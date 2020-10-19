@@ -1,0 +1,21 @@
+﻿@model TekiBlog.ViewModels.LoginViewModel
+
+<h2>Log in</h2>
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <form asp-controller="Auth" asp-action="Login" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Email">Email</label>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password">Password</label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                </div>
+                <input type="Submit" value="Sign in" />
+            </form>
+        </section>
+    </div>
+</div>
