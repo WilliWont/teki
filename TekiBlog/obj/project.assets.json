@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\a_self_proj\\teki\\assignment\\TekiBlog\\TekiBlog.csproj",
+      "projectUniqueName": "D:\\a_self_proj\\teki\\TekiBlog\\TekiBlog.csproj",
       "projectName": "TekiBlog",
-      "projectPath": "D:\\a_self_proj\\teki\\assignment\\TekiBlog\\TekiBlog.csproj",
+      "projectPath": "D:\\a_self_proj\\teki\\TekiBlog\\TekiBlog.csproj",
       "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-      "outputPath": "D:\\a_self_proj\\teki\\assignment\\TekiBlog\\obj\\",
+      "outputPath": "D:\\a_self_proj\\teki\\TekiBlog\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
