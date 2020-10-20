@@ -27,10 +27,13 @@ namespace TekiBlog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Register DB Context
+            // Register DB Context. This method is add many of service revelant to DBContext to service collection . 
+            // We can use this service any time by using dependency injection
             services.AddDbContext<ApplicationDBContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            // Register Identiy service
+            // Register Identity service . This method is add many of service revelant to Identity to service collection
+            // like UserManager , RoleManager or SigninManager.
+            // We can use this service any time by using dependency injection
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 // Password require validations
@@ -40,6 +43,7 @@ namespace TekiBlog
                 options.Password.RequireNonAlphanumeric = false;
             })
                 .AddEntityFrameworkStores<ApplicationDBContext>();
+            // Add service for MVC 
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
