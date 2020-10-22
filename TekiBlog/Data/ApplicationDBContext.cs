@@ -16,11 +16,15 @@ namespace TekiBlog.Data
         {
         }
 
+        public DbSet<Status> Statuses { get; set; }
+        public DbSet<Article> Articles { get; set; }
+
+
         // This funtion is used to create identity tables to database when migration.
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.HasDefaultSchema("Identity");
+            builder.HasDefaultSchema("Tekki");
             builder.Entity<ApplicationUser>(entity =>
             {
                 entity.ToTable(name: "User");
@@ -48,6 +52,14 @@ namespace TekiBlog.Data
             builder.Entity<IdentityUserToken<string>>(entity =>
             {
                 entity.ToTable("UserTokens");
+            });
+            builder.Entity<Status>(entity =>
+            {
+                entity.ToTable("Status");
+            });
+            builder.Entity<Article>(entity =>
+            {
+                entity.ToTable("Article");
             });
         }
     }
