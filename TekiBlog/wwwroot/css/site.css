@@ -1,6 +1,19 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+
+/* style constants
+-------------------------------------------------- */
+:root {
+    --main: rgb(254, 121, 78);
+    --main-hover: rgb(234, 111, 58);
+/*    --logout: rgb(202, 104, 115);
+    --logout-hover: rgb(182, 94, 95);
+    --login: rgb(254, 121, 78);
+    --register: rgb(254, 121, 78);*/
+
+}
+/*------------------------------------*/
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -12,20 +25,20 @@ a {
     color: rgb(254, 121, 78);
 }
 
-    a:hover {
-        color: rgb(234, 111, 58);
-    }
+a:hover {
+    color: var(--main-hover);
+}
 
 .btn-primary {
     color: #fff;
     background-color: rgb(254, 121, 78);
-    border-color: rgb(234, 111, 58);
+    border-color: var(--main-hover);
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
     background-color: rgb(254, 121, 78);
-    border-color: rgb(234, 111, 58);
+    border-color: var(--main-hover);
 }
 
 /* Sticky footer styles
@@ -88,18 +101,52 @@ nav.navbar {
     height: 90px;
 }
 
-/* Style buttons */
-.btn {
-    background-color: rgb(254, 121, 78); /* Blue background */
-    border: none; /* Remove borders */
-    color: white; /* White text */
+.form-inline {
+    position: relative;
 }
 
-/* Darker background on mouse-over */
-    .btn:hover {
-        background-color: rgb(234, 111, 58);
-        box-shadow: 0px 3px 5px rgb(198, 198, 198);
-    }
+.form-inline button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.btn {
+    background-color: var(--main);
+    border-style: solid;
+    border-color: var(--main);
+    color: white;
+    margin: 0 .4vw;
+}
+
+.btn-outline {
+    background-color: rgb(255,255,255);
+    border-style: solid;
+    border-color: var(--main);
+    color: var(--main);
+}
+
+/*.btn-logout {
+    background-color: var(--logout);
+    border-color: var(--logout);
+}
+*/
+.btn:hover {
+    background-color: var(--main-hover);
+    border-color: var(--main-hover);
+    box-shadow: 0px 3px 5px rgb(198, 198, 198);
+}
+
+/*.btn-logout:hover {
+    background-color: var(--logout-hover);
+    border-color: var(--logout-hover);
+}*/
 
 /*#region compose button */
 /*https://codepen.io/grdnbryant/pen/eNGjzX*/
@@ -176,5 +223,6 @@ top: -5px;
 /*#endregon*/
 
 .body-content{
+    /*TODO: remove body-content height*/
     height:300vh;
 }

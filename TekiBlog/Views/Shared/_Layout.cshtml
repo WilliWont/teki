@@ -12,25 +12,27 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white mb-3">
+        
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <img class="img-brand" src="~/img/logo.png">
             </a>
+            
             <ul class="navbar-nav mr-auto"></ul>
+            
             <form class="form-inline my-2 my-lg-0">
+
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+                <button class="btn btn-outline-secondary my-2 my-sm-0" title="Search" type="submit"><i class="fa fa-search"></i></button>
+
             </form>
+
             <partial name="_LoginPartial" />
+        
         </nav>
     </header>
-    <div class="btn-compose-container">
-        <a asp-area="" asp-controller="Home" asp-action="Privacy">
-        <span class="circle">
-            <div class="vertical"></div>
-            <div class="horizontal"></div>
-        </span>
-        </a>
-    </div>
+
+    <partial name="_ComposePartial" />
+    
     <div class="container body-content">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -42,6 +44,7 @@
             &copy; 2020 - TekiBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
