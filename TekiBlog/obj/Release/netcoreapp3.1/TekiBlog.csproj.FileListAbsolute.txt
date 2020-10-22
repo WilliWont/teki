@@ -125,7 +125,6 @@ E:\FPTdocument\TERM5\PRN292\Tekki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.dl
 E:\FPTdocument\TERM5\PRN292\Tekki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.pdb
 E:\FPTdocument\TERM5\PRN292\Tekki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.genruntimeconfig.cache
 E:\FPTdocument\TERM5\PRN292\Tekki\TekiBlog\obj\Release\netcoreapp3.1\Razor\Views\Shared\_LoginPartial.cshtml.g.cs
-E:\FPTdocument\TERM5\PRN292\Tekki\TekiBlog\obj\Release\netcoreapp3.1\Razor\Views\Article.cshtml.g.cs
 E:\FPTdocument\TERM5\PRN292\Tekki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.csproj.CoreCompileInputs.cache
 E:\FPTdocument\TERM5\PRN292\Tekki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.MvcApplicationPartsAssemblyInfo.cs
 E:\FPTdocument\TERM5\PRN292\Tekki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.MvcApplicationPartsAssemblyInfo.cache

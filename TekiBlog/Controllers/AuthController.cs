@@ -52,8 +52,9 @@ namespace TekiBlog.Controllers
             else
             {
                 _logger.LogInformation("User Logged in failed");
+                ViewData["ErrorLogin"] = "The password or email is invalid";
+                return View(model);
             }
-            return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> Logout()
