@@ -11,8 +11,6 @@ D:\a_self_proj\teki\TekiBlog\bin\Release\netcoreapp3.1\TekiBlog.Views.dll
 D:\a_self_proj\teki\TekiBlog\bin\Release\netcoreapp3.1\TekiBlog.Views.pdb
 D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.AssemblyInfoInputs.cache
 D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.AssemblyInfo.cs
-D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.csproj.CoreCompileInputs.cache
-D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.MvcApplicationPartsAssemblyInfo.cache
 D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.RazorAssemblyInfo.cache
 D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.RazorAssemblyInfo.cs
 D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.TagHelpers.input.cache
@@ -180,8 +178,13 @@ D:\a_self_proj\teki\TekiBlog\bin\Release\netcoreapp3.1\runtimes\win-x86\native\s
 D:\a_self_proj\teki\TekiBlog\bin\Release\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 D:\a_self_proj\teki\TekiBlog\bin\Release\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 D:\a_self_proj\teki\TekiBlog\bin\Release\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.MvcApplicationPartsAssemblyInfo.cs
 D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\Razor\Views\Auth\Login.cshtml.g.cs
 D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\Razor\Views\Auth\Register.cshtml.g.cs
 D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\Razor\Views\Shared\_LoginPartial.cshtml.g.cs
 D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\Razor\Views\Shared\_ComposePartial.cshtml.g.cs
+D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\Razor\Views\Article\Editor.cshtml.g.cs
+D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\Razor\Views\Article\Detail.cshtml.g.cs
+D:\a_self_proj\teki\TekiBlog\bin\Release\netcoreapp3.1\Quill.Delta.dll
+D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.csproj.CoreCompileInputs.cache
+D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.MvcApplicationPartsAssemblyInfo.cs
+D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.MvcApplicationPartsAssemblyInfo.cache

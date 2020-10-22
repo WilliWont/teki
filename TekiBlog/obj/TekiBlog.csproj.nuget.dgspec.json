@@ -60,6 +60,10 @@
             "Microsoft.EntityFrameworkCore.Tools": {
               "target": "Package",
               "version": "[3.1.8, )"
+            },
+            "Quill.Delta": {
+              "target": "Package",
+              "version": "[1.0.7, )"
             }
           },
           "imports": [

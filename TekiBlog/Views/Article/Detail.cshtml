@@ -1,0 +1,17 @@
+﻿@model TekiBlog.Models.Article
+title: @Html.DisplayFor(model => model.Tittle)
+<br>
+raw:@Html.DisplayFor(model => model.ContentRaw)
+<br>
+html:@Html.Raw(@Model.ContentHtml)
+<br>
+summary:@Html.DisplayFor(model => model.Sumary)
+<br>
+datepost;@Html.DisplayFor(model => model.DatePosted)
+<br>
+currentvote:@Html.DisplayFor(model => model.CurrentVote)
+<br>
+status:@Html.DisplayFor(model => model.Status)
+<br>
+userId:@Html.DisplayFor(model => model.User)
+<br>

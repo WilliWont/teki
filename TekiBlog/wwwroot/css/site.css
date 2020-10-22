@@ -7,6 +7,7 @@ for details on configuring this project to bundle and minify static web assets. 
 :root {
     --main: rgb(254, 121, 78);
     --main-hover: rgb(234, 111, 58);
+
 /*    --logout: rgb(202, 104, 115);
     --logout-hover: rgb(182, 94, 95);
     --login: rgb(254, 121, 78);
@@ -132,21 +133,17 @@ nav.navbar {
     color: var(--main);
 }
 
-/*.btn-logout {
-    background-color: var(--logout);
-    border-color: var(--logout);
-}
-*/
 .btn:hover {
     background-color: var(--main-hover);
     border-color: var(--main-hover);
     box-shadow: 0px 3px 5px rgb(198, 198, 198);
 }
 
-/*.btn-logout:hover {
-    background-color: var(--logout-hover);
-    border-color: var(--logout-hover);
-}*/
+.form-group.required .control-label:before {
+    content: "◉ ";
+    color: var(--main);
+    font-size:1.2rem;
+}
 
 /*#region compose button */
 /*https://codepen.io/grdnbryant/pen/eNGjzX*/
@@ -221,8 +218,3 @@ top: -5px;
     z-index: 10;
 }
 /*#endregon*/
-
-.body-content{
-    /*TODO: remove body-content height*/
-    height:300vh;
-}

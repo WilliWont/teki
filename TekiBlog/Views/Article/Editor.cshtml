@@ -1,0 +1,68 @@
+﻿
+@model TekiBlog.ViewModels.CreateArticleViewModel
+
+
+@{
+    // NOTE: quill tutorial link
+    // https://endpointsystems.com/blog/asp-net-core-rich-text-editor
+    ViewData["Title"] = "Editor";
+}
+
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/editor.css" />
+}
+
+@section Scripts{
+
+    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script>
+        let jdQuill = new Quill('#description', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['image', 'code-block']
+                ]
+            }
+        });
+        function handleSubmit() {
+            document.getElementById('abc').value = JSON.stringify(jdQuill.getContents());
+        }
+    </script>
+}
+
+<form id="form" asp-controller="Article" asp-action="PostArticle" onsubmit="handleSubmit()">
+    <input type="hidden" id="abc" asp-for="@Model.ArticleContent" />
+
+    <div class="form-group required">
+        <label class="control-label" for="inputTitle">Title</label>
+        <input type="text" class="form-control" id="inputTitle" aria-describedby="titleHelp" asp-for="@Model.Title">
+        <small id="titleHelp" class="form-text text-muted">Write a brief title for your article</small>
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label" for="inputTLDR">Summary</label>
+        <textarea type="text" class="form-control" id="inputTLDR" aria-describedby="tldrHelp" asp-for="@Model.Summary"></textarea>
+        <small id="tldrHelp" class="form-text text-muted">Write a brief summary for your article</small>
+    </div>
+
+
+    <div class="form-group required">
+        <label class="control-label" for="inputContent">Content</label>
+        <div id="description" id="inputContent">
+        </div>
+    </div>
+
+    <input class="btn btn-outline-secondary btn-outline my-2 my-sm-0"
+           action="action"
+           onclick="window.history.go(-1); return false;"
+           type="submit"
+           value="Return" />
+    <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-pencil"></i> Post Article</button>
+
+
+</form>
