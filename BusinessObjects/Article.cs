@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
-namespace TekiBlog.Models
+namespace BusinessObjects
 {
     public class Article
     {
-        public string ID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid ID { get; set; }
 
         [StringLength(200)]
         public string Title { get; set; }
@@ -20,10 +24,8 @@ namespace TekiBlog.Models
 
         public int CurrentVote { get; set; }
 
-        public int StatusID { get; set;}
         public Status Status { get; set; }
 
-        public string UserID { get; set;}
         public ApplicationUser User { get; set; }
     }
 }

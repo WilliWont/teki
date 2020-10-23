@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using TekiBlog.Models;
 using TekiBlog.ViewModels;
+using BusinessObjects;
 
 namespace TekiBlog.Controllers
 {

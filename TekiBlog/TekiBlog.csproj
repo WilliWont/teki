@@ -13,4 +13,10 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8" />
 		<PackageReference Include="Quill.Delta" Version="1.0.7" />
 	</ItemGroup>
+
+
+	<ItemGroup>
+	  <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj" />
+	  <ProjectReference Include="..\DataObjects\DataObjects.csproj" />
+	</ItemGroup>
 </Project>

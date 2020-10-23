@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TekiBlog.Data;
-using TekiBlog.Models;
+using DataObjects;
+using BusinessObjects;
 
 namespace TekiBlog
 {

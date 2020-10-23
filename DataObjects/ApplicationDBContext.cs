@@ -1,30 +1,30 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
+using System.IO;
+using BusinessObjects;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TekiBlog.Models;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
-namespace TekiBlog.Data
+namespace DataObjects
 {
     public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
-           : base(options)
+          : base(options)
         {
+
         }
 
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Article> Articles { get; set; }
 
-
         // This funtion is used to create identity tables to database when migration.
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.HasDefaultSchema("Tekki");
+            builder.HasDefaultSchema("Teki");
             builder.Entity<ApplicationUser>(entity =>
             {
                 entity.ToTable(name: "User");
@@ -61,6 +61,21 @@ namespace TekiBlog.Data
             {
                 entity.ToTable("Article");
             });
+        }
+    }
+
+    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ApplicationDBContext>
+    {
+        public ApplicationDBContext CreateDbContext(string[] args)
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(@Directory.GetCurrentDirectory() + "/../TekiBlog/appsettings.json")
+                .Build();
+            var builder = new DbContextOptionsBuilder<ApplicationDBContext>();
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            builder.UseSqlServer(connectionString);
+            return new ApplicationDBContext(builder.Options);
         }
     }
 }

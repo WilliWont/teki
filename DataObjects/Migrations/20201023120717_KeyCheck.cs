@@ -1,18 +1,18 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TekiBlog.Migrations
+namespace DataObjects.Migrations
 {
-    public partial class AddnewArticle : Migration
+    public partial class KeyCheck : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "Tekki");
+                name: "Teki");
 
             migrationBuilder.CreateTable(
                 name: "Role",
-                schema: "Tekki",
+                schema: "Teki",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -27,7 +27,7 @@ namespace TekiBlog.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Status",
-                schema: "Tekki",
+                schema: "Teki",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
@@ -41,7 +41,7 @@ namespace TekiBlog.Migrations
 
             migrationBuilder.CreateTable(
                 name: "User",
-                schema: "Tekki",
+                schema: "Teki",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -69,7 +69,7 @@ namespace TekiBlog.Migrations
 
             migrationBuilder.CreateTable(
                 name: "RoleClaims",
-                schema: "Tekki",
+                schema: "Teki",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -84,7 +84,7 @@ namespace TekiBlog.Migrations
                     table.ForeignKey(
                         name: "FK_RoleClaims_Role_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "Tekki",
+                        principalSchema: "Teki",
                         principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -92,33 +92,33 @@ namespace TekiBlog.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Article",
-                schema: "Tekki",
+                schema: "Teki",
                 columns: table => new
                 {
-                    ID = table.Column<string>(nullable: false),
-                    Tittle = table.Column<string>(maxLength: 200, nullable: true),
+                    ID = table.Column<Guid>(nullable: false),
+                    Title = table.Column<string>(maxLength: 200, nullable: true),
                     ContentRaw = table.Column<string>(nullable: true),
                     ContentHtml = table.Column<string>(nullable: true),
-                    Sumary = table.Column<string>(nullable: true),
+                    Summary = table.Column<string>(nullable: true),
                     DatePosted = table.Column<DateTime>(nullable: false),
                     CurrentVote = table.Column<int>(nullable: false),
-                    statusID = table.Column<int>(nullable: true),
-                    userId = table.Column<string>(nullable: true)
+                    StatusID = table.Column<int>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Article", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Article_Status_statusID",
-                        column: x => x.statusID,
-                        principalSchema: "Tekki",
+                        name: "FK_Article_Status_StatusID",
+                        column: x => x.StatusID,
+                        principalSchema: "Teki",
                         principalTable: "Status",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Article_User_userId",
-                        column: x => x.userId,
-                        principalSchema: "Tekki",
+                        name: "FK_Article_User_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "Teki",
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -126,7 +126,7 @@ namespace TekiBlog.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserClaims",
-                schema: "Tekki",
+                schema: "Teki",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -141,7 +141,7 @@ namespace TekiBlog.Migrations
                     table.ForeignKey(
                         name: "FK_UserClaims_User_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Tekki",
+                        principalSchema: "Teki",
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -149,7 +149,7 @@ namespace TekiBlog.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserLogins",
-                schema: "Tekki",
+                schema: "Teki",
                 columns: table => new
                 {
                     LoginProvider = table.Column<string>(nullable: false),
@@ -163,7 +163,7 @@ namespace TekiBlog.Migrations
                     table.ForeignKey(
                         name: "FK_UserLogins_User_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Tekki",
+                        principalSchema: "Teki",
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -171,7 +171,7 @@ namespace TekiBlog.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserRoles",
-                schema: "Tekki",
+                schema: "Teki",
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
@@ -183,14 +183,14 @@ namespace TekiBlog.Migrations
                     table.ForeignKey(
                         name: "FK_UserRoles_Role_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "Tekki",
+                        principalSchema: "Teki",
                         principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserRoles_User_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Tekki",
+                        principalSchema: "Teki",
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -198,7 +198,7 @@ namespace TekiBlog.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserTokens",
-                schema: "Tekki",
+                schema: "Teki",
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
@@ -212,27 +212,27 @@ namespace TekiBlog.Migrations
                     table.ForeignKey(
                         name: "FK_UserTokens_User_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Tekki",
+                        principalSchema: "Teki",
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Article_statusID",
-                schema: "Tekki",
+                name: "IX_Article_StatusID",
+                schema: "Teki",
                 table: "Article",
-                column: "statusID");
+                column: "StatusID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Article_userId",
-                schema: "Tekki",
+                name: "IX_Article_UserId",
+                schema: "Teki",
                 table: "Article",
-                column: "userId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                schema: "Tekki",
+                schema: "Teki",
                 table: "Role",
                 column: "NormalizedName",
                 unique: true,
@@ -240,19 +240,19 @@ namespace TekiBlog.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
-                schema: "Tekki",
+                schema: "Teki",
                 table: "RoleClaims",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                schema: "Tekki",
+                schema: "Teki",
                 table: "User",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                schema: "Tekki",
+                schema: "Teki",
                 table: "User",
                 column: "NormalizedUserName",
                 unique: true,
@@ -260,19 +260,19 @@ namespace TekiBlog.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
-                schema: "Tekki",
+                schema: "Teki",
                 table: "UserClaims",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogins_UserId",
-                schema: "Tekki",
+                schema: "Teki",
                 table: "UserLogins",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
-                schema: "Tekki",
+                schema: "Teki",
                 table: "UserRoles",
                 column: "RoleId");
         }
@@ -281,39 +281,39 @@ namespace TekiBlog.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Article",
-                schema: "Tekki");
+                schema: "Teki");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims",
-                schema: "Tekki");
+                schema: "Teki");
 
             migrationBuilder.DropTable(
                 name: "UserClaims",
-                schema: "Tekki");
+                schema: "Teki");
 
             migrationBuilder.DropTable(
                 name: "UserLogins",
-                schema: "Tekki");
+                schema: "Teki");
 
             migrationBuilder.DropTable(
                 name: "UserRoles",
-                schema: "Tekki");
+                schema: "Teki");
 
             migrationBuilder.DropTable(
                 name: "UserTokens",
-                schema: "Tekki");
+                schema: "Teki");
 
             migrationBuilder.DropTable(
                 name: "Status",
-                schema: "Tekki");
+                schema: "Teki");
 
             migrationBuilder.DropTable(
                 name: "Role",
-                schema: "Tekki");
+                schema: "Teki");
 
             migrationBuilder.DropTable(
                 name: "User",
-                schema: "Tekki");
+                schema: "Teki");
         }
     }
 }

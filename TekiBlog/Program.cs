@@ -8,8 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using TekiBlog.Data;
-using TekiBlog.Models;
+using BusinessObjects;
+using DataObjects;
 
 namespace TekiBlog
 {
@@ -37,6 +37,21 @@ namespace TekiBlog
                     // Add admine and user role to DB
                     roleMgr.CreateAsync(adminRole).GetAwaiter().GetResult();
                     roleMgr.CreateAsync(userRole).GetAwaiter().GetResult();
+                }
+
+                var activeStatus = new Status
+                {
+                    Name = "Active"
+                };
+                var deactiveStatus = new Status
+                {
+                    Name = "Deactive"
+                };
+                if (!ctx.Statuses.Any())
+                {
+                    ctx.Statuses.Add(activeStatus);
+                    ctx.Statuses.Add(deactiveStatus);
+                    ctx.SaveChanges();
                 }
 
                 if (!ctx.Users.Any(u => u.UserName == "Admin")) // If there are no user with name admin

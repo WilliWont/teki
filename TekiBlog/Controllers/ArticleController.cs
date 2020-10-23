@@ -11,9 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Quill.Delta;
-using TekiBlog.Data;
-using TekiBlog.Models;
 using TekiBlog.ViewModels;
+using DataObjects;
+using BusinessObjects;
+using Microsoft.Extensions.Logging;
 
 namespace TekiBlog.Controllers
 {
@@ -22,14 +23,16 @@ namespace TekiBlog.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signinManager;
         private readonly ApplicationDBContext _context;
-
-        public ArticleController(UserManager<ApplicationUser> userManager, 
+        private readonly ILogger<ArticleController> _logger;
+        public ArticleController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signinManager,
-            ApplicationDBContext context)
+            ApplicationDBContext context,
+            ILogger<ArticleController> logger)
         {
             _userManager = userManager;
             _signinManager = signinManager;
-           _context = context;
+            _context = context;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -38,16 +41,18 @@ namespace TekiBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detail(string id)
+        public IActionResult Detail(Guid id)
         {
             if (id == null)
             {
+                _logger.LogInformation("Id is null");
                 return NotFound();
             }
 
             var article = _context.Articles.FirstOrDefault(m => m.ID.Equals(id));
             if (article == null)
             {
+                _logger.LogInformation("Article is null");
                 return NotFound();
             }
 
@@ -83,33 +88,25 @@ namespace TekiBlog.Controllers
             Console.WriteLine($"html: {html}");
             #endregion
 
-            string userId = _userManager.GetUserId(HttpContext.User);
-            //Status active = new Status { ID = 2, Name = "Active" };
-            //ApplicationUser user = new ApplicationUser { Id = userId };
+            // Get user in current context
+            var user = await _userManager.GetUserAsync(User);
+            // Create active status for this post
+            Status active = _context.Statuses.First(x => x.Name.Equals("Active"));
+            
 
             string raw = Regex.Replace(html, "<.*?>", String.Empty);
 
-            SHA256 mySHA256 = SHA256.Create();
-            byte[] bytes = mySHA256.ComputeHash(Encoding.UTF8.GetBytes(DateTime.UtcNow.ToString() + userId));
-
-            // Convert byte array to a string   
-            StringBuilder articleID = new StringBuilder();
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                articleID.Append(bytes[i].ToString("x2"));
-            }
-
+            // Create article model to insert to Database
             Article articleModel = new Article
             {
-                ID = articleID.ToString(),
                 Title = article.Title,
                 Summary = article.Summary,
                 DatePosted = DateTime.UtcNow,
                 CurrentVote = 0,
                 ContentHtml = html,
                 ContentRaw = raw,
-                StatusID = 2,
-                UserID = userId
+                Status = active,
+                User = user
             };
 
 
@@ -117,13 +114,13 @@ namespace TekiBlog.Controllers
             {
                 _context.Add(articleModel);
                 await _context.SaveChangesAsync();
-                Console.WriteLine("added ID:"+articleModel.ID);
+                Console.WriteLine("added ID:" + articleModel.ID);
                 // return to article view
                 // return RedirectToAction(nameof(Index));
             }
 
             // return to home page
-            return RedirectToAction("Detail","Article", new {id= articleModel.ID });
+            return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
         }
 
     }
