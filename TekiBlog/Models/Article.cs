@@ -5,7 +5,7 @@ namespace TekiBlog.Models
 {
     public class Article
     {
-        public Guid ID { get; set; }
+        public string ID { get; set; }
 
         [StringLength(200)]
         public string Title { get; set; }

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Quill.Delta;
 using TekiBlog.Data;
@@ -37,17 +40,16 @@ namespace TekiBlog.Controllers
         [HttpGet]
         public IActionResult Detail(string id)
         {
-            Console.WriteLine("at detail id:" + id);
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-            var article = _context.Articles
-            .FirstOrDefault(m => m.ID.Equals(id));
-            //if (article == null)
-            //{
-            //    return NotFound();
-            //}
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var article = _context.Articles.FirstOrDefault(m => m.ID.Equals(id));
+            if (article == null)
+            {
+                return NotFound();
+            }
 
             return View(article);
         }
@@ -61,7 +63,11 @@ namespace TekiBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostArticle(CreateArticleViewModel article)
         {
-            // TODO: VALIDATE ARTICLE
+            // TODO: VALIDATE POST ARTICLE
+
+            // TODO: REFACTOR POST ARTICLE
+
+            // TODO: COMPRESS POST ARTICLE IMG
 
             #region article content
             string content = article.ArticleContent;
@@ -83,8 +89,19 @@ namespace TekiBlog.Controllers
 
             string raw = Regex.Replace(html, "<.*?>", String.Empty);
 
+            SHA256 mySHA256 = SHA256.Create();
+            byte[] bytes = mySHA256.ComputeHash(Encoding.UTF8.GetBytes(DateTime.UtcNow.ToString() + userId));
+
+            // Convert byte array to a string   
+            StringBuilder articleID = new StringBuilder();
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                articleID.Append(bytes[i].ToString("x2"));
+            }
+
             Article articleModel = new Article
             {
+                ID = articleID.ToString(),
                 Title = article.Title,
                 Summary = article.Summary,
                 DatePosted = DateTime.UtcNow,
