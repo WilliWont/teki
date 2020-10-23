@@ -1,11 +1,11 @@
 ﻿@model TekiBlog.Models.Article
-title: @Html.DisplayFor(model => model.Tittle)
+title: @Html.DisplayFor(model => model.Title)
 <br>
 raw:@Html.DisplayFor(model => model.ContentRaw)
 <br>
 html:@Html.Raw(@Model.ContentHtml)
 <br>
-summary:@Html.DisplayFor(model => model.Sumary)
+summary:@Html.DisplayFor(model => model.Summary)
 <br>
 datepost;@Html.DisplayFor(model => model.DatePosted)
 <br>

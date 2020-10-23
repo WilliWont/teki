@@ -31,6 +31,8 @@ namespace TekiBlog
             // We can use this service any time by using dependency injection
             services.AddDbContext<ApplicationDBContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+
             // Register Identity service . This method is add many of service revelant to Identity to service collection
             // like UserManager , RoleManager or SigninManager.
             // We can use this service any time by using dependency injection
@@ -43,6 +45,8 @@ namespace TekiBlog
                 options.Password.RequireNonAlphanumeric = false;
             })
                 .AddEntityFrameworkStores<ApplicationDBContext>();
+            
+            
             // Add service for MVC 
             services.AddControllersWithViews();
             services.AddRazorPages();
