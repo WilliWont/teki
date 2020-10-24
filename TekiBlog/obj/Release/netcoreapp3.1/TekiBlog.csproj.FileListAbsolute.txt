@@ -289,3 +289,8 @@ E:\FPTdocument\TERM5\PRN292\Assignment2\teki\TekiBlog\obj\Release\netcoreapp3.1\
 E:\FPTdocument\TERM5\PRN292\Assignment2\teki\TekiBlog\obj\Release\netcoreapp3.1\staticwebassets\TekiBlog.StaticWebAssets.Manifest.cache
 E:\FPTdocument\TERM5\PRN292\Assignment2\teki\TekiBlog\obj\Release\netcoreapp3.1\staticwebassets\TekiBlog.StaticWebAssets.xml
 E:\FPTdocument\TERM5\PRN292\Assignment2\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.genruntimeconfig.cache
+D:\a_self_proj\teki\TekiBlog\bin\Release\netcoreapp3.1\BusinessObjects.dll
+D:\a_self_proj\teki\TekiBlog\bin\Release\netcoreapp3.1\DataObjects.dll
+D:\a_self_proj\teki\TekiBlog\bin\Release\netcoreapp3.1\BusinessObjects.pdb
+D:\a_self_proj\teki\TekiBlog\bin\Release\netcoreapp3.1\DataObjects.pdb
+D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\Razor\Views\Article\Index.cshtml.g.cs

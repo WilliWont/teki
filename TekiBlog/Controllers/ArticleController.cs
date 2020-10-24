@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
-using Quill.Delta;
 using TekiBlog.ViewModels;
 using DataObjects;
 using BusinessObjects;
@@ -37,7 +36,11 @@ namespace TekiBlog.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            // TODO: REMOVE LATER, FOR TEST ONLY
+
+            List<Article> articles = _context.Articles.ToList();
+
+            return View(articles);
         }
 
         [HttpGet]
@@ -49,12 +52,15 @@ namespace TekiBlog.Controllers
                 return NotFound();
             }
 
-            var article = _context.Articles.FirstOrDefault(m => m.ID.Equals(id));
+            // TODO: REFACTOR THIS 
+            var article = _context.Articles.FirstOrDefault(m => m.ID.Equals(id) && m.Status.ID == 1);
             if (article == null)
             {
                 _logger.LogInformation("Article is null");
                 return NotFound();
             }
+
+            //article.User = _context.Users.First(m => m.Id == article.User);
 
             return View(article);
         }
@@ -75,25 +81,30 @@ namespace TekiBlog.Controllers
             // TODO: COMPRESS POST ARTICLE IMG
 
             #region article content
-            string content = article.ArticleContent;
-            content = content.Substring(7);
-            int endI = content.Length - 1;
-            content = content.Substring(0, endI);
-            Console.WriteLine($"contentPROC: {content}");
+            //string content = article.ArticleContent;
+            //Console.WriteLine($"article data received: {content}");
+            //content = content.Substring(7);
+            //int endI = content.Length - 1;
+            //content = content.Substring(0, endI);
+            //Console.WriteLine($"contentPROC: {content}");
 
-            var deltaOps = JArray.Parse(content);
-            Console.WriteLine($"contentJSON: {deltaOps}");
-            var htmlConverter = new HtmlConverter(deltaOps);
-            string html = htmlConverter.Convert();
-            Console.WriteLine($"html: {html}");
+            //var deltaOps = JArray.Parse(content);
+            //Console.WriteLine($"contentJSON: {deltaOps}");
+            //var htmlConverter = new HtmlConverter(deltaOps);
+            //string html = htmlConverter.Convert();
+            //Console.WriteLine($"html: {html}");
             #endregion
+
 
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
+            
             // Create active status for this post
             Status active = _context.Statuses.First(x => x.Name.Equals("Active"));
             
+            string html = article.ArticleContent;
 
+            // TODO: switch raw to tinymce function
             string raw = Regex.Replace(html, "<.*?>", String.Empty);
 
             // Create article model to insert to Database

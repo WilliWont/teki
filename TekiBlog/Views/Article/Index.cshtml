@@ -1,0 +1,8 @@
+﻿@model IEnumerable<BusinessObjects.Article>
+@* //TODO: REMOVE LATER, TEST ONLY*@
+
+@foreach (var item in Model)
+{
+    <a asp-action="Detail" asp-route-id="@item.ID">@item.Title</a>
+    <br>
+}

@@ -1,17 +1,14 @@
 ﻿@model BusinessObjects.Article
-title: @Html.DisplayFor(model => model.Title)
-<br>
-raw:@Html.DisplayFor(model => model.ContentRaw)
-<br>
-html:@Html.Raw(@Model.ContentHtml)
-<br>
-summary:@Html.DisplayFor(model => model.Summary)
-<br>
-datepost;@Html.DisplayFor(model => model.DatePosted)
-<br>
-currentvote:@Html.DisplayFor(model => model.CurrentVote)
-<br>
-status:@Html.DisplayFor(model => model.Status)
-<br>
-userId:@Html.DisplayFor(model => model.User)
-<br>
+
+<div class="flx-container">
+    <div class="col-9 article-detail">
+        <h1 class="title">@Html.DisplayFor(model => model.Title)</h1>
+
+        <blockquote class="blockquote">
+            <p class="mb-0">@Html.DisplayFor(model => model.Summary)</p>
+        </blockquote>
+
+        <p class="content">@Html.Raw(@Model.ContentHtml)</p>
+
+    </div>
+</div>
