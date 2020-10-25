@@ -2,3 +2,37 @@
 .btn-compose-container {
     display:none;
 }
+
+[contenteditable] {
+    transition: .1s ease;
+    outline: none;
+    padding: 12px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius:3px;
+    border-color: rgba(0,0,0,0);
+}
+
+[data-placeholder]:empty:before, [aria-placeholder] {
+    content: attr(data-placeholder);
+    color: rgb(146,146,146);
+    font-style: italic;
+    cursor:text;
+}
+
+[contenteditable]:hover {
+    transition: .1s ease;
+    border-color: rgb(146,146,146);
+    box-shadow: 0px 1px 3px rgb(198, 198, 198);
+}
+
+.input-required::before {
+    content: "◉ ";
+    color: var(--main);
+    font-size: .8rem;
+}
+#form-content{
+    background-color: rgb(247,247,247);
+    min-height:40vh;
+    margin-bottom: 2vh; 
+}

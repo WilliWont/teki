@@ -10,11 +10,13 @@ namespace TekiBlog.ViewModels
 {
     public class CreateArticleViewModel
     {
-        // NOTE: TINYMCE-1: create model
-        // Create a model for containing editor's content
-        // REQUIRE .Web.Mvc namespace
-        //[AllowHtml] // nescessary for HTML to pass through
+        //[AllowHtml] // nescessary for HTML to pass through   
+        [Required]
         public string ArticleContent { get; set; }
+
+        [Required]
+        public string ArticleRaw { get; set; }
+
 
         [Required]
         public string Title { get; set; }

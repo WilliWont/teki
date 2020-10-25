@@ -1,14 +1,28 @@
 ﻿@model BusinessObjects.Article
+@section Styles{
+    <link rel="stylesheet" href="~/css/detail.css" />
+}
 
 <div class="flx-container">
     <div class="col-9 article-detail">
-        <h1 class="title">@Html.DisplayFor(model => model.Title)</h1>
 
-        <blockquote class="blockquote">
-            <p class="mb-0">@Html.DisplayFor(model => model.Summary)</p>
-        </blockquote>
 
-        <p class="content">@Html.Raw(@Model.ContentHtml)</p>
+        <h1 id="form-title" class="title" aria-describedby="titleHelp">@Html.DisplayFor(model => model.Title)</h1>
+        @*//TODO: ADD USER LINK HERE*@
+        <small id="titleHelp">By *User here* | @Html.DisplayFor(model => model.DatePosted)</small>
 
+        @if (@Model.Summary != null)
+        {
+            <blockquote class="blockquote">
+                <p id="form-tldr"
+                   class="mb-0 article-input">@Html.DisplayFor(model => model.Summary)</p>
+            </blockquote>
+        }
+
+
+
+        <div id="form-content" class="article-input">
+            @Html.Raw(@Model.ContentHtml)
+        </div>
     </div>
 </div>
