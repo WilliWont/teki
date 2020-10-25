@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DataObjects;
 using BusinessObjects;
+using DataObjects.Repository;
+using ActionServices;
 
 namespace TekiBlog
 {
@@ -32,6 +34,8 @@ namespace TekiBlog
             services.AddDbContext<ApplicationDBContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            // Register my app service. This includes CRUD function in every repository.
+            services.AddTransient<IService, Service>();
 
             // Register Identity service . This method is add many of service revelant to Identity to service collection
             // like UserManager , RoleManager or SigninManager.

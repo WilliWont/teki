@@ -1,0 +1,14 @@
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\bin\Release\netcoreapp3.1\ActionServices.deps.json
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\bin\Release\netcoreapp3.1\ActionServices.dll
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\bin\Release\netcoreapp3.1\ActionServices.pdb
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\bin\Release\netcoreapp3.1\BusinessObjects.dll
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\bin\Release\netcoreapp3.1\DataObjects.dll
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\bin\Release\netcoreapp3.1\BusinessObjects.pdb
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\bin\Release\netcoreapp3.1\DataObjects.pdb
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\obj\Release\netcoreapp3.1\ActionServices.csprojAssemblyReference.cache
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\obj\Release\netcoreapp3.1\ActionServices.AssemblyInfoInputs.cache
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\obj\Release\netcoreapp3.1\ActionServices.AssemblyInfo.cs
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\obj\Release\netcoreapp3.1\ActionServices.csproj.CoreCompileInputs.cache
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\obj\Release\netcoreapp3.1\ActionServices.csproj.CopyComplete
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\obj\Release\netcoreapp3.1\ActionServices.dll
+E:\FPTdocument\TERM5\PRN292\Assignment3\teki\ActionServices\obj\Release\netcoreapp3.1\ActionServices.pdb

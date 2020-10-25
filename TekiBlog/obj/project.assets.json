@@ -2183,6 +2183,23 @@
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
       },
+      "ActionServices/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "BusinessObjects": "1.0.0",
+          "DataObjects": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ActionServices.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ActionServices.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "BusinessObjects/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
@@ -2196,7 +2213,10 @@
         },
         "runtime": {
           "bin/placeholder/BusinessObjects.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "DataObjects/1.0.0": {
         "type": "project",
@@ -2214,7 +2234,10 @@
         },
         "runtime": {
           "bin/placeholder/DataObjects.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },
@@ -7439,6 +7462,11 @@
         "system.xml.xmlserializer.nuspec"
       ]
     },
+    "ActionServices/1.0.0": {
+      "type": "project",
+      "path": "../ActionServices/ActionServices.csproj",
+      "msbuildProject": "../ActionServices/ActionServices.csproj"
+    },
     "BusinessObjects/1.0.0": {
       "type": "project",
       "path": "../BusinessObjects/BusinessObjects.csproj",
@@ -7452,6 +7480,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "ActionServices >= 1.0.0",
       "BusinessObjects >= 1.0.0",
       "DataObjects >= 1.0.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 3.1.8",
@@ -7463,24 +7492,27 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ASUS\\.nuget\\packages\\": {},
+    "C:\\Users\\DELL\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\a_self_proj\\teki\\TekiBlog\\TekiBlog.csproj",
+      "projectUniqueName": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\TekiBlog\\TekiBlog.csproj",
       "projectName": "TekiBlog",
-      "projectPath": "D:\\a_self_proj\\teki\\TekiBlog\\TekiBlog.csproj",
-      "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-      "outputPath": "D:\\a_self_proj\\teki\\TekiBlog\\obj\\",
+      "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\TekiBlog\\TekiBlog.csproj",
+      "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+      "outputPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\TekiBlog\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -7492,11 +7524,14 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj": {
-              "projectPath": "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj"
+            "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ActionServices\\ActionServices.csproj": {
+              "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ActionServices\\ActionServices.csproj"
             },
-            "D:\\a_self_proj\\teki\\DataObjects\\DataObjects.csproj": {
-              "projectPath": "D:\\a_self_proj\\teki\\DataObjects\\DataObjects.csproj"
+            "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj": {
+              "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj"
+            },
+            "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\DataObjects\\DataObjects.csproj": {
+              "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\DataObjects\\DataObjects.csproj"
             }
           }
         }

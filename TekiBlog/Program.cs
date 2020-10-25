@@ -68,6 +68,18 @@ namespace TekiBlog
                     // Add new admin role to this user
                     userMgr.AddToRoleAsync(adminUser, adminRole.Name).GetAwaiter().GetResult();
                 }
+                if(!ctx.Users.Any(u => u.UserName == "User"))// If there are no user with name user
+                {
+                    var normalUser = new ApplicationUser
+                    {
+                        UserName = "User",
+                        Email = "phamhoangbao2000@gmail.com",
+                        FirstName = "Phan Le Khanh",
+                        LastName = "Vy",
+                    };
+                    userMgr.CreateAsync(normalUser, "password").GetAwaiter().GetResult();
+                    userMgr.AddToRoleAsync(normalUser, userRole.Name).GetAwaiter().GetResult();
+                }
             }
             catch (Exception ex)
             {

@@ -16,6 +16,7 @@
 
 
 	<ItemGroup>
+	  <ProjectReference Include="..\ActionServices\ActionServices.csproj" />
 	  <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj" />
 	  <ProjectReference Include="..\DataObjects\DataObjects.csproj" />
 	</ItemGroup>

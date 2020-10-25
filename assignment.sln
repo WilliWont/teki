@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessObjects", "Business
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataObjects", "DataObjects\DataObjects.csproj", "{7AF77617-8662-4E05-AAE5-996E4A47B46C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "TekiUtility\Utilities.csproj", "{69B7916A-2A66-4712-A3CF-2259EC99B2CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "TekiUtility\Utilities.csproj", "{69B7916A-2A66-4712-A3CF-2259EC99B2CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionServices", "ActionServices\ActionServices.csproj", "{2CEE93DD-918C-4E50-90A1-C1D15B50156A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{69B7916A-2A66-4712-A3CF-2259EC99B2CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69B7916A-2A66-4712-A3CF-2259EC99B2CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69B7916A-2A66-4712-A3CF-2259EC99B2CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CEE93DD-918C-4E50-90A1-C1D15B50156A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CEE93DD-918C-4E50-90A1-C1D15B50156A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CEE93DD-918C-4E50-90A1-C1D15B50156A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CEE93DD-918C-4E50-90A1-C1D15B50156A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{516F1349-E1C2-4306-89BF-8F63380565D9} = {277F21E2-52B4-458F-B3F4-C777B3180292}
 		{7AF77617-8662-4E05-AAE5-996E4A47B46C} = {272C7BD9-DB3C-434A-AA4A-E8D1BCC11FF2}
 		{69B7916A-2A66-4712-A3CF-2259EC99B2CE} = {5941C973-38A0-4D07-BF2F-E24527022BF0}
+		{2CEE93DD-918C-4E50-90A1-C1D15B50156A} = {5941C973-38A0-4D07-BF2F-E24527022BF0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {20F5623F-D7B5-457A-8ADB-915C3C51DA6D}

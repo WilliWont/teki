@@ -13,32 +13,32 @@ using Newtonsoft.Json.Linq;
 using TekiBlog.ViewModels;
 using DataObjects;
 using BusinessObjects;
+using DataObjects.Repository;
 using Microsoft.Extensions.Logging;
+using ActionServices;
 
 namespace TekiBlog.Controllers
 {
     public class ArticleController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signinManager;
-        private readonly ApplicationDBContext _context;
         private readonly ILogger<ArticleController> _logger;
+        private readonly IService _service;
+
         public ArticleController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signinManager,
-            ApplicationDBContext context,
-            ILogger<ArticleController> logger)
+            ILogger<ArticleController> logger,
+            IService service)
         {
             _userManager = userManager;
-            _signinManager = signinManager;
-            _context = context;
             _logger = logger;
+            _service = service;
         }
 
         public IActionResult Index()
         {
             // TODO: REMOVE LATER, FOR TEST ONLY
 
-            List<Article> articles = _context.Articles.ToList();
+            List<Article> articles = _service.GetAllArticle().ToList();
 
             return View(articles);
         }
@@ -53,7 +53,7 @@ namespace TekiBlog.Controllers
             }
 
             // TODO: REFACTOR THIS 
-            var article = _context.Articles.FirstOrDefault(m => m.ID.Equals(id) && m.Status.ID == 1);
+            var article = _service.GetArticle(id);
             if (article == null)
             {
                 _logger.LogInformation("Article is null");
@@ -100,7 +100,7 @@ namespace TekiBlog.Controllers
             var user = await _userManager.GetUserAsync(User);
             
             // Create active status for this post
-            Status active = _context.Statuses.First(x => x.Name.Equals("Active"));
+            Status active = _service.GetStatus("Active") ;
             
             string html = article.ArticleContent;
 
@@ -123,9 +123,16 @@ namespace TekiBlog.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Add(articleModel);
-                await _context.SaveChangesAsync();
-                Console.WriteLine("added ID:" + articleModel.ID);
+                _service.AddArticle(articleModel);
+                if (await _service.Commit())
+                {
+                    Console.WriteLine("added ID:" + articleModel.ID);
+                }
+                else
+                {
+                    return View(article);
+                }
+                
                 // return to article view
                 // return RedirectToAction(nameof(Index));
             }

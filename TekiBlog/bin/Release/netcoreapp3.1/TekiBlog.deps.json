@@ -24,6 +24,7 @@
     ".NETCoreApp,Version=v3.1": {
       "TekiBlog/1.0.0": {
         "dependencies": {
+          "ActionServices": "1.0.0",
           "BusinessObjects": "1.0.0",
           "DataObjects": "1.0.0",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "3.1.8",
@@ -1824,6 +1825,18 @@
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0",
           "System.Xml.XmlDocument": "4.3.0"
+        }
+      },
+      "ActionServices/1.0.0": {
+        "dependencies": {
+          "BusinessObjects": "1.0.0",
+          "DataObjects": "1.0.0"
+        },
+        "runtime": {
+          "ActionServices.dll": {}
+        },
+        "compile": {
+          "ActionServices.dll": {}
         }
       },
       "BusinessObjects/1.0.0": {
@@ -4427,6 +4440,11 @@
       "sha512": "sha512-MYoTCP7EZ98RrANESW05J5ZwskKDoN0AuZ06ZflnowE50LTpbR5yRg3tHckTVm5j/m47stuGgCrCHWePyHS70Q==",
       "path": "system.xml.xmlserializer/4.3.0",
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
+    },
+    "ActionServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "BusinessObjects/1.0.0": {
       "type": "project",
