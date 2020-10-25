@@ -76,25 +76,13 @@ namespace TekiBlog.Controllers
         {
             // TODO: VALIDATE POST ARTICLE
 
+            // TODO: ADD COVER IMAGE FOR ARTICLE
+
+            // TODO: ADD TAGS TO ARTICLS
+
             // TODO: REFACTOR POST ARTICLE
 
             // TODO: COMPRESS POST ARTICLE IMG
-
-            #region article content
-            //string content = article.ArticleContent;
-            //Console.WriteLine($"article data received: {content}");
-            //content = content.Substring(7);
-            //int endI = content.Length - 1;
-            //content = content.Substring(0, endI);
-            //Console.WriteLine($"contentPROC: {content}");
-
-            //var deltaOps = JArray.Parse(content);
-            //Console.WriteLine($"contentJSON: {deltaOps}");
-            //var htmlConverter = new HtmlConverter(deltaOps);
-            //string html = htmlConverter.Convert();
-            //Console.WriteLine($"html: {html}");
-            #endregion
-
 
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
@@ -105,7 +93,9 @@ namespace TekiBlog.Controllers
             string html = article.ArticleContent;
 
             // TODO: switch raw to tinymce function
-            string raw = Regex.Replace(html, "<.*?>", String.Empty);
+            string raw = article.ArticleRaw;
+
+            Console.WriteLine("title: "+article.Title);
 
             // Create article model to insert to Database
             Article articleModel = new Article

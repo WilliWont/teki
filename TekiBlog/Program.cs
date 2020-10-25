@@ -47,10 +47,16 @@ namespace TekiBlog
                 {
                     Name = "Deactive"
                 };
+                var draftStatus = new Status
+                {
+                    Name = "Draft"
+                };
                 if (!ctx.Statuses.Any())
                 {
                     ctx.Statuses.Add(activeStatus);
                     ctx.Statuses.Add(deactiveStatus);
+                    ctx.Statuses.Add(draftStatus);
+
                     ctx.SaveChanges();
                 }
 
