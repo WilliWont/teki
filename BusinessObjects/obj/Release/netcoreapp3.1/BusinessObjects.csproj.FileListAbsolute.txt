@@ -16,12 +16,3 @@ D:\a_self_proj\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.As
 D:\a_self_proj\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.csproj.CoreCompileInputs.cache
 D:\a_self_proj\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.dll
 D:\a_self_proj\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.pdb
-E:\FPTdocument\TERM5\PRN292\Assignment3\teki\BusinessObjects\bin\Release\netcoreapp3.1\BusinessObjects.deps.json
-E:\FPTdocument\TERM5\PRN292\Assignment3\teki\BusinessObjects\bin\Release\netcoreapp3.1\BusinessObjects.dll
-E:\FPTdocument\TERM5\PRN292\Assignment3\teki\BusinessObjects\bin\Release\netcoreapp3.1\BusinessObjects.pdb
-E:\FPTdocument\TERM5\PRN292\Assignment3\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.csprojAssemblyReference.cache
-E:\FPTdocument\TERM5\PRN292\Assignment3\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.AssemblyInfoInputs.cache
-E:\FPTdocument\TERM5\PRN292\Assignment3\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.AssemblyInfo.cs
-E:\FPTdocument\TERM5\PRN292\Assignment3\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.csproj.CoreCompileInputs.cache
-E:\FPTdocument\TERM5\PRN292\Assignment3\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.dll
-E:\FPTdocument\TERM5\PRN292\Assignment3\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.pdb
