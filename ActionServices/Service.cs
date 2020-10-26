@@ -35,7 +35,7 @@ namespace ActionServices
         }
         public Article GetArticle(Guid id)
         {
-            Article article = articleRepository.GetByID(id);
+            Article article = articleRepository.GetArticleInfo(id);
             return article;
         }
 

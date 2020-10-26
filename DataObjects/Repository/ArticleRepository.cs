@@ -15,10 +15,20 @@ namespace DataObjects.Repository
         {
 
         }
+
+        public Article GetArticleInfo(Guid ID)
+        {
+            Article article = _context.Articles
+                .Include(a => a.User)
+                .FirstOrDefault(a => a.ID.Equals(ID));
+            return article;
+        }
+
         // Implement all additional methods in IArticleRepository
         public bool UpdateArticle(Article article)
         {
             throw new NotImplementedException();
         }
+        
     }
 }

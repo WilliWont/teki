@@ -11,5 +11,7 @@ namespace DataObjects
     {
         // There are some additional methods for Article Implemetations.
         bool UpdateArticle(Article article);
+
+        Article GetArticleInfo(Guid ID);
     }
 }
