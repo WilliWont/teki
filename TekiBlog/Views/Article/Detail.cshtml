@@ -9,7 +9,7 @@
 
         <h1 id="form-title" class="title" aria-describedby="titleHelp">@Html.DisplayFor(model => model.Title)</h1>
         @*//TODO: ADD USER LINK HERE*@
-        <small id="titleHelp">By *User here* | @Html.DisplayFor(model => model.DatePosted)</small>
+        <small id="titleHelp">By @Model.User | @Html.DisplayFor(model => model.DatePosted)</small>
 
         @if (@Model.Summary != null)
         {
