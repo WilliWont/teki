@@ -93,25 +93,17 @@ namespace TekiBlog.Controllers
         {
             // TODO: VALIDATE POST ARTICLE
 
-            // TODO: ADD COVER IMAGE FOR ARTICLE
-
-            // TODO: ADD TAGS TO ARTICLS
-
             // TODO: REFACTOR POST ARTICLE
-
-            // TODO: COMPRESS POST ARTICLE IMG
 
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
-            // Create active status for this post
+
+            // Get active status for this post
             Status active = _service.GetStatus("Active") ;
             
             string html = article.ArticleContent;
 
-            // TODO: switch raw to tinymce function
             string raw = article.ArticleRaw;
-
-            Console.WriteLine("title: "+article.Title);
 
             // Create article model to insert to Database
             Article articleModel = new Article
@@ -126,7 +118,7 @@ namespace TekiBlog.Controllers
                 User = user
             };
 
-
+            Console.WriteLine("id: "+ articleModel.ID);
             if (ModelState.IsValid)
             {
                 _service.AddArticle(articleModel);
@@ -136,31 +128,22 @@ namespace TekiBlog.Controllers
                 }
                 else
                 {
-                    return View(article);
+                    //return View(article);
+                    return Content("no no no");
                 }
                 
-                // return to article view
-                // return RedirectToAction(nameof(Index));
             }
 
             // return to home page
-            return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
+            return Content("ye ye ye");
+
+            //return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateArticle(CreateArticleViewModel article)
         {
-            // TODO: VALIDATE POST ARTICLE
-
-            // TODO: ADD COVER IMAGE FOR ARTICLE
-
-            // TODO: ADD TAGS TO ARTICLS
-
-            // TODO: REFACTOR POST ARTICLE
-
-            // TODO: COMPRESS POST ARTICLE IMG
-
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
             // Create active status for this post
@@ -168,10 +151,7 @@ namespace TekiBlog.Controllers
 
             string html = article.ArticleContent;
 
-            // TODO: switch raw to tinymce function
             string raw = article.ArticleRaw;
-
-            Console.WriteLine("title: " + article.Title);
 
             // Create article model to insert to Database
             Article articleModel = new Article
@@ -200,8 +180,6 @@ namespace TekiBlog.Controllers
                     return View(article);
                 }
 
-                // return to article view
-                // return RedirectToAction(nameof(Index));
             }
 
             // return to home page

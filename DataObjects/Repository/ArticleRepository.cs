@@ -27,7 +27,6 @@ namespace DataObjects.Repository
         // Implement all additional methods in IArticleRepository
         public bool UpdateArticle(Article article)
         {
-
             _context.Articles.Update(article);
 
             return true;

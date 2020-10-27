@@ -154,6 +154,7 @@ nav.navbar {
 
 .title{
     font-weight:bold;
+    font-size:2.5rem;
 }
 
 .article-detail p{
@@ -170,6 +171,8 @@ nav.navbar {
     align-content: center;
     justify-content:center;
 }
+
+
 
 /*#region compose button */
 /*https://codepen.io/grdnbryant/pen/eNGjzX*/
