@@ -4,6 +4,7 @@ using DataObjects.IRepository;
 using DataObjects.Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ActionServices
@@ -49,6 +50,16 @@ namespace ActionServices
         public async Task<bool> Commit()
         {
             return await unitOfwork.Commit();
+        }
+
+        public IQueryable<Article> GetArticleWithUserID(ApplicationUser user)
+        {
+            return articleRepository.GetArticlesByID(user);
+        }
+
+        public bool UpdateArticle(Article article)
+        {
+            return articleRepository.UpdateArticle(article);
         }
     }
 }

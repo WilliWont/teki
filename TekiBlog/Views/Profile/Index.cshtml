@@ -1,0 +1,53 @@
+﻿@model IQueryable<Article>
+
+<div class="container">
+    <partial name="_ManageNav" />
+    <div class="col-9">
+        <table class="table">
+            <thead class="black white-text">
+                <tr>
+                    <th scope="col">
+                        #
+                    </th>
+                    <th scope="col">
+                        Title
+                    </th>
+                    <th scope="col">
+                        Status
+                    </th>
+                    <th scope="col">
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var num = 0;
+                    foreach (var item in Model)
+                    {
+                        num = num + 1;
+                        <tr>
+                            <td>
+                                @num
+                            </td>
+                            <td>
+                                @item.Title
+                            </td>
+                            <td>
+                                @item.Status.Name
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-secondary">Update</button>
+                                <button type="button" class="btn btn-secondary">Delete</button>
+                                <a class="btn btn-secondary" asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">View</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
