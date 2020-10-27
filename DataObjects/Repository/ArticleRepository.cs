@@ -24,6 +24,16 @@ namespace DataObjects.Repository
             return article;
         }
 
+        public IQueryable<Article> GetArticlesByID(ApplicationUser user)
+        {
+            IQueryable<Article> articles = _context.Articles
+                .Include(a => a.Status)
+                .Include(a => a.User)
+                .Select(a => new Article { ID = a.ID, User = a.User, Status = a.Status, Title = a.Title })
+                .Where(a => a.User.Equals(user));
+            return articles;
+        }
+
         // Implement all additional methods in IArticleRepository
         public bool UpdateArticle(Article article)
         {

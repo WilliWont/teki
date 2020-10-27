@@ -104,14 +104,14 @@ namespace TekiBlog.Controllers
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
             // Create active status for this post
-            Status active = _service.GetStatus("Active") ;
-            
+            Status active = _service.GetStatus("Active");
+
             string html = article.ArticleContent;
 
             // TODO: switch raw to tinymce function
             string raw = article.ArticleRaw;
 
-            Console.WriteLine("title: "+article.Title);
+            Console.WriteLine("title: " + article.Title);
 
             // Create article model to insert to Database
             Article articleModel = new Article
@@ -133,18 +133,24 @@ namespace TekiBlog.Controllers
                 if (await _service.Commit())
                 {
                     Console.WriteLine("added ID:" + articleModel.ID);
+                    return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
                 }
                 else
                 {
                     return View(article);
                 }
-                
+
                 // return to article view
                 // return RedirectToAction(nameof(Index));
             }
-
+            else
+            {
+                ViewData["Error"] = "Error here";
+                _logger.LogInformation("Invalid state");
+                return RedirectToAction("Editor", "Article", article);
+            }
             // return to home page
-            return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
+            
         }
 
         [HttpPost]
@@ -197,7 +203,8 @@ namespace TekiBlog.Controllers
                 }
                 else
                 {
-                    return View(article);
+                    ViewData["Error"] = "Some error orcured. Please check again";
+                    return RedirectToAction("Editor", "Article", new { id = articleModel.ID });
                 }
 
                 // return to article view
@@ -206,6 +213,12 @@ namespace TekiBlog.Controllers
 
             // return to home page
             return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteArticle(Guid id)
+        {
+            return View();
         }
     }
 }

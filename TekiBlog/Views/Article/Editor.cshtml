@@ -40,7 +40,7 @@
             menubar: false,
             contextmenu: false,
             toolbar: 'bold italic underline | strikethrough subscript superscript | codesample media link',
-            
+
         });
 
         // bind data to form before posting to server
@@ -69,54 +69,58 @@
 
     </script>
 }
-
+<div class="text-danger">@ViewData["Error"]</div>
+<div asp-validation-summary="All" class="text-danger"></div>
 <div class="flx-container">
     <div class="col-9 article-detail">
-            <form id="form" asp-controller="Article"
-                  asp-action="@(Model != null ? "UpdateArticle" : "PostArticle" )"
-                  onsubmit="bindData()">
-                <small id="titleHelp" class="form-text text-muted">
-                    Write a brief title for your article <sup class="input-required"></sup>
-                </small>
-                <h1 id="form-title"
-                    class="title article-input"
-                    aria-describedby="titleHelp"
-                    contenteditable="true"
-                    data-placeholder='title here'>@Model?.Title</h1>
+        <form id="form" asp-controller="Article"
+              asp-action="@(Model != null ? "UpdateArticle" : "PostArticle" )"
+              onsubmit="bindData()">
+            <small id="titleHelp" class="form-text text-muted">
+                Write a brief title for your article <sup class="input-required"></sup>
+            </small>
+            <h1 id="form-title"
+                class="title article-input"
+                aria-describedby="titleHelp"
+                contenteditable="true"
+                data-placeholder='title here'>
+                @Model?.Title
+            </h1>
 
-                <small id="tldrHelp" class="form-text text-muted">
-                    Write a brief summary for your article
-                </small>
-                <blockquote class="blockquote" aria-describedby="tldrHelp">
-                    <p id="form-tldr"
-                       class="mb-0 article-input"
-                       contenteditable="true"
-                       data-placeholder="summary here">@Model?.Summary</p>
-                </blockquote>
+            <small id="tldrHelp" class="form-text text-muted">
+                Write a brief summary for your article
+            </small>
+            <blockquote class="blockquote" aria-describedby="tldrHelp">
+                <p id="form-tldr"
+                   class="mb-0 article-input"
+                   contenteditable="true"
+                   data-placeholder="summary here">@Model?.Summary</p>
+            </blockquote>
 
-                <input type="hidden" id="input-id" asp-for="@Model.Id">
-                <input type="hidden" id="input-raw" asp-for="@Model.ArticleRaw">
-                <input type="hidden" id="input-title" asp-for="@Model.Title">
-                <input type="hidden" id="input-tldr" asp-for="@Model.Summary">
-                <input type="hidden" id="input-content" asp-for="@Model.ArticleContent">
+            <input type="hidden" id="input-id" asp-for="@Model.Id">
+            <input type="hidden" id="input-raw" asp-for="@Model.ArticleRaw">
+            <input type="hidden" id="input-title" asp-for="@Model.Title">
+            <span asp-validation-for="Title" class="text-danger"></span>
+            <input type="hidden" id="input-tldr" asp-for="@Model.Summary">
+            <input type="hidden" id="input-content" asp-for="@Model.ArticleContent">
 
-                <small id="contentHelp" class="form-text text-muted">
-                    Write your article content here <sup class="input-required"></sup>
-                </small>
-                <div id="form-content" class="article-input" aria-describedby="contentHelp">
-                </div>
+            <small id="contentHelp" class="form-text text-muted">
+                Write your article content here <sup class="input-required"></sup>
+            </small>
+            <div id="form-content" class="article-input" aria-describedby="contentHelp">
+            </div>
 
-                <input class="btn btn-outline-secondary btn-outline my-2 my-sm-0"
-                       action="action"
-                       onclick="window.history.go(-1); return false;"
-                       type="submit"
-                       value="Return" />
+            <input class="btn btn-outline-secondary btn-outline my-2 my-sm-0"
+                   action="action"
+                   onclick="window.history.go(-1); return false;"
+                   type="submit"
+                   value="Return" />
 
-                <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">
-                    <i class="fa fa-pencil"></i> @(Model != null ? "Update Article" : "Post Article" )
-                </button>
+            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">
+                <i class="fa fa-pencil"></i> @(Model != null ? "Update Article" : "Post Article" )
+            </button>
 
-            </form>
+        </form>
 
-        </div>
+    </div>
 </div>

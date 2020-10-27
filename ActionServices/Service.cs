@@ -61,5 +61,10 @@ namespace ActionServices
         {
             return articleRepository.UpdateArticle(article);
         }
+
+        public void DeleteArticle(Article article)
+        {
+            articleRepository.Remove(article);
+        }
     }
 }
