@@ -1,4 +1,7 @@
 ﻿@model BusinessObjects.Article
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager;
+
 @section Styles{
     <link rel="stylesheet" href="~/css/detail.css" />
 }
@@ -9,7 +12,15 @@
 
         <h1 id="form-title" class="title" aria-describedby="titleHelp">@Html.DisplayFor(model => model.Title)</h1>
         @*//TODO: ADD USER LINK HERE*@
-        <small id="titleHelp">By @Model.User | @Html.DisplayFor(model => model.DatePosted)</small>
+        <small id="titleHelp">
+            By <a href="#">@Model.User.FirstName @Model.User.LastName</a> |
+            @Html.DisplayFor(model => model.DatePosted)
+        </small> |
+        @if (@Model.User.Id.Equals(UserManager.GetUserId(User)))
+        {
+            @*<a href="google.com">g</a>*@
+            <a href='@Url.Action("Editor","Article",new {id=Model.ID.ToString() })'>edit</a>
+        }
 
         @if (@Model.Summary != null)
         {

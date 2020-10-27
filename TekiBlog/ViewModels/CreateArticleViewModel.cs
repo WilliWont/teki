@@ -10,6 +10,8 @@ namespace TekiBlog.ViewModels
 {
     public class CreateArticleViewModel
     {
+        public Guid Id{get; set;}
+
         //[AllowHtml] // nescessary for HTML to pass through   
         [Required]
         public string ArticleContent { get; set; }
