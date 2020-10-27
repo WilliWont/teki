@@ -27,7 +27,10 @@ namespace DataObjects.Repository
         // Implement all additional methods in IArticleRepository
         public bool UpdateArticle(Article article)
         {
-            throw new NotImplementedException();
+
+            _context.Articles.Update(article);
+
+            return true;
         }
         
     }

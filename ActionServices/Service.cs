@@ -50,5 +50,10 @@ namespace ActionServices
         {
             return await unitOfwork.Commit();
         }
+
+        public bool UpdateArticle(Article article)
+        {
+            return articleRepository.UpdateArticle(article);
+        }
     }
 }

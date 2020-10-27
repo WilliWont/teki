@@ -10,6 +10,9 @@ namespace ActionServices
     {
         // Article Services
         Article GetArticle(Guid id);
+
+        bool UpdateArticle(Article article);
+
         IEnumerable<Article> GetAllArticle();
         void AddArticle(Article article);
 
