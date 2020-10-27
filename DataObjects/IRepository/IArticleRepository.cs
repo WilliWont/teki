@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessObjects;
@@ -11,7 +12,8 @@ namespace DataObjects
     {
         // There are some additional methods for Article Implemetations.
         bool UpdateArticle(Article article);
-
         Article GetArticleInfo(Guid ID);
+        IQueryable<Article> GetArticlesByID(ApplicationUser user);
+
     }
 }

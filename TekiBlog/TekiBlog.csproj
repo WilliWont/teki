@@ -19,5 +19,6 @@
 	  <ProjectReference Include="..\ActionServices\ActionServices.csproj" />
 	  <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj" />
 	  <ProjectReference Include="..\DataObjects\DataObjects.csproj" />
+	  <ProjectReference Include="..\TekiUtility\Utilities.csproj" />
 	</ItemGroup>
 </Project>
