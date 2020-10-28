@@ -88,9 +88,20 @@ namespace TekiBlog.Controllers
         }
 
         [HttpPost]
+        public string AjaxTest(CreateArticleViewModel article)
+        {
+            string received = article.ArticleContent;
+
+            Console.Write(received);
+
+            return received;
+        }
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostArticle(CreateArticleViewModel article)
         {
+            Console.Write("at post");
             // TODO: VALIDATE POST ARTICLE
 
             // TODO: REFACTOR POST ARTICLE
@@ -128,16 +139,16 @@ namespace TekiBlog.Controllers
                 }
                 else
                 {
-                    //return View(article);
-                    return Content("no no no");
+                    return View(article);
+                    //return Content("no no no");
                 }
                 
             }
 
             // return to home page
-            return Content("ye ye ye");
+            //return Content("ye ye ye");
 
-            //return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
+            return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
         }
 
         [HttpPost]

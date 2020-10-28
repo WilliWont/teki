@@ -9,10 +9,12 @@ tinymce.init({
     },
     placeholder: "article content here",
     inline: true,
-    plugins: 'codesample autoresize link',
+    plugins: 'codesample autoresize link paste',
     menubar: false,
     contextmenu: false,
     toolbar: 'bold italic underline | strikethrough subscript superscript | codesample media link',
+    link_assume_external_targets: true,
+    paste_as_text: true
 });
 
 // bind data to form before posting to server
@@ -23,17 +25,30 @@ function bindData() {
     $("#input-content").val(tinymce.activeEditor.getContent());
 }
 
-$("#form").submit(function (event) {
-    alert('submit');
+//$("#form").submit(function (event) {
+//    alert('submit');
+//    bindData();
+//    $.ajax({
+//        type: "POST",
+//        url: "/Article/AjaxTest",
+//        data: $("#form").serialize(),
+//        dataType: "text",
+//        success: function (msg) {
+//            //let response = JSON.parse(msg);
 
-    $.post("/Article/PostArticle", $form.serialize(), function (response) {
-        alert(response);
-        //if (response.error) {
-        //    alert("error: " + response.error);
-        //} else {
-        //    createComment(response);
-        //}
-    });
+//            //if (response.isValid == true) {
 
-    event.preventDefault();
-});
+//            //} else {
+//            //    for (let i = 0; i < response.validationError.length; i++) {
+//            //        let field = validationFields.get(response.validationError[0]);
+//            //        field.text(response.validationError.msg);
+//            //    }
+//            //}
+//        },
+//        error: function (req, status, error) {
+//            console.log(msg);
+//        }
+//    }); 
+
+//    event.preventDefault();
+//});

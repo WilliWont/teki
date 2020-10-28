@@ -50,7 +50,7 @@ namespace TekiBlog
             })
                 .AddEntityFrameworkStores<ApplicationDBContext>();
             
-            
+
             // Add service for MVC 
             services.AddControllersWithViews();
             services.AddRazorPages();

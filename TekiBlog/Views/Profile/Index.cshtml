@@ -37,7 +37,7 @@
                                 @item.Status.Name
                             </td>
                             <td>
-                                <button type="button" class="btn btn-secondary">Update</button>
+                                <input type="button" class="btn" value="Edit" onclick="location.href='@Url.Action("Editor", "Article",new {id=item.ID.ToString() })'" />
                                 <button type="button" class="btn btn-secondary">Delete</button>
                                 <a class="btn btn-secondary" asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">View</a>
                             </td>

@@ -296,3 +296,5 @@ D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\staticwebassets\TekiBlog.
 D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.dll
 D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.pdb
 D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\TekiBlog.genruntimeconfig.cache
+D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\Razor\Views\Profile\Index.cshtml.g.cs
+D:\a_self_proj\teki\TekiBlog\obj\Release\netcoreapp3.1\Razor\Views\Shared\_ManageNav.cshtml.g.cs

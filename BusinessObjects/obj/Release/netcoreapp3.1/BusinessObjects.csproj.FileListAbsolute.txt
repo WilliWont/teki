@@ -15,3 +15,4 @@ D:\a_self_proj\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.As
 D:\a_self_proj\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.csproj.CoreCompileInputs.cache
 D:\a_self_proj\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.dll
 D:\a_self_proj\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.pdb
+D:\a_self_proj\teki\BusinessObjects\obj\Release\netcoreapp3.1\BusinessObjects.csprojAssemblyReference.cache
