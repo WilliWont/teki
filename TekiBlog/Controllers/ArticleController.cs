@@ -44,7 +44,7 @@ namespace TekiBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detail(Guid id)
+        public async Task<IActionResult> Detail(Guid id)
         {
             if (id == null)
             {
@@ -62,9 +62,10 @@ namespace TekiBlog.Controllers
             else
             {
                 _logger.LogInformation($"Status of this article : {article.Status.Name}");
-                var user = _userManager.GetUserAsync(User);
-                if (user == null || article.User.Equals(user))
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null || !article.User.Equals(user))
                 {
+                    _logger.LogInformation($"User now {user}");
                     if (!article.Status.Name.Equals("Active"))
                     {
                         return NotFound();
@@ -72,6 +73,7 @@ namespace TekiBlog.Controllers
                 }
                 else
                 {
+                    _logger.LogInformation("User is authorized");
                     if (article.Status.Name.Equals("Deleted"))
                     {
                         return NotFound();
@@ -80,7 +82,7 @@ namespace TekiBlog.Controllers
             }
 
             //article.User = _context.Users.First(m => m.Id == article.User);
-
+            _logger.LogInformation("User will get the article");
             return View(article);
         }
 
