@@ -47,3 +47,7 @@
     border-color: var(--main-hover);
 }
 
+.mce-content-body img {
+    max-width: 100%;
+    height: auto;
+}

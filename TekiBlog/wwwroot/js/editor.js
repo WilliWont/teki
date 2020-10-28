@@ -9,12 +9,13 @@ tinymce.init({
     },
     placeholder: "article content here",
     inline: true,
-    plugins: 'codesample autoresize link paste',
+    plugins: 'codesample autoresize link paste lists image paste ',
     menubar: false,
     contextmenu: false,
-    toolbar: 'bold italic underline | strikethrough subscript superscript | codesample media link',
+    toolbar: 'undo redo | styleselect | bold italic underline | numlist bullist | strikethrough subscript superscript | codesample image link',
     link_assume_external_targets: true,
-    paste_as_text: true
+    paste_as_text: true,
+    paste_data_images: true
 });
 
 // bind data to form before posting to server
