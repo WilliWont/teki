@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="IService.cs" />
+    <Compile Remove="Service.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="IService.cs" />
+    <None Include="Service.cs" />
+  </ItemGroup>
+
+</Project>

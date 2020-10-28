@@ -19,9 +19,13 @@ namespace TekiBlog.ViewModels
         [Required]
         public string ArticleRaw { get; set; }
 
-
         [Required]
         public string Title { get; set; }
+
         public string Summary { get; set; }
+
+        public int TITLE_MAX_LEN { get; } = 10;
+        public int SUMMARY_MAX_LEN { get { return 10; } }
+        public int CONTENT_MAX_LEN { get { return 10; } }
     }
 }

@@ -1,10 +1,7 @@
-﻿
-@model TekiBlog.ViewModels.CreateArticleViewModel
+﻿@model TekiBlog.ViewModels.CreateArticleViewModel
 
 
 @{
-    // NOTE: quill tutorial link
-    // https://endpointsystems.com/blog/asp-net-core-rich-text-editor
     ViewData["Title"] = "Editor";
 }
 
@@ -17,40 +14,9 @@
 
     @* Import the tinymce package *@
     <script type="text/javascript" src="~/js/tinymce/tinymce.min.js"></script>
-
+    <script type="text/javascript" src="~/js/editor.js"></script>
 
     <script type="text/javascript">
-
-        //TODO: SETUP PLUGINS
-        // initializing editor
-        tinymce.init({
-            selector: "#form-content",
-            setup: function (editor) {
-                editor.on('init', function (e) {
-                    editor.setContent($("#input-content").val());
-                });
-            },
-            placeholder: "article content here",
-            inline: true,
-
-            //plugins: 'table',
-            //menubar: 'table',
-            //toolbar: 'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'
-            plugins: 'codesample autoresize link',
-            menubar: false,
-            contextmenu: false,
-            toolbar: 'bold italic underline | strikethrough subscript superscript | codesample media link',
-
-        });
-
-        // bind data to form before posting to server
-        function bindData() {
-            $("#input-raw").val(tinymce.activeEditor.getContent({ format: "text" }));
-            $("#input-tldr").val($("#form-tldr").text());
-            $("#input-title").val($("#form-title").text());
-            $("#input-content").val(tinymce.activeEditor.getContent());
-        }
-
         // to convert any pasting into plain text
         document.querySelector('#form-title').addEventListener('paste', function (event) {
             event.preventDefault();
@@ -61,14 +27,10 @@
             event.preventDefault();
             document.execCommand('inserttext', false, event.clipboardData.getData('text/plain').trim());
         });
-        // TODO: REFACTOR IF HAVE TIME
-        //document.querySelector('#form-content').addEventListener('paste', function (event) {
-        //    event.preventDefault();
-        //    document.execCommand('inserttext', false, event.clipboardData.getData('text/plain').trim());
-        //});
-
     </script>
 }
+<div class="text-danger">@ViewData["Error"]</div>
+<div asp-validation-summary="All" class="text-danger"></div>
 <div class="flx-container">
     <div class="col-9 article-detail">
         <form id="form" asp-controller="Article"
@@ -94,10 +56,12 @@
                    contenteditable="true"
                    data-placeholder="summary here">@Model?.Summary</p>
             </blockquote>
+
             @if (Model != null)
             {
                 <input type="hidden" id="input-id" asp-for="@Model.Id">
             }
+
             <input type="hidden" id="input-raw" asp-for="@Model.ArticleRaw">
             <input type="hidden" id="input-title" asp-for="@Model.Title">
             <input type="hidden" id="input-tldr" asp-for="@Model.Summary">
