@@ -49,8 +49,13 @@ namespace TekiBlog
                 options.Password.RequireNonAlphanumeric = false;
             })
                 .AddEntityFrameworkStores<ApplicationDBContext>();
-            
-            
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Auth/Login";
+                options.AccessDeniedPath = "/Auth/AccessDenied";
+            });
+
             // Add service for MVC 
             services.AddControllersWithViews();
             services.AddRazorPages();

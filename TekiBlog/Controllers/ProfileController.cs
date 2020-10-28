@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using ActionServices;
 using BusinessObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace TekiBlog.Controllers
 {
+    [Authorize(Roles = "User")]
     public class ProfileController : Controller
     {
         private readonly ILogger<ProfileController> _logger;

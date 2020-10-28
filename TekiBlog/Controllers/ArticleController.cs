@@ -59,12 +59,32 @@ namespace TekiBlog.Controllers
                 _logger.LogInformation("Article is null");
                 return NotFound();
             }
+            else
+            {
+                _logger.LogInformation($"Status of this article : {article.Status.Name}");
+                var user = _userManager.GetUserAsync(User);
+                if (user == null || article.User.Equals(user))
+                {
+                    if (!article.Status.Name.Equals("Active"))
+                    {
+                        return NotFound();
+                    }
+                }
+                else
+                {
+                    if (article.Status.Name.Equals("Deleted"))
+                    {
+                        return NotFound();
+                    }
+                }
+            }
 
             //article.User = _context.Users.First(m => m.Id == article.User);
 
             return View(article);
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Editor(Guid id)
         {
             if (id != null)
@@ -87,6 +107,7 @@ namespace TekiBlog.Controllers
             return View();
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostArticle(CreateArticleViewModel article)
@@ -145,12 +166,12 @@ namespace TekiBlog.Controllers
             }
             else
             {
-                ViewData["Error"] = "Error here";
+
                 _logger.LogInformation("Invalid state");
                 return RedirectToAction("Editor", "Article", article);
             }
             // return to home page
-            
+
         }
 
         [HttpPost]
@@ -215,10 +236,46 @@ namespace TekiBlog.Controllers
             return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet]
-        public async Task<IActionResult> DeleteArticle(Guid id)
+        public async Task<IActionResult> ModifyArticle(Guid id, string type)
         {
-            return View();
+            var article = _service.GetArticle(id);
+            if (article != null)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user != null)
+                {
+                    if (user.Equals(article.User))
+                    {
+                        Status disableStatus = _service.GetStatus(type);
+                        article.Status = disableStatus;
+                        _service.UpdateArticle(article);
+                        if (await _service.Commit())
+                        {
+                            return RedirectToAction("Index", "Profile");
+                        }
+                        else
+                        {
+                            return NotFound();
+                        }
+                    }
+                    else
+                    {
+                        return RedirectToAction("AccessDenied", "Auth");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
         }
+
+
     }
 }

@@ -38,7 +38,15 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-secondary">Update</button>
-                                <button type="button" class="btn btn-secondary">Delete</button>
+                                @if (item.Status.Name.Equals("Disable"))
+                                {
+                                    <a class="btn btn-secondary" asp-controller="Article" asp-action="ModifyArticle" asp-route-id="@item.ID" asp-route-type="Active">Enbale</a>
+                                }
+                                @if (item.Status.Name.Equals("Active"))
+                                {
+                                    <a class="btn btn-secondary" asp-controller="Article" asp-action="ModifyArticle" asp-route-id="@item.ID" asp-route-type="Disable">Disable</a>
+                                }
+                                <a class="btn btn-secondary" asp-controller="Article" asp-action="ModifyArticle" asp-route-id="@item.ID" asp-route-type="Deleted">Delete</a>
                                 <a class="btn btn-secondary" asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">View</a>
                             </td>
                         </tr>

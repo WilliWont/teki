@@ -69,8 +69,6 @@
 
     </script>
 }
-<div class="text-danger">@ViewData["Error"]</div>
-<div asp-validation-summary="All" class="text-danger"></div>
 <div class="flx-container">
     <div class="col-9 article-detail">
         <form id="form" asp-controller="Article"
@@ -96,11 +94,12 @@
                    contenteditable="true"
                    data-placeholder="summary here">@Model?.Summary</p>
             </blockquote>
-
-            <input type="hidden" id="input-id" asp-for="@Model.Id">
+            @if (Model != null)
+            {
+                <input type="hidden" id="input-id" asp-for="@Model.Id">
+            }
             <input type="hidden" id="input-raw" asp-for="@Model.ArticleRaw">
             <input type="hidden" id="input-title" asp-for="@Model.Title">
-            <span asp-validation-for="Title" class="text-danger"></span>
             <input type="hidden" id="input-tldr" asp-for="@Model.Summary">
             <input type="hidden" id="input-content" asp-for="@Model.ArticleContent">
 

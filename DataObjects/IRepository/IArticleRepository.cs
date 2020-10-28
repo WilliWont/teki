@@ -14,6 +14,5 @@ namespace DataObjects
         bool UpdateArticle(Article article);
         Article GetArticleInfo(Guid ID);
         IQueryable<Article> GetArticlesByID(ApplicationUser user);
-
     }
 }
