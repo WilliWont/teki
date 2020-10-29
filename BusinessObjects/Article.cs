@@ -27,5 +27,7 @@ namespace BusinessObjects
         public Status Status { get; set; }
 
         public ApplicationUser User { get; set; }
+
+        public byte[] CoverImage { get; set; }
     }
 }

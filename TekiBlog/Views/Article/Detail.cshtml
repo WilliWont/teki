@@ -12,23 +12,40 @@
     <link rel="stylesheet" href="~/css/detail.css" />
 }
 
+@section Scripts{ 
+    <script src="~/js/detail.js"></script>
+}
+
+@section CoverImg{
+    <div class="article-header">
+        <div class="article-img-container">
+        <img id="article-img-cover" src="@ViewData["ArticleCoverImg"]" />
+        </div>
+        <div class="flx-container article-header-info-container">
+                <div class="article-header-info-inner col-9">
+                    <h1 id="form-title"
+                        class="title article-input">
+                        @Model?.Title
+                    </h1>
+                    <div class="article-user-info">
+                        <small id="titleHelp" class="user-link-container">
+                            <span>By <a href="#">@Model.User.FirstName @Model.User.LastName</a></span>
+                        </small>
+                        <small>
+                            @Html.DisplayFor(model => model.DatePosted)
+                        </small>
+                    </div>
+                </div>
+            </div>
+    </div>
+}
 <div class="flx-container">
     <div class="col-sm-12 col-md-9 article-detail">
         <form>
-            <div class="form-container">
-                <h1 id="form-title"
-                    class="title article-input">
-                    @Model?.Title
-                </h1>
-                <small id="titleHelp">
-                    By <a href="#">@Model.User.FirstName @Model.User.LastName</a> |
-                    @Html.DisplayFor(model => model.DatePosted)
-                </small> 
-                @if (@Model.User.Id.Equals(UserManager.GetUserId(User)))
-                {
-                    <span>| </span><a href='@Url.Action("Editor","Article",new {id=Model.ID.ToString() })'> edit</a>
-                }
-            </div>
+
+            @*<div class="form-container">
+            article-info used to be here
+            </div>*@
 
             @if (@Model.Summary != null)
             {

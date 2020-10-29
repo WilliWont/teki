@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-
-
+using ValidationUtilities.Util;
 
 namespace TekiBlog.ViewModels
 {
@@ -26,5 +25,7 @@ namespace TekiBlog.ViewModels
 
         [StringLength(256, MinimumLength = 8)]
         public string Summary { get; set; }
+
+        public byte[] CoverImage { get; set;}
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessObjects;
+using Microsoft.AspNetCore.Http;
 
 namespace ActionServices
 {
@@ -18,5 +19,6 @@ namespace ActionServices
         // Status Service
         Status GetStatus(string name);
         Task<bool> Commit();
+        void GetImage(out byte[] img, HttpRequest req);
     }
 }

@@ -21,7 +21,12 @@
     <div class="col-9 article-detail">
         <form id="form" asp-controller="Article"
               asp-action="@(Model != null ? "UpdateArticle" : "PostArticle" )"
-              onsubmit="bindData()">
+              onsubmit="bindData()"
+              method="post"
+              enctype="multipart/form-data">
+            <input type="file" id="file1"
+                   name="file1"
+                   multiple="multiple" />
             <small id="titleHelp" class="form-text text-muted">
                 Write a brief title for your article <sup class="input-required"></sup>
             </small>

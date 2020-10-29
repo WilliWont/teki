@@ -17,6 +17,7 @@ using DataObjects.Repository;
 using Microsoft.Extensions.Logging;
 using ActionServices;
 using ValidationUtilities;
+using System.IO;
 
 namespace TekiBlog.Controllers
 {
@@ -52,23 +53,23 @@ namespace TekiBlog.Controllers
         {
             if (id == null)
             {
-                _logger.LogInformation("Id is null");
+                _logger.LogInformation("article id is null");
                 return NotFound();
             }
 
             var article = _service.GetArticle(id);
             if (article == null)
             {
-                _logger.LogInformation("Article is null");
+                _logger.LogInformation($"request for article {id} returned null");
                 return NotFound();
             }
             else
             {
-                _logger.LogInformation($"Status of this article : {article.Status.Name}");
+                _logger.LogInformation($"status of article {article.ID}: {article.Status.Name}");
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null || !article.User.Equals(user))
                 {
-                    _logger.LogInformation($"User now {user}");
+                    _logger.LogInformation($"user {user} called for article {id}");
                     if (!article.Status.Name.Equals("Active"))
                     {
                         return NotFound();
@@ -76,7 +77,7 @@ namespace TekiBlog.Controllers
                 }
                 else
                 {
-                    _logger.LogInformation("User is authorized");
+                    _logger.LogInformation("user is authorized");
                     if (article.Status.Name.Equals("Deleted"))
                     {
                         return NotFound();
@@ -84,8 +85,19 @@ namespace TekiBlog.Controllers
                 }
             }
 
+
+
+            // Temporary block, will remove during deployment
+            if (article.CoverImage != null)
+            {
+                string imageBase64Data = Convert.ToBase64String(article.CoverImage);
+                string imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+                ViewData["ArticleCoverImg"] = imageDataURL;
+            }
+
             //article.User = _context.Users.First(m => m.Id == article.User);
-            _logger.LogInformation("User will get the article");
+            _logger.LogInformation($"user receives article {article.ID}");
+
             return View(article);
         }
 
@@ -140,10 +152,11 @@ namespace TekiBlog.Controllers
         {
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
-            // Create active status for this post
-            Status active = _service.GetStatus("Active");
 
-            if (ModelState.IsValid)
+            _service.GetImage(out byte[] coverImage, this.Request);
+            article.CoverImage = coverImage;
+
+            if (ModelState.IsValid && coverImage != null)
             {
 
                 // Get active status for this post
@@ -163,7 +176,8 @@ namespace TekiBlog.Controllers
                     ContentHtml = html,
                     ContentRaw = raw?.Trim(),
                     Status = active,
-                    User = user
+                    User = user,
+                    CoverImage = article.CoverImage
                 };
 
                 _service.AddArticle(articleModel);
@@ -175,9 +189,8 @@ namespace TekiBlog.Controllers
                 }    
             }
             else
-            {
-
-            _logger.LogInformation($"user {user.Id} post article failed");
+                _logger.LogInformation($"user {user.Id} post article failed"); 
+            
             return NotFound();
         }
 
@@ -187,6 +200,9 @@ namespace TekiBlog.Controllers
         {
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
+            _service.GetImage(out byte[] coverImage, this.Request);
+            article.CoverImage = coverImage;
+
             if (ModelState.IsValid)
             {
                 var pastArticle = _service.GetArticle(article.Id);
@@ -201,6 +217,9 @@ namespace TekiBlog.Controllers
                     pastArticle.Title = article.Title?.Trim();
                     pastArticle.Summary = article.Summary?.Trim();
                     pastArticle.Status = active;
+
+                    if(article.CoverImage != null)
+                        pastArticle.CoverImage = article.CoverImage;
 
                     _service.UpdateArticle(pastArticle);
                     if (await _service.Commit())

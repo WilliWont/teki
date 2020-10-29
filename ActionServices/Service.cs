@@ -2,8 +2,10 @@
 using DataObjects;
 using DataObjects.IRepository;
 using DataObjects.Repository;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -60,6 +62,23 @@ namespace ActionServices
         public bool UpdateArticle(Article article)
         {
             return articleRepository.UpdateArticle(article);
+        }
+
+        public void GetImage(out byte[] img, HttpRequest req)
+        {
+            foreach (var file in req.Form.Files)
+            {
+                // TODO: Compress Image if have time
+                MemoryStream ms = new MemoryStream();
+                file.CopyTo(ms);
+                img = ms.ToArray();
+                ms.Close();
+
+                ms.Dispose();
+
+                return;
+            }
+            img = null;
         }
     }
 }

@@ -1,0 +1,15 @@
+D:\a_self_proj\teki\DataObjects\bin\Debug\netcoreapp3.1\DataObjects.deps.json
+D:\a_self_proj\teki\DataObjects\bin\Debug\netcoreapp3.1\DataObjects.runtimeconfig.json
+D:\a_self_proj\teki\DataObjects\bin\Debug\netcoreapp3.1\DataObjects.runtimeconfig.dev.json
+D:\a_self_proj\teki\DataObjects\bin\Debug\netcoreapp3.1\DataObjects.dll
+D:\a_self_proj\teki\DataObjects\bin\Debug\netcoreapp3.1\DataObjects.pdb
+D:\a_self_proj\teki\DataObjects\bin\Debug\netcoreapp3.1\BusinessObjects.dll
+D:\a_self_proj\teki\DataObjects\bin\Debug\netcoreapp3.1\BusinessObjects.pdb
+D:\a_self_proj\teki\DataObjects\obj\Debug\netcoreapp3.1\DataObjects.csprojAssemblyReference.cache
+D:\a_self_proj\teki\DataObjects\obj\Debug\netcoreapp3.1\DataObjects.AssemblyInfoInputs.cache
+D:\a_self_proj\teki\DataObjects\obj\Debug\netcoreapp3.1\DataObjects.AssemblyInfo.cs
+D:\a_self_proj\teki\DataObjects\obj\Debug\netcoreapp3.1\DataObjects.csproj.CoreCompileInputs.cache
+D:\a_self_proj\teki\DataObjects\obj\Debug\netcoreapp3.1\DataObjects.csproj.CopyComplete
+D:\a_self_proj\teki\DataObjects\obj\Debug\netcoreapp3.1\DataObjects.dll
+D:\a_self_proj\teki\DataObjects\obj\Debug\netcoreapp3.1\DataObjects.pdb
+D:\a_self_proj\teki\DataObjects\obj\Debug\netcoreapp3.1\DataObjects.genruntimeconfig.cache
