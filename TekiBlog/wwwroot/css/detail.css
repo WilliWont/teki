@@ -1,3 +1,12 @@
 ﻿#titleHelp{
     font-size:1rem;
 }
+#form-content {
+    word-wrap: break-word;
+}
+
+    #form-content img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }

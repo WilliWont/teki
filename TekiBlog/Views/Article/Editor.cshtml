@@ -12,25 +12,11 @@
 
 @section Scripts{
 
-    @* Import the tinymce package *@
     <script type="text/javascript" src="~/js/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript" src="~/js/validation.js"></script>
+    <script type="text/javascript" src="~/js/charactercount.js"></script>
     <script type="text/javascript" src="~/js/editor.js"></script>
-
-    <script type="text/javascript">
-        // to convert any pasting into plain text
-        document.querySelector('#form-title').addEventListener('paste', function (event) {
-            event.preventDefault();
-            document.execCommand('inserttext', false, event.clipboardData.getData('text/plain').trim());
-        });
-        // TODO: REFACTOR IF HAVE TIME
-        document.querySelector('#form-tldr').addEventListener('paste', function (event) {
-            event.preventDefault();
-            document.execCommand('inserttext', false, event.clipboardData.getData('text/plain').trim());
-        });
-    </script>
 }
-<div class="text-danger">@ViewData["Error"]</div>
-<div asp-validation-summary="All" class="text-danger"></div>
 <div class="flx-container">
     <div class="col-9 article-detail">
         <form id="form" asp-controller="Article"
@@ -39,23 +25,40 @@
             <small id="titleHelp" class="form-text text-muted">
                 Write a brief title for your article <sup class="input-required"></sup>
             </small>
-            <h1 id="form-title"
-                class="title article-input"
-                aria-describedby="titleHelp"
-                contenteditable="true"
-                data-placeholder='title here'>
-                @Model?.Title
-            </h1>
+            <div class="form-container">
+                <h1 id="form-title"
+                    class="title article-input"
+                    aria-describedby="titleHelp"
+                    contenteditable="true"
+                    data-placeholder='title here'>
+                    @Model?.Title
+                </h1>
+                <small class="charcount-input" count-for="form-title"></small>
+                <small class="invalid-input"
+                       validate-for="form-title"
+                       input-display-name="Title"
+                       input-required
+                       input-min-len='@ViewData["TitleMinLen"]'
+                       input-max-len='@ViewData["TitleMaxLen"]'></small>
+            </div>
 
             <small id="tldrHelp" class="form-text text-muted">
                 Write a brief summary for your article
             </small>
-            <blockquote class="blockquote" aria-describedby="tldrHelp">
-                <p id="form-tldr"
-                   class="mb-0 article-input"
-                   contenteditable="true"
-                   data-placeholder="summary here">@Model?.Summary</p>
-            </blockquote>
+            <div class="form-container">
+                <blockquote class="blockquote" aria-describedby="tldrHelp">
+                    <p id="form-tldr"
+                       class="mb-0 article-input"
+                       contenteditable="true"
+                       data-placeholder="summary here">@Model?.Summary</p>
+                    <small class="charcount-input" count-for="form-tldr"></small>
+                </blockquote>
+                <small class="invalid-input"
+                       input-display-name="Summary"
+                       validate-for="form-tldr"
+                       input-max-len='@ViewData["SummaryMaxLen"]'
+                       input-min-len='@ViewData["SummaryMinLen"]'></small>
+            </div>
 
             @if (Model != null)
             {
@@ -70,16 +73,25 @@
             <small id="contentHelp" class="form-text text-muted">
                 Write your article content here <sup class="input-required"></sup>
             </small>
-            <div id="form-content" class="article-input" aria-describedby="contentHelp">
-            </div>
+            <div class="form-container">
 
+                <div id="form-content" class="article-input" aria-describedby="contentHelp">
+                </div>
+                <small class="charcount-input charcount-show" count-for="input-raw"></small>
+                <small class="invalid-input"
+                       validate-for="form-content"
+                       input-display-name="Content"
+                       input-required
+                       input-min-len='@ViewData["ContentMinLen"]'
+                       input-max-len='@ViewData["ContentMaxLen"]'></small>
+            </div>
             <input class="btn btn-outline-secondary btn-outline my-2 my-sm-0"
                    action="action"
                    onclick="window.history.go(-1); return false;"
                    type="submit"
                    value="Return" />
 
-            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">
+            <button id="btnSubmit" class="btn btn-outline-secondary my-2 my-sm-0" type="submit">
                 <i class="fa fa-pencil"></i> @(Model != null ? "Update Article" : "Post Article" )
             </button>
 

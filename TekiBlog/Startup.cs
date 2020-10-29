@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,8 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DataObjects;
 using BusinessObjects;
-using DataObjects.Repository;
 using ActionServices;
+using ValidationUtilities;
+using TekiBlog.ViewModels;
 
 namespace TekiBlog
 {
@@ -36,6 +32,9 @@ namespace TekiBlog
 
             // Register my app service. This includes CRUD function in every repository.
             services.AddTransient<IService, Service>();
+
+            services.AddTransient<IGenericValidationUtil<CreateArticleViewModel>, 
+                                GenericValidationUtil<CreateArticleViewModel>>();
 
             // Register Identity service . This method is add many of service revelant to Identity to service collection
             // like UserManager , RoleManager or SigninManager.

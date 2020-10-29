@@ -17,15 +17,14 @@ namespace TekiBlog.ViewModels
         public string ArticleContent { get; set; }
 
         [Required]
+        [StringLength(5000,MinimumLength = 128)]
         public string ArticleRaw { get; set; }
 
         [Required]
+        [StringLength(128, MinimumLength = 8)]
         public string Title { get; set; }
 
+        [StringLength(256, MinimumLength = 8)]
         public string Summary { get; set; }
-
-        public int TITLE_MAX_LEN { get; } = 10;
-        public int SUMMARY_MAX_LEN { get { return 10; } }
-        public int CONTENT_MAX_LEN { get { return 10; } }
     }
 }
