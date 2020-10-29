@@ -15,7 +15,6 @@ namespace ActionServices
         void AddArticle(Article article);
         IQueryable<Article> GetArticleWithUserID(ApplicationUser user);
         bool UpdateArticle(Article article);
-        void DeleteArticle(Article article);
         // Status Service
         Status GetStatus(string name);
         Task<bool> Commit();

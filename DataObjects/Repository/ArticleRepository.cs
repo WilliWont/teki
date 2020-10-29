@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,8 @@ namespace DataObjects.Repository
         {
             Article article = _context.Articles
                 .Include(a => a.User)
-                .FirstOrDefault(a => a.ID.Equals(ID));
+                .Include(a => a.Status)
+                .FirstOrDefault(a => (a.ID.Equals(ID) && (!a.Status.Name.Equals("Deleted"))));
             return article;
         }
 
@@ -30,7 +32,7 @@ namespace DataObjects.Repository
                 .Include(a => a.Status)
                 .Include(a => a.User)
                 .Select(a => new Article { ID = a.ID, User = a.User, Status = a.Status, Title = a.Title })
-                .Where(a => a.User.Equals(user));
+                .Where(a => (a.User.Equals(user) && (!a.Status.Name.Equals("Deleted"))));
             return articles;
         }
 
@@ -41,6 +43,5 @@ namespace DataObjects.Repository
 
             return true;
         }
-        
     }
 }

@@ -111,5 +111,10 @@ namespace TekiBlog.Controllers
         {
             return View();
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

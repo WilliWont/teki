@@ -48,7 +48,7 @@ namespace TekiBlog.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detail(Guid id)
+        public async Task<IActionResult> Detail(Guid id)
         {
             if (id == null)
             {
@@ -62,10 +62,34 @@ namespace TekiBlog.Controllers
                 _logger.LogInformation("Article is null");
                 return NotFound();
             }
+            else
+            {
+                _logger.LogInformation($"Status of this article : {article.Status.Name}");
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null || !article.User.Equals(user))
+                {
+                    _logger.LogInformation($"User now {user}");
+                    if (!article.Status.Name.Equals("Active"))
+                    {
+                        return NotFound();
+                    }
+                }
+                else
+                {
+                    _logger.LogInformation("User is authorized");
+                    if (article.Status.Name.Equals("Deleted"))
+                    {
+                        return NotFound();
+                    }
+                }
+            }
 
+            //article.User = _context.Users.First(m => m.Id == article.User);
+            _logger.LogInformation("User will get the article");
             return View(article);
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Editor(Guid id)
         {
             #region setup validaiton viewdata
@@ -116,6 +140,8 @@ namespace TekiBlog.Controllers
         {
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
+            // Create active status for this post
+            Status active = _service.GetStatus("Active");
 
             if (ModelState.IsValid)
             {
@@ -148,6 +174,8 @@ namespace TekiBlog.Controllers
 
                 }    
             }
+            else
+            {
 
             _logger.LogInformation($"user {user.Id} post article failed");
             return NotFound();
@@ -188,5 +216,47 @@ namespace TekiBlog.Controllers
             _logger.LogInformation($"user {user.Id} update article failed");
             return NotFound();
         }
+
+        [Authorize(Roles = "User")]
+        [HttpGet]
+        public async Task<IActionResult> ModifyArticle(Guid id, string type)
+        {
+            var article = _service.GetArticle(id);
+            if (article != null)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user != null)
+                {
+                    if (user.Equals(article.User))
+                    {
+                        Status disableStatus = _service.GetStatus(type);
+                        article.Status = disableStatus;
+                        _service.UpdateArticle(article);
+                        if (await _service.Commit())
+                        {
+                            return RedirectToAction("Index", "Profile");
+                        }
+                        else
+                        {
+                            return NotFound();
+                        }
+                    }
+                    else
+                    {
+                        return RedirectToAction("AccessDenied", "Auth");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
     }
 }
