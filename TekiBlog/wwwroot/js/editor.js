@@ -89,3 +89,17 @@ document.querySelector('#form-tldr').addEventListener('paste', function (event) 
 
 //    event.preventDefault();
 //});
+
+function previewFile(input) {
+    var file = $("input[type=file]").get(0).files[0];
+
+    if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function () {
+            $("#article-img-cover").attr("src", reader.result);
+        }
+        //$("#input-img-update").prop("checked", true);
+        reader.readAsDataURL(file);
+    }
+}

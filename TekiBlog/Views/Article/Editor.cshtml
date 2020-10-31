@@ -8,6 +8,8 @@
 
 @section Styles{
     <link rel="stylesheet" href="~/css/editor.css" />
+    <link rel="stylesheet" href="~/css/detail.css" />
+
 }
 
 @section Scripts{
@@ -17,6 +19,42 @@
     <script type="text/javascript" src="~/js/charactercount.js"></script>
     <script type="text/javascript" src="~/js/editor.js"></script>
 }
+
+@section CoverImg{
+    <div class="article-header">
+        <div class="article-img-container">
+            <img id="article-img-cover" src="@ViewData["ArticleCoverImg"]" />
+        </div>
+        <div class="flx-container article-header-info-container">
+            <div class="article-header-info-inner col-9">
+                
+                <div class="form-container">
+                    <small id="titleHelp" class="form-text text-muted">
+                        Write a brief title for your article <sup class="input-required"></sup>
+                    </small>
+                    <h1 id="form-title"
+                        class="title article-input"
+                        aria-describedby="titleHelp"
+                        contenteditable="true"
+                        data-placeholder='title here'>
+                        @Model?.Title
+                    </h1>
+                    <small class="charcount-input" count-for="form-title"></small>
+                    <small class="invalid-input"
+                           validate-for="form-title"
+                           input-display-name="Title"
+                           input-required
+                           input-min-len='@ViewData["TitleMinLen"]'
+                           input-max-len='@ViewData["TitleMaxLen"]'></small>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+}
+
+
 <div class="flx-container">
     <div class="col-9 article-detail">
         <form id="form" asp-controller="Article"
@@ -24,28 +62,17 @@
               onsubmit="bindData()"
               method="post"
               enctype="multipart/form-data">
-            <input type="file" id="file1"
-                   name="file1"
-                   multiple="multiple" />
-            <small id="titleHelp" class="form-text text-muted">
-                Write a brief title for your article <sup class="input-required"></sup>
+
+            <small id="fileHelp" class="form-text text-muted">
+                Choose a cover image for your article, 16:9 ratio and 5MB maximum<sup class="input-required"></sup>
             </small>
-            <div class="form-container">
-                <h1 id="form-title"
-                    class="title article-input"
-                    aria-describedby="titleHelp"
-                    contenteditable="true"
-                    data-placeholder='title here'>
-                    @Model?.Title
-                </h1>
-                <small class="charcount-input" count-for="form-title"></small>
-                <small class="invalid-input"
-                       validate-for="form-title"
-                       input-display-name="Title"
-                       input-required
-                       input-min-len='@ViewData["TitleMinLen"]'
-                       input-max-len='@ViewData["TitleMaxLen"]'></small>
-            </div>
+            <input id="fileHelp file1" type="file"
+                   name="file1" class="fileinput form-control-file"
+                   accept="image/*"
+                   onchange="previewFile(this);"
+                   @(ViewData["ArticleCoverImg"] != null ? "" : "required" )
+                   />
+
 
             <small id="tldrHelp" class="form-text text-muted">
                 Write a brief summary for your article

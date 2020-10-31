@@ -1,5 +1,5 @@
 ﻿// When the user scrolls the page, execute myFunction
-window.onscroll = function () { myFunction() };
+//window.onscroll = function () { myFunction() };
 //https://www.w3schools.com/howto/howto_js_navbar_sticky.asp
 // Get the navbar
 var navbar = document.getElementById("site-header");
@@ -16,8 +16,6 @@ var $navbar = $("#site-header");
 //    }
 //}
 
-
-
 // by nimaek
 //https://stackoverflow.com/a/34332847/11620610
 jQuery(window).on('scroll', function () {
@@ -25,10 +23,7 @@ jQuery(window).on('scroll', function () {
         divBottom = jQuery('.article-header').offset().top + jQuery('.article-header').outerHeight();
     if (divBottom*6/9 > top) {
         $navbar.removeClass('dark-nav');
-
     } else {
         $navbar.addClass('dark-nav');
-
-
     }
 });

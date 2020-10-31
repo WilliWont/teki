@@ -5,9 +5,10 @@
 
 @if (SignInManager.IsSignedIn(User))
 { 
+    var user = await UserManager.GetUserAsync(User);
     <div class="link-logged-in">
         <div>Hello</div>
-        <a class="" asp-area="" asp-controller="Profile" asp-action="Index" title="Manage">@User.Identity.Name</a>
+        <a class="" asp-area="" asp-controller="Profile" asp-action="Index" title="Manage">@user.FirstName @user.LastName</a>
     </div>
 }
 

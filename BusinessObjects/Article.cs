@@ -29,5 +29,7 @@ namespace BusinessObjects
         public ApplicationUser User { get; set; }
 
         public byte[] CoverImage { get; set; }
+        public byte[] ThumbnailImage { get; set; }
+
     }
 }

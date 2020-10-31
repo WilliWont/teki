@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,5 +22,6 @@ namespace ActionServices
         Status GetStatus(string name);
         Task<bool> Commit();
         void GetImage(out byte[] img, HttpRequest req);
+        void ProcessImage(ref byte[] originalBytes, Size size, Rectangle crop, ImageFormat format);
     }
 }

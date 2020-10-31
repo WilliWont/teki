@@ -118,6 +118,9 @@ namespace DataObjects.Migrations
                     b.Property<string>("Summary")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("ThumbnailImage")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 

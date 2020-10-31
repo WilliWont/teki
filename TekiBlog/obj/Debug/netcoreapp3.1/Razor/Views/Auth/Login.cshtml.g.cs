@@ -21,13 +21,13 @@ using TekiBlog;
 #nullable disable
 #nullable restore
 #line 2 "D:\a_self_proj\teki\TekiBlog\Views\_ViewImports.cshtml"
-using TekiBlog.Models;
+using BusinessObjects;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"00dfe096c921f6396cca7cb0dd70a8ecb99a1d70", @"/Views/Auth/Login.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"2c2058f722980ddfc1d58dfa76a40287347254db", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"5e8bfe405485bea66633efb8ce9aab880f6982ca", @"/Views/_ViewImports.cshtml")]
     public class Views_Auth_Login : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<TekiBlog.ViewModels.LoginViewModel>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("class", new global::Microsoft.AspNetCore.Html.HtmlString("text-danger"), global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
