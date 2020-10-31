@@ -40,7 +40,11 @@ namespace TekiBlog.Controllers
                 //_logger.LogInformation($"Article any {articles.Any()}");
                 return View(articles);
             }
-
+        }
+        public async Task<IActionResult> Info()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return View(user);
         }
     }
 }
