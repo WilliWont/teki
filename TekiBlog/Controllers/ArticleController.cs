@@ -16,6 +16,8 @@ using BusinessObjects;
 using DataObjects.Repository;
 using Microsoft.Extensions.Logging;
 using ActionServices;
+using ValidationUtilities;
+using System.IO;
 
 namespace TekiBlog.Controllers
 {
@@ -24,14 +26,17 @@ namespace TekiBlog.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<ArticleController> _logger;
         private readonly IService _service;
+        private readonly IGenericValidationUtil<CreateArticleViewModel> _validation;
 
         public ArticleController(UserManager<ApplicationUser> userManager,
             ILogger<ArticleController> logger,
-            IService service)
+            IService service,
+            IGenericValidationUtil<CreateArticleViewModel> validation)
         {
             _userManager = userManager;
             _logger = logger;
             _service = service;
+            _validation = validation;
         }
 
         public IActionResult Index()
@@ -48,24 +53,23 @@ namespace TekiBlog.Controllers
         {
             if (id == null)
             {
-                _logger.LogInformation("Id is null");
+                _logger.LogInformation("article id is null");
                 return NotFound();
             }
 
-            // TODO: REFACTOR THIS 
             var article = _service.GetArticle(id);
             if (article == null)
             {
-                _logger.LogInformation("Article is null");
+                _logger.LogInformation($"request for article {id} returned null");
                 return NotFound();
             }
             else
             {
-                _logger.LogInformation($"Status of this article : {article.Status.Name}");
+                _logger.LogInformation($"status of article {article.ID}: {article.Status.Name}");
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null || !article.User.Equals(user))
                 {
-                    _logger.LogInformation($"User now {user}");
+                    _logger.LogInformation($"user {user} called for article {id}");
                     if (!article.Status.Name.Equals("Active"))
                     {
                         return NotFound();
@@ -73,7 +77,7 @@ namespace TekiBlog.Controllers
                 }
                 else
                 {
-                    _logger.LogInformation("User is authorized");
+                    _logger.LogInformation("user is authorized");
                     if (article.Status.Name.Equals("Deleted"))
                     {
                         return NotFound();
@@ -81,14 +85,36 @@ namespace TekiBlog.Controllers
                 }
             }
 
+
+
+            // Temporary block, will remove during deployment
+            if (article.CoverImage != null)
+            {
+                string imageBase64Data = Convert.ToBase64String(article.CoverImage);
+                string imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+                ViewData["ArticleCoverImg"] = imageDataURL;
+            }
+
             //article.User = _context.Users.First(m => m.Id == article.User);
-            _logger.LogInformation("User will get the article");
+            _logger.LogInformation($"user receives article {article.ID}");
+
             return View(article);
         }
 
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Editor(Guid id)
         {
+            #region setup validaiton viewdata
+            ViewData["SummaryMaxLen"] = _validation.GetMaxLen("Summary");
+            ViewData["SummaryMinLen"] = _validation.GetMinLen("Summary");
+            
+            ViewData["TitleMaxLen"] = _validation.GetMaxLen("Title");
+            ViewData["TitleMinLen"] = _validation.GetMinLen("Title");
+            
+            ViewData["ContentMaxLen"] = _validation.GetMaxLen("ArticleRaw");
+            ViewData["ContentMinLen"] = _validation.GetMinLen("ArticleRaw");
+            #endregion
+
             if (id != null)
             {
                 var article = _service.GetArticle(id);
@@ -106,136 +132,108 @@ namespace TekiBlog.Controllers
                     }
                 }
             }
+
             return View();
         }
 
-        [Authorize(Roles = "User")]
+        //[HttpPost]
+        //public string AjaxTest(CreateArticleViewModel article)
+        //{
+        //    string received = article.ArticleContent;
+
+        //    Console.Write(received);
+
+        //    return received;
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostArticle(CreateArticleViewModel article)
         {
-            // TODO: VALIDATE POST ARTICLE
-
-            // TODO: ADD COVER IMAGE FOR ARTICLE
-
-            // TODO: ADD TAGS TO ARTICLS
-
-            // TODO: REFACTOR POST ARTICLE
-
-            // TODO: COMPRESS POST ARTICLE IMG
-
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
-            // Create active status for this post
-            Status active = _service.GetStatus("Active");
 
-            string html = article.ArticleContent;
+            _service.GetImage(out byte[] coverImage, this.Request);
+            article.CoverImage = coverImage;
 
-            // TODO: switch raw to tinymce function
-            string raw = article.ArticleRaw;
-
-            Console.WriteLine("title: " + article.Title);
-
-            // Create article model to insert to Database
-            Article articleModel = new Article
+            if (ModelState.IsValid && coverImage != null)
             {
-                Title = article.Title,
-                Summary = article.Summary,
-                DatePosted = DateTime.UtcNow,
-                CurrentVote = 0,
-                ContentHtml = html,
-                ContentRaw = raw,
-                Status = active,
-                User = user
-            };
 
+                // Get active status for this post
+                Status active = _service.GetStatus("Active");
 
-            if (ModelState.IsValid)
-            {
+                string html = article.ArticleContent;
+
+                string raw = article.ArticleRaw;
+
+                // Create article model to insert to Database
+                Article articleModel = new Article
+                {
+                    Title = article.Title?.Trim(),
+                    Summary = article.Summary?.Trim(),
+                    DatePosted = DateTime.UtcNow,
+                    CurrentVote = 0,
+                    ContentHtml = html,
+                    ContentRaw = raw?.Trim(),
+                    Status = active,
+                    User = user,
+                    CoverImage = article.CoverImage
+                };
+
                 _service.AddArticle(articleModel);
                 if (await _service.Commit())
                 {
-                    Console.WriteLine("added ID:" + articleModel.ID);
+                    _logger.LogInformation($"user {user.Id} posted article {articleModel.ID}");
                     return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
-                }
-                else
-                {
-                    return View(article);
-                }
 
-                // return to article view
-                // return RedirectToAction(nameof(Index));
+                }    
             }
             else
-            {
-
-                _logger.LogInformation("Invalid state");
-                return RedirectToAction("Editor", "Article", article);
-            }
-            // return to home page
-
+                _logger.LogInformation($"user {user.Id} post article failed"); 
+            
+            return NotFound();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateArticle(CreateArticleViewModel article)
         {
-            // TODO: VALIDATE POST ARTICLE
-
-            // TODO: ADD COVER IMAGE FOR ARTICLE
-
-            // TODO: ADD TAGS TO ARTICLS
-
-            // TODO: REFACTOR POST ARTICLE
-
-            // TODO: COMPRESS POST ARTICLE IMG
-
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
-            // Create active status for this post
-            Status active = _service.GetStatus("Active");
-
-            string html = article.ArticleContent;
-
-            // TODO: switch raw to tinymce function
-            string raw = article.ArticleRaw;
-
-            Console.WriteLine("title: " + article.Title);
-
-            // Create article model to insert to Database
-            Article articleModel = new Article
-            {
-                ID = article.Id,
-                Title = article.Title,
-                Summary = article.Summary,
-                DatePosted = DateTime.UtcNow,
-                CurrentVote = 0,
-                ContentHtml = html,
-                ContentRaw = raw,
-                Status = active,
-                User = user
-            };
-
+            _service.GetImage(out byte[] coverImage, this.Request);
+            article.CoverImage = coverImage;
 
             if (ModelState.IsValid)
             {
-                _service.UpdateArticle(articleModel);
-                if (await _service.Commit())
+                var pastArticle = _service.GetArticle(article.Id);
+                if (pastArticle.User.Id.Equals(user.Id))
                 {
-                    Console.WriteLine("updated ID:" + articleModel.ID);
-                }
-                else
-                {
-                    ViewData["Error"] = "Some error orcured. Please check again";
-                    return RedirectToAction("Editor", "Article", new { id = articleModel.ID });
-                }
+                    // Get active status for this post
+                    Status active = _service.GetStatus("Active");
 
-                // return to article view
-                // return RedirectToAction(nameof(Index));
-            }
+                    // edit article model to update to Database
+                    pastArticle.ContentHtml = article.ArticleContent;
+                    pastArticle.ContentRaw = article.ArticleRaw?.Trim();
+                    pastArticle.Title = article.Title?.Trim();
+                    pastArticle.Summary = article.Summary?.Trim();
+                    pastArticle.Status = active;
 
-            // return to home page
-            return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
+                    if(article.CoverImage != null)
+                        pastArticle.CoverImage = article.CoverImage;
+
+                    _service.UpdateArticle(pastArticle);
+                    if (await _service.Commit())
+                    {
+                        _logger.LogInformation($"user {user.Id} updated article {pastArticle.ID}");
+                        return RedirectToAction("Detail", "Article", new { id = pastArticle.ID });
+
+                    } // exit if unable to update
+                } else // exit if invalid user
+                _logger.LogInformation($"user {user.Id} tried updating {pastArticle.User.Id}'s article");
+            } // exit if invalid article
+
+            _logger.LogInformation($"user {user.Id} update article failed");
+            return NotFound();
         }
 
         [Authorize(Roles = "User")]

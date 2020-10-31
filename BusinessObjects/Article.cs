@@ -11,7 +11,6 @@ namespace BusinessObjects
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid ID { get; set; }
 
-        [StringLength(200)]
         public string Title { get; set; }
 
         public string ContentRaw { get; set; }
@@ -20,6 +19,7 @@ namespace BusinessObjects
 
         public string Summary { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:ddd, MMM dd yyyy 'at' H:m}")]
         public DateTime DatePosted { get; set; }
 
         public int CurrentVote { get; set; }
@@ -27,5 +27,7 @@ namespace BusinessObjects
         public Status Status { get; set; }
 
         public ApplicationUser User { get; set; }
+
+        public byte[] CoverImage { get; set; }
     }
 }

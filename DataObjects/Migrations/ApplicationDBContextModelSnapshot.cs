@@ -103,6 +103,9 @@ namespace DataObjects.Migrations
                     b.Property<string>("ContentRaw")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("CoverImage")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int>("CurrentVote")
                         .HasColumnType("int");
 
@@ -116,8 +119,7 @@ namespace DataObjects.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");

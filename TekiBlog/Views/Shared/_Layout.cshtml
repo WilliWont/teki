@@ -12,15 +12,16 @@
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    <header>
+    <header id="site-header">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white mb-3">
-        
+
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <img class="img-brand" src="~/img/logo.png">
             </a>
-            
+            <partial name="_UserLinkPartial" />
+
             <ul class="navbar-nav mr-auto"></ul>
-            
+
             <form class="form-inline my-2 my-lg-0">
 
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -29,12 +30,12 @@
             </form>
 
             <partial name="_LoginPartial" />
-        
+
         </nav>
     </header>
 
     <partial name="_ComposePartial" />
-    
+    @RenderSection("CoverImg", required: false)
     <div class="container body-content">
         <main role="main" class="pb-3">
             @RenderBody()

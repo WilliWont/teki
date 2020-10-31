@@ -11,7 +11,6 @@
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8" />
-		<PackageReference Include="Quill.Delta" Version="1.0.7" />
 	</ItemGroup>
 
 
@@ -19,5 +18,6 @@
 	  <ProjectReference Include="..\ActionServices\ActionServices.csproj" />
 	  <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj" />
 	  <ProjectReference Include="..\DataObjects\DataObjects.csproj" />
+	  <ProjectReference Include="..\ValidationUtilities\ValidationUtilities.csproj" />
 	</ItemGroup>
 </Project>

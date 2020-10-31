@@ -1,0 +1,9 @@
+D:\a_self_proj\teki\BusinessObjects\bin\Debug\netcoreapp3.1\BusinessObjects.deps.json
+D:\a_self_proj\teki\BusinessObjects\bin\Debug\netcoreapp3.1\BusinessObjects.dll
+D:\a_self_proj\teki\BusinessObjects\bin\Debug\netcoreapp3.1\BusinessObjects.pdb
+D:\a_self_proj\teki\BusinessObjects\obj\Debug\netcoreapp3.1\BusinessObjects.csprojAssemblyReference.cache
+D:\a_self_proj\teki\BusinessObjects\obj\Debug\netcoreapp3.1\BusinessObjects.AssemblyInfoInputs.cache
+D:\a_self_proj\teki\BusinessObjects\obj\Debug\netcoreapp3.1\BusinessObjects.AssemblyInfo.cs
+D:\a_self_proj\teki\BusinessObjects\obj\Debug\netcoreapp3.1\BusinessObjects.csproj.CoreCompileInputs.cache
+D:\a_self_proj\teki\BusinessObjects\obj\Debug\netcoreapp3.1\BusinessObjects.dll
+D:\a_self_proj\teki\BusinessObjects\obj\Debug\netcoreapp3.1\BusinessObjects.pdb
