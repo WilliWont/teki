@@ -1,0 +1,47 @@
+﻿@model TekiBlog.ViewModels.PaginatedList<Article>
+
+
+@if (Model.Any())
+{
+    <div>
+        @foreach (var item in Model)
+        {
+            <div>
+                <div>
+                    <a asp-action="Detail" asp-route-id="@item.ID">@item.Title</a> 
+                    by <a asp-controller="Profile" asp-action="Info" asp-route-id="@item.User.Id">@item.User.UserName</a>
+                </div>
+                <div>
+                    Posted in @item.DatePosted.ToLongDateString()
+                </div>
+                <div>
+                    @item.Summary
+                </div>
+            </div>
+            <br />
+        }
+    </div>
+
+
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+    <a asp-controller="Article"
+       asp-action="Search"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-searchValue = "@ViewData["SearchValue"]"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-controller="Article"
+       asp-action="Search"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-searchValue = "@ViewData["SearchValue"]"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+}
+else
+{
+    <h1>No result found</h1>
+}
