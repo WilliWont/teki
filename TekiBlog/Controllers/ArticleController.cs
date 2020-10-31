@@ -109,10 +109,10 @@ namespace TekiBlog.Controllers
             #region setup validaiton viewdata
             ViewData["SummaryMaxLen"] = _validation.GetMaxLen("Summary");
             ViewData["SummaryMinLen"] = _validation.GetMinLen("Summary");
-            
+
             ViewData["TitleMaxLen"] = _validation.GetMaxLen("Title");
             ViewData["TitleMinLen"] = _validation.GetMinLen("Title");
-            
+
             ViewData["ContentMaxLen"] = _validation.GetMaxLen("ArticleRaw");
             ViewData["ContentMinLen"] = _validation.GetMinLen("ArticleRaw");
             #endregion
@@ -205,11 +205,11 @@ namespace TekiBlog.Controllers
                     _logger.LogInformation($"user {user.Id} posted article {articleModel.ID}");
                     return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
 
-                }    
+                }
             }
             else
-                _logger.LogInformation($"user {user.Id} post article failed"); 
-            
+                _logger.LogInformation($"user {user.Id} post article failed");
+
             return NotFound();
         }
 
@@ -247,7 +247,7 @@ namespace TekiBlog.Controllers
                     pastArticle.Summary = article.Summary?.Trim();
                     pastArticle.Status = active;
 
-                    if(article.CoverImage != null)
+                    if (article.CoverImage != null)
                         pastArticle.CoverImage = article.CoverImage;
 
                     _service.UpdateArticle(pastArticle);
@@ -257,8 +257,9 @@ namespace TekiBlog.Controllers
                         return RedirectToAction("Detail", "Article", new { id = pastArticle.ID });
 
                     } // exit if unable to update
-                } else // exit if invalid user
-                _logger.LogInformation($"user {user.Id} tried updating {pastArticle.User.Id}'s article");
+                }
+                else // exit if invalid user
+                    _logger.LogInformation($"user {user.Id} tried updating {pastArticle.User.Id}'s article");
             } // exit if invalid article
 
             _logger.LogInformation($"user {user.Id} update article failed");
@@ -305,6 +306,19 @@ namespace TekiBlog.Controllers
             }
         }
 
-
+        [HttpGet]
+        public async Task<IActionResult> Search(string searchValue, int? pageNumber)
+        {
+            int pageSize = 2;
+            _logger.LogInformation("Search value " + searchValue);
+            if (string.IsNullOrEmpty(searchValue) && (pageNumber == null))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            ViewData["SearchValue"] = searchValue;
+            IQueryable<Article> articles = _service.SearchArticle(searchValue);
+            PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize);
+            return View(result);
+        }
     }
 }

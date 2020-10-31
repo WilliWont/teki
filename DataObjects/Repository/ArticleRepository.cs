@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +34,18 @@ namespace DataObjects.Repository
                 .Include(a => a.User)
                 .Select(a => new Article { ID = a.ID, User = a.User, Status = a.Status, Title = a.Title })
                 .Where(a => (a.User.Equals(user) && (!a.Status.Name.Equals("Deleted"))));
+            return articles;
+        }
+
+        public IQueryable<Article> SearchArticle(string searchValue)
+        {
+            IQueryable<Article> articles = _context.Articles
+                .Include(a => a.Status)
+                .Include(a => a.User)
+                .Select(a => a)
+                .Where(a => a.Status.Name.Equals("Active") 
+                && (a.Title.Contains(searchValue) || a.Summary.Contains(searchValue)))
+                .OrderByDescending(a => a.DatePosted);
             return articles;
         }
 

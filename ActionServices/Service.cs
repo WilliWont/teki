@@ -165,5 +165,10 @@ namespace ActionServices
             }
 
         }
+
+        public IQueryable<Article> SearchArticle(string searchValue)
+        {
+            return articleRepository.SearchArticle(searchValue);
+        }
     }
 }

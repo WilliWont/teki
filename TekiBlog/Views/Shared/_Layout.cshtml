@@ -22,9 +22,8 @@
 
             <ul class="navbar-nav mr-auto"></ul>
 
-            <form class="form-inline my-2 my-lg-0">
-
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <form asp-controller="Article" class="form-inline my-2 my-lg-0" asp-action="Search" method="get">
+                <input class="form-control mr-sm-2" type="text" placeholder="Input here..." name="searchValue" aria-label="Search" value="@ViewData["SearchValue"]">
                 <button class="btn btn-outline-secondary my-2 my-sm-0" title="Search" type="submit"><i class="fa fa-search"></i></button>
 
             </form>

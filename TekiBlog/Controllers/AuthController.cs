@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TekiBlog.ViewModels;
 using BusinessObjects;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace TekiBlog.Controllers
 {
@@ -78,7 +79,7 @@ namespace TekiBlog.Controllers
                 string username = address.User;
                 var user = new ApplicationUser
                 {
-                    UserName = username,
+                    UserName = model.Username,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
@@ -104,6 +105,18 @@ namespace TekiBlog.Controllers
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
+            }
+            else
+            {
+                var message = string.Join(" | ", ModelState.Values
+                                           .SelectMany(v => v.Errors)
+                                           .Select(e => e.ErrorMessage));
+                var errors = ModelState.Select(v => new { key = v.Key , value = v.Value});
+                foreach(var error in errors)
+                {
+                    _logger.LogInformation($"Error : {error.key} - {error.value} ");
+                }
+                _logger.LogError(message);
             }
             return View();
         }
