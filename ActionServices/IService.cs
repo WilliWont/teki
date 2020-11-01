@@ -19,10 +19,14 @@ namespace ActionServices
         IQueryable<Article> GetArticleWithUserID(ApplicationUser user);
         bool UpdateArticle(Article article);
         IQueryable<Article> SearchArticle(string searchValue);
+        IQueryable<Article> GetArticleByStatus(string status);
         // Status Service
         Status GetStatus(string name);
         Task<bool> Commit();
         void GetImage(out byte[] img, HttpRequest req);
-        void ProcessImage(ref byte[] originalBytes, Size size, Rectangle crop, ImageFormat format);
+        byte[] ResizeImgageByWidth(byte[] originalBytes, int w, ImageFormat format);
+        byte[] CropImage(byte[] originalBytes, Rectangle crop, ImageFormat format);
+
+
     }
 }

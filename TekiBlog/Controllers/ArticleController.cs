@@ -41,13 +41,16 @@ namespace TekiBlog.Controllers
             _validation = validation;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             // TODO: REMOVE LATER, FOR TEST ONLY
+            IQueryable<Article> articles = _service.GetArticleByStatus("Active");
 
-            List<Article> articles = _service.GetAllArticle().ToList();
+            int pageSize = PaginatedList<Article>.perPage;
+            PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize);
 
-            return View(articles);
+            return View(result);
+
         }
 
         [HttpGet]
@@ -161,21 +164,25 @@ namespace TekiBlog.Controllers
         {
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
-            byte[] coverImage;
+            byte[] articleImage;
+
             try
             {
-                _service.GetImage(out coverImage, this.Request);
-                _service.ProcessImage(ref coverImage, new Size(1280,1280), new Rectangle(0,0,1280,720), ImageFormat.Jpeg);
-                article.CoverImage = coverImage;
+                _service.GetImage(out articleImage, this.Request);
+                // TODO: elimate magic number if have time
+                articleImage = _service.ResizeImgageByWidth(articleImage, 1280, ImageFormat.Jpeg);
+                
+                article.CoverImage = _service.CropImage(articleImage, new Rectangle(0,0,1280, 720),ImageFormat.Jpeg);
+                article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(600 / 3, 0, 600, 450), ImageFormat.Jpeg);
             }
             catch
             {
                 _logger.LogInformation("failed to retrieve image");
-                coverImage = null;
+                articleImage = null;
             }
 
 
-            if (ModelState.IsValid && coverImage != null)
+            if (ModelState.IsValid && articleImage != null)
             {
 
                 // Get active status for this post
@@ -196,7 +203,8 @@ namespace TekiBlog.Controllers
                     ContentRaw = raw?.Trim(),
                     Status = active,
                     User = user,
-                    CoverImage = article.CoverImage
+                    CoverImage = article.CoverImage,
+                    ThumbnailImage = article.ThumbnailImage
                 };
 
                 _service.AddArticle(articleModel);
@@ -219,17 +227,21 @@ namespace TekiBlog.Controllers
         {
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
-            byte[] coverImage;
+            byte[] articleImage;
+   
             try
             {
-                _service.GetImage(out coverImage, this.Request);
-                _service.ProcessImage(ref coverImage, new Size(1280, 1280), new Rectangle(0, 0, 1280, 720), ImageFormat.Jpeg);
-                article.CoverImage = coverImage;
+                _service.GetImage(out articleImage, this.Request);
+                // TODO: elimate magic number if have time
+                articleImage = _service.ResizeImgageByWidth(articleImage, 1280, ImageFormat.Jpeg);
+
+                article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, 1280, 720), ImageFormat.Jpeg);
+                article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(600 / 3, 0, 600, 450), ImageFormat.Jpeg);
             }
             catch
             {
                 _logger.LogInformation("failed to retrieve image");
-                coverImage = null;
+                articleImage = null;
             }
 
             if (ModelState.IsValid)
@@ -247,8 +259,11 @@ namespace TekiBlog.Controllers
                     pastArticle.Summary = article.Summary?.Trim();
                     pastArticle.Status = active;
 
-                    if (article.CoverImage != null)
+                    if (articleImage!=null)
+                    {
                         pastArticle.CoverImage = article.CoverImage;
+                        pastArticle.ThumbnailImage = article.ThumbnailImage;
+                    }
 
                     _service.UpdateArticle(pastArticle);
                     if (await _service.Commit())

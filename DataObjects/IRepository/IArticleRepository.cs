@@ -15,5 +15,7 @@ namespace DataObjects
         Article GetArticleInfo(Guid ID);
         IQueryable<Article> GetArticlesByID(ApplicationUser user);
         IQueryable<Article> SearchArticle(string searchValue);
+        IQueryable<Article> GetArticleByStatus(string status);
+
     }
 }

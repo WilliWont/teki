@@ -11,7 +11,7 @@ namespace TekiBlog.ViewModels
         public int PageIndex { get; private set; }
         public int TotalPages { get; private set; }
 
-        public readonly int perPage = 2;
+        public static readonly int perPage = 20;
 
 
         public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)

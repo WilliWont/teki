@@ -62,34 +62,6 @@ document.querySelector('#form-tldr').addEventListener('paste', function (event) 
     document.execCommand('inserttext', false, event.clipboardData.getData('text/plain').trim());
 });
 
-//$("#form").submit(function (event) {
-//    alert('submit');
-//    bindData();
-//    $.ajax({
-//        type: "POST",
-//        url: "/Article/AjaxTest",
-//        data: $("#form").serialize(),
-//        dataType: "text",
-//        success: function (msg) {
-//            //let response = JSON.parse(msg);
-
-//            //if (response.isValid == true) {
-
-//            //} else {
-//            //    for (let i = 0; i < response.validationError.length; i++) {
-//            //        let field = validationFields.get(response.validationError[0]);
-//            //        field.text(response.validationError.msg);
-//            //    }
-//            //}
-//        },
-//        error: function (req, status, error) {
-//            console.log(msg);
-//        }
-//    }); 
-
-//    event.preventDefault();
-//});
-
 function previewFile(input) {
     var file = $("input[type=file]").get(0).files[0];
 

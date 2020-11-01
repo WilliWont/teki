@@ -19,7 +19,7 @@ namespace DataObjects
 
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Article> Articles { get; set; }
-
+        public DbSet<Bookmark> Bookmarks { get; set; }
         // This funtion is used to create identity tables to database when migration.
         protected override void OnModelCreating(ModelBuilder builder)
         {

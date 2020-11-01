@@ -72,6 +72,7 @@ header {
     border-color: white;
     padding-right: 2rem;
     text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+    word-wrap:break-word !important;
 }
 
 .article-user-info {
