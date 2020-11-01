@@ -185,5 +185,10 @@ namespace ActionServices
                 }
             }
         }
+
+        public IQueryable<Article> GetArticleForViewer(ApplicationUser user)
+        {
+            return articleRepository.GetArticlesForViewer(user);
+        }
     }
 }

@@ -32,8 +32,20 @@ namespace DataObjects.Repository
             IQueryable<Article> articles = _context.Articles
                 .Include(a => a.Status)
                 .Include(a => a.User)
-                .Select(a => new Article { ID = a.ID, User = a.User, Status = a.Status, Title = a.Title })
-                .Where(a => (a.User.Equals(user) && (!a.Status.Name.Equals("Deleted"))));
+                .Select(a => new Article { ID = a.ID, User = a.User, Status = a.Status, Title = a.Title , DatePosted = a.DatePosted })
+                .Where(a => a.User.Equals(user) && (!a.Status.Name.Equals("Deleted")))
+                .OrderByDescending(a => a.DatePosted); 
+            return articles;
+        }
+
+        public IQueryable<Article> GetArticlesForViewer(ApplicationUser user)
+        {
+            IQueryable<Article> articles = _context.Articles
+                .Include(a => a.Status)
+                .Include(a => a.User)
+                .Select(a => a)
+                .Where(a => a.Status.Name.Equals("Active") && a.User.Equals(user))
+                .OrderByDescending(a => a.DatePosted);
             return articles;
         }
 

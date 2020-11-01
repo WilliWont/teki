@@ -1,0 +1,65 @@
+﻿@model Tuple<ApplicationUser, IQueryable<Article>>
+
+<header>
+    <h1>
+        @Model.Item1.FirstName @Model.Item1.LastName
+    </h1>
+    <h4>
+        @Model.Item1.UserName
+    </h4>
+    <h5>
+        @Model.Item1.Email
+    </h5>
+</header>
+@if (!Model.Item2.Any())
+{
+    <h3>This user has no post here</h3>
+}
+else
+{
+    <div class="container">
+        <div class="col-9">
+            <table class="table">
+                <thead class="black white-text">
+                    <tr>
+                        <th scope="col">
+                            #
+                        </th>
+                        <th scope="col">
+                            Title
+                        </th>
+                        <th scope="col">
+                            Date posted
+                        </th>
+                        <th scope="col">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var num = 0;
+                        foreach (var item in Model.Item2)
+                        {
+                            num = num + 1;
+                            <tr>
+                                <td>
+                                    @num
+                                </td>
+                                <td>
+                                    @item.Title
+                                </td>
+                                <td>
+                                    @item.DatePosted
+                                </td>
+                                <td>
+                                    <a class="btn btn-secondary" asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">View</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

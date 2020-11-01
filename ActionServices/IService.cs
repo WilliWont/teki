@@ -19,6 +19,7 @@ namespace ActionServices
         IQueryable<Article> GetArticleWithUserID(ApplicationUser user);
         bool UpdateArticle(Article article);
         IQueryable<Article> SearchArticle(string searchValue);
+        IQueryable<Article> GetArticleForViewer(ApplicationUser user);
         IQueryable<Article> GetArticleByStatus(string status);
         // Status Service
         Status GetStatus(string name);

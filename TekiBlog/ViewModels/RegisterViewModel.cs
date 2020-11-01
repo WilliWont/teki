@@ -17,6 +17,7 @@ namespace TekiBlog.ViewModels
         public string LastName { get; set; }
 
         [Required]
+        [StringLength(50, MinimumLength = 6)]
         [Display(Name = "UserName")]
         public string Username { get; set; }
 

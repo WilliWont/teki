@@ -12,31 +12,31 @@
     <link rel="stylesheet" href="~/css/detail.css" />
 }
 
-@section Scripts{ 
+@section Scripts{
     <script src="~/js/detail.js"></script>
 }
 
 @section CoverImg{
     <div class="article-header">
         <div class="article-img-container">
-        <img id="article-img-cover" src="@ViewData["ArticleCoverImg"]" />
+            <img id="article-img-cover" src="@ViewData["ArticleCoverImg"]" />
         </div>
         <div class="flx-container article-header-info-container">
-                <div class="article-header-info-inner col-9">
-                    <h1 id="form-title"
-                        class="title article-input">
-                        @Model?.Title
-                    </h1>
-                    <div class="article-user-info">
-                        <small id="titleHelp" class="user-link-container">
-                            <span>By <a href="#">@Model.User.FirstName @Model.User.LastName</a></span>
-                        </small>
-                        <small>
-                            @Html.DisplayFor(model => model.DatePosted)
-                        </small>
-                    </div>
+            <div class="article-header-info-inner col-9">
+                <h1 id="form-title"
+                    class="title article-input">
+                    @Model?.Title
+                </h1>
+                <div class="article-user-info">
+                    <small id="titleHelp" class="user-link-container">
+                        <span>By <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@Model.User.Id">@Model.User.FirstName @Model.User.LastName</a></span>
+                    </small>
+                    <small>
+                        @Html.DisplayFor(model => model.DatePosted)
+                    </small>
                 </div>
             </div>
+        </div>
     </div>
 }
 <div class="flx-container">
@@ -44,8 +44,8 @@
         <form>
 
             @*<div class="form-container">
-            article-info used to be here
-            </div>*@
+                article-info used to be here
+                </div>*@
 
             @if (@Model.Summary != null)
             {
