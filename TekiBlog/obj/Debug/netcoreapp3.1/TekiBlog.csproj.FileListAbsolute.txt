@@ -131,4 +131,17 @@ D:\a_self_proj\teki\TekiBlog\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LoginPa
 D:\a_self_proj\teki\TekiBlog\obj\Debug\netcoreapp3.1\Razor\Views\Article\Detail.cshtml.g.cs
 D:\a_self_proj\teki\TekiBlog\obj\Debug\netcoreapp3.1\Razor\Views\Article\Editor.cshtml.g.cs
 D:\a_self_proj\teki\TekiBlog\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ComposePartial.cshtml.g.cs
-D:\a_self_proj\teki\TekiBlog\bin\Debug\netcoreapp3.1\Quill.Delta.dll
+D:\a_self_proj\teki\TekiBlog\bin\Debug\netcoreapp3.1\Properties\ServiceDependencies\teki-blog - Web Deploy\profile.arm.json
+D:\a_self_proj\teki\TekiBlog\bin\Debug\netcoreapp3.1\ActionServices.dll
+D:\a_self_proj\teki\TekiBlog\bin\Debug\netcoreapp3.1\BusinessObjects.dll
+D:\a_self_proj\teki\TekiBlog\bin\Debug\netcoreapp3.1\DataObjects.dll
+D:\a_self_proj\teki\TekiBlog\bin\Debug\netcoreapp3.1\ValidationUtilities.dll
+D:\a_self_proj\teki\TekiBlog\bin\Debug\netcoreapp3.1\ActionServices.pdb
+D:\a_self_proj\teki\TekiBlog\bin\Debug\netcoreapp3.1\BusinessObjects.pdb
+D:\a_self_proj\teki\TekiBlog\bin\Debug\netcoreapp3.1\DataObjects.pdb
+D:\a_self_proj\teki\TekiBlog\bin\Debug\netcoreapp3.1\ValidationUtilities.pdb
+D:\a_self_proj\teki\TekiBlog\obj\Debug\netcoreapp3.1\Razor\Views\Article\Index.cshtml.g.cs
+D:\a_self_proj\teki\TekiBlog\obj\Debug\netcoreapp3.1\Razor\Views\Auth\AccessDenied.cshtml.g.cs
+D:\a_self_proj\teki\TekiBlog\obj\Debug\netcoreapp3.1\Razor\Views\Profile\Index.cshtml.g.cs
+D:\a_self_proj\teki\TekiBlog\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ManageNav.cshtml.g.cs
+D:\a_self_proj\teki\TekiBlog\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_UserLinkPartial.cshtml.g.cs

@@ -44,7 +44,7 @@ namespace DataObjects.Repository
                 .Include(a => a.User)
                 .Select(a => a)
                 .Where(a => a.Status.Name.Equals("Active") 
-                && (a.Title.Contains(searchValue) || a.Summary.Contains(searchValue)))
+                && (a.Title.Contains(searchValue) || a.Summary.Contains(searchValue) || a.ContentRaw.Contains(searchValue)))
                 .OrderByDescending(a => a.DatePosted);
             return articles;
         }

@@ -4,7 +4,7 @@
 @inject UserManager<ApplicationUser> UserManager;
 
 @if (SignInManager.IsSignedIn(User))
-{
+{ 
     var user = await UserManager.GetUserAsync(User);
     <div class="link-logged-in">
         <div>Hello</div>

@@ -27,5 +27,9 @@ namespace TekiBlog.ViewModels
         public string Summary { get; set; }
 
         public byte[] CoverImage { get; set;}
+
+        public byte[] ThumbnailImage { get; set; }
+
+
     }
 }

@@ -18,6 +18,8 @@ using Microsoft.Extensions.Logging;
 using ActionServices;
 using ValidationUtilities;
 using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace TekiBlog.Controllers
 {
@@ -123,6 +125,13 @@ namespace TekiBlog.Controllers
                     var user = await _userManager.GetUserAsync(User);
                     if (article.User.Id.Equals(user?.Id))
                     {
+                        if (article.CoverImage != null)
+                        {
+                            string imageBase64Data = Convert.ToBase64String(article.CoverImage);
+                            string imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+                            ViewData["ArticleCoverImg"] = imageDataURL;
+                        }
+
                         return View(new CreateArticleViewModel
                         {
                             ArticleContent = article.ContentHtml,
@@ -152,9 +161,19 @@ namespace TekiBlog.Controllers
         {
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
+            byte[] coverImage;
+            try
+            {
+                _service.GetImage(out coverImage, this.Request);
+                _service.ProcessImage(ref coverImage, new Size(1280,1280), new Rectangle(0,0,1280,720), ImageFormat.Jpeg);
+                article.CoverImage = coverImage;
+            }
+            catch
+            {
+                _logger.LogInformation("failed to retrieve image");
+                coverImage = null;
+            }
 
-            _service.GetImage(out byte[] coverImage, this.Request);
-            article.CoverImage = coverImage;
 
             if (ModelState.IsValid && coverImage != null)
             {
@@ -200,8 +219,18 @@ namespace TekiBlog.Controllers
         {
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
-            _service.GetImage(out byte[] coverImage, this.Request);
-            article.CoverImage = coverImage;
+            byte[] coverImage;
+            try
+            {
+                _service.GetImage(out coverImage, this.Request);
+                _service.ProcessImage(ref coverImage, new Size(1280, 1280), new Rectangle(0, 0, 1280, 720), ImageFormat.Jpeg);
+                article.CoverImage = coverImage;
+            }
+            catch
+            {
+                _logger.LogInformation("failed to retrieve image");
+                coverImage = null;
+            }
 
             if (ModelState.IsValid)
             {
@@ -280,7 +309,7 @@ namespace TekiBlog.Controllers
         [HttpGet]
         public async Task<IActionResult> Search(string searchValue, int? pageNumber)
         {
-            int pageSize = 2;
+            int pageSize = PaginatedList<Article>.perPage;
             _logger.LogInformation("Search value " + searchValue);
             if (string.IsNullOrEmpty(searchValue) && (pageNumber == null))
             {
