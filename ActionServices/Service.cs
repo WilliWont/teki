@@ -170,5 +170,10 @@ namespace ActionServices
         {
             return articleRepository.SearchArticle(searchValue);
         }
+
+        public IQueryable<Article> GetArticleForViewer(ApplicationUser user)
+        {
+            return articleRepository.GetArticlesForViewer(user);
+        }
     }
 }

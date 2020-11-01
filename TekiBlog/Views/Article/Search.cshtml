@@ -9,7 +9,7 @@
             <div>
                 <div>
                     <a asp-action="Detail" asp-route-id="@item.ID">@item.Title</a> 
-                    by <a asp-controller="Profile" asp-action="Info" asp-route-id="@item.User.Id">@item.User.UserName</a>
+                    by <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@item.User.Id">@item.User.UserName</a>
                 </div>
                 <div>
                     Posted in @item.DatePosted.ToLongDateString()

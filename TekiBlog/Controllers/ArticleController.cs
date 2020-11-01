@@ -309,7 +309,7 @@ namespace TekiBlog.Controllers
         [HttpGet]
         public async Task<IActionResult> Search(string searchValue, int? pageNumber)
         {
-            int pageSize = PaginatedList<Article>.perPage;
+            int pageSize = PaginatedList<Article>.PerPage;
             _logger.LogInformation("Search value " + searchValue);
             if (string.IsNullOrEmpty(searchValue) && (pageNumber == null))
             {

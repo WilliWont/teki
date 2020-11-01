@@ -1,8 +1,11 @@
-﻿@model ApplicationUser
+﻿@model TekiBlog.ViewModels.ProfileViewModel
 
 <div class="container">
-    <partial name="_ManageNav" />
-    <form method="post" asp-controller="Profile" asp-action="ChangeInfo">
+    @*<partial name="_ManageNav" />*@
+    <span class="text-success">@ViewData["UpdateInfoMessageSuccess"]</span>
+    <form method="post" asp-controller="Profile" asp-action="Info">
+        <input type="hidden" asp-for="UserID" />
+        <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="FirstName"></label>
             <input asp-for="FirstName" class="form-control" />
