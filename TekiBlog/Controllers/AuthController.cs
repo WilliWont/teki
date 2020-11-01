@@ -47,8 +47,16 @@ namespace TekiBlog.Controllers
             var result = await _signInManager.PasswordSignInAsync(userName, model.Password, false, false);
             if (result.Succeeded)
             {
+                bool isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
                 _logger.LogInformation("User Logged in");
-                return RedirectToAction("Index", "Home");
+                if (isAdmin)
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
             else
             {
@@ -111,8 +119,8 @@ namespace TekiBlog.Controllers
                 var message = string.Join(" | ", ModelState.Values
                                            .SelectMany(v => v.Errors)
                                            .Select(e => e.ErrorMessage));
-                var errors = ModelState.Select(v => new { key = v.Key , value = v.Value});
-                foreach(var error in errors)
+                var errors = ModelState.Select(v => new { key = v.Key, value = v.Value });
+                foreach (var error in errors)
                 {
                     _logger.LogInformation($"Error : {error.key} - {error.value} ");
                 }
