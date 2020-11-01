@@ -13,7 +13,7 @@ namespace TekiBlog.ViewModels
 
         public static int PerPage { get
             {
-                return 2;
+                return 10;
             } }
 
 

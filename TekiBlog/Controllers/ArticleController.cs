@@ -41,15 +41,28 @@ namespace TekiBlog.Controllers
             _validation = validation;
         }
 
-        public async Task<IActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Home(int? pageNumber)
         {
-            // TODO: REMOVE LATER, FOR TEST ONLY
             IQueryable<Article> articles = _service.GetArticleByStatus("Active");
 
-            int pageSize = PaginatedList<Article>.perPage;
+            int pageSize = PaginatedList<Article>.PerPage;
+
             PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize);
 
-            return View(result);
+            HomePageViewModel viewModel = new HomePageViewModel
+            {
+                Articles = result,
+            };
+
+            var user = await _userManager.GetUserAsync(User);
+            if(user?.Id != null)
+            {
+                List<Bookmark> bookmarks = await _service.GetBookmarks(user).ToListAsync();
+                viewModel.UserBookmarks = bookmarks;
+            }
+
+
+            return View(viewModel);
 
         }
 

@@ -20,7 +20,7 @@ namespace TekiBlog.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction("Index","Article");
+            return RedirectToAction("Home","Article");
         }
 
         public IActionResult Privacy()

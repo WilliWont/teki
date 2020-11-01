@@ -1,26 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\ValidationUtilities.csproj": {}
+    "D:\\a_self_proj\\teki\\ValidationUtilities\\ValidationUtilities.csproj": {}
   },
   "projects": {
-    "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\ValidationUtilities.csproj": {
+    "D:\\a_self_proj\\teki\\ValidationUtilities\\ValidationUtilities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\ValidationUtilities.csproj",
+        "projectUniqueName": "D:\\a_self_proj\\teki\\ValidationUtilities\\ValidationUtilities.csproj",
         "projectName": "ValidationUtilities",
-        "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\ValidationUtilities.csproj",
-        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\obj\\",
+        "projectPath": "D:\\a_self_proj\\teki\\ValidationUtilities\\ValidationUtilities.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "D:\\a_self_proj\\teki\\ValidationUtilities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"

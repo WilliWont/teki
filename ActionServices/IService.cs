@@ -21,7 +21,16 @@ namespace ActionServices
         IQueryable<Article> SearchArticle(string searchValue);
         IQueryable<Article> GetArticleForViewer(ApplicationUser user);
         IQueryable<Article> GetArticleByStatus(string status);
-        // Status Service
+        
+        // Bookmark Services
+        void AddBookmark(Bookmark bookmark);
+        void RemoveBookmark(Bookmark bookmark);
+        IQueryable<Bookmark> GetBookmarks(Article article, ApplicationUser user);
+        IQueryable<Bookmark> GetBookmarks(Article article);
+        IQueryable<Bookmark> GetBookmarks(ApplicationUser user);
+
+
+        // Status Services
         Status GetStatus(string name);
         Task<bool> Commit();
         void GetImage(out byte[] img, HttpRequest req);

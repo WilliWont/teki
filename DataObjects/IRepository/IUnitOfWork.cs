@@ -9,6 +9,7 @@ namespace DataObjects.IRepository
     {
         IArticleRepository ArticleRepository { get; }
         IStatusRepository StatusRepository { get; }
+        IBookmarkRepository BookmarkRepository { get; }
         Task<bool> Commit();
     }
 }

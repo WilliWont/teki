@@ -31,5 +31,7 @@ namespace BusinessObjects
         public byte[] CoverImage { get; set; }
         public byte[] ThumbnailImage { get; set; }
 
+        public List<Bookmark> BookmarkedUsers { get; set;}
+
     }
 }

@@ -27,9 +27,32 @@ namespace TekiBlog.Controllers
             _service = service;
         }
 
-        public IActionResult BookmarkAdd(Guid id)
+        public async Task<IActionResult> BookmarkAdd(Guid id)
         {
-            return Ok(id);
+            var user = await _userManager.GetUserAsync(User);
+            bool hasError;
+            try
+            {
+                Bookmark bookmark = new Bookmark
+                {
+                    UserID = user.Id,
+                    ArticleID = id,
+                    DatePosted = DateTime.UtcNow
+                };
+    
+                _service.AddBookmark(bookmark);
+                hasError = !(await _service.Commit());
+            }
+            catch
+            {
+                _logger.LogInformation($"failed to book mark article {id}");
+                hasError = true;
+            }
+
+            if(hasError)
+                return Ok("error");
+            else
+                return Ok(0);
         }
 
         public IActionResult BookmarkListDetail()
@@ -37,9 +60,32 @@ namespace TekiBlog.Controllers
             return View();
         }
 
-        public IActionResult BookmarkRemove()
+        public async Task<IActionResult> BookmarkRemove(Guid id)
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            bool hasError;
+            try
+            {
+                Bookmark bookmark = new Bookmark
+                {
+                    UserID = user.Id,
+                    ArticleID = id,
+                    DatePosted = DateTime.UtcNow
+                };
+
+                _service.RemoveBookmark(bookmark);
+                hasError = !( await _service.Commit() );
+            }
+            catch
+            {
+                _logger.LogInformation($"failed to remove bookmark of article {id}");
+                hasError = true;
+            }
+
+            if (hasError)
+                return Ok("error");
+            else
+                return Ok(1);
         }
     }
 }

@@ -3,6 +3,7 @@ using DataObjects;
 using DataObjects.IRepository;
 using DataObjects.Repository;
 using Microsoft.AspNetCore.Http;
+using Smartcrop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -20,6 +21,7 @@ namespace ActionServices
         private readonly UnitOfWork unitOfwork;
         private readonly IArticleRepository articleRepository ;
         private readonly IStatusRepository statusRepository ;
+        private readonly IBookmarkRepository bookmarkRepository;
 
         public Service(ApplicationDBContext context)
         {
@@ -27,6 +29,7 @@ namespace ActionServices
             unitOfwork = new UnitOfWork(_context);
             articleRepository = unitOfwork.ArticleRepository;
             statusRepository = unitOfwork.StatusRepository;
+            bookmarkRepository = unitOfwork.BookmarkRepository;
         } 
 
         // Article Service implemetation
@@ -122,7 +125,7 @@ namespace ActionServices
                         graphics.DrawImage(imgOriginal, 0, 0, width, height);
                     }
 
-                    Rectangle rectangle = new Rectangle(0,0, width, height);
+                    System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(0,0, width, height);
 
                     using (var croppedBmp = resizedBmp.Clone(rectangle, resizedBmp.PixelFormat))
                     using (var ms = new MemoryStream())
@@ -143,7 +146,7 @@ namespace ActionServices
             }
         }
 
-        public byte[] CropImage(byte[] originalBytes, Rectangle crop, ImageFormat format)
+        public byte[] CropImage(byte[] originalBytes, System.Drawing.Rectangle crop, ImageFormat format)
         {
             using (var streamOriginal = new MemoryStream(originalBytes))
             using (var imgOriginal = Image.FromStream(streamOriginal))
@@ -155,6 +158,20 @@ namespace ActionServices
                 crop.Width = (width < crop.Width) ? width : crop.Width;
                 crop.Height = (height < crop.Height) ? height : crop.Height;
 
+                ///////////////////////////////////////////////////
+                /// Determines the best crop coordinates
+                /// Library cloned from here:
+                // https://github.com/softawaregmbh/smartcrop.net
+                var cropCoords = new ImageCrop(crop.Width, crop.Height).Crop(originalBytes);
+                System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(
+                    cropCoords.Area.X, 
+                    cropCoords.Area.Y, 
+                    cropCoords.Area.Width, 
+                    cropCoords.Area.Height
+                );
+                ///////////////////////////////////////////////////
+
+
                 //actually resize it
                 using (var resizedBmp = new Bitmap(width, height))
                 {
@@ -164,7 +181,6 @@ namespace ActionServices
                         graphics.DrawImage(imgOriginal, 0, 0, width, height);
                     }
 
-                    Rectangle rectangle = crop;
 
                     using (var croppedBmp = resizedBmp.Clone(rectangle, resizedBmp.PixelFormat))
                     using (var ms = new MemoryStream())
@@ -189,6 +205,31 @@ namespace ActionServices
         public IQueryable<Article> GetArticleForViewer(ApplicationUser user)
         {
             return articleRepository.GetArticlesForViewer(user);
+        }
+
+        public void AddBookmark(Bookmark bookmark)
+        {
+            bookmarkRepository.Add(bookmark);
+        }
+
+        public void RemoveBookmark(Bookmark bookmark)
+        {
+            bookmarkRepository.Remove(bookmark);
+        }
+
+        public IQueryable<Bookmark> GetBookmarks(Article article, ApplicationUser user)
+        {
+            return bookmarkRepository.GetBookmarks(article, user);
+        }
+
+        public IQueryable<Bookmark> GetBookmarks(Article article)
+        {
+            return bookmarkRepository.GetBookmarks(article);
+        }
+
+        public IQueryable<Bookmark> GetBookmarks(ApplicationUser user)
+        {
+            return bookmarkRepository.GetBookmarks(user);
         }
     }
 }

@@ -20,11 +20,14 @@ namespace DataObjects.Repository
 
         public IStatusRepository StatusRepository { get; private set; }
 
+        public IBookmarkRepository BookmarkRepository {get; private set; }
+
         // Initialize all repositories with the same DBContext.
         private void InitRepositories()
         {
             ArticleRepository = new ArticleRepository(_context);
             StatusRepository = new StatusRepository(_context);
+            BookmarkRepository = new BookmarkRepository(_context);
         }
 
         // Commit: This function is used to save any change into database when updates, delete , etc 

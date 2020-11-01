@@ -615,6 +615,49 @@
           }
         }
       },
+      "SkiaSharp/1.68.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard1.3/SkiaSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/SkiaSharp.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/osx/native/libSkiaSharp.dylib": {
+            "assetType": "native",
+            "rid": "osx"
+          },
+          "runtimes/tizen-armel/native/libSkiaSharp.so": {
+            "assetType": "native",
+            "rid": "tizen-armel"
+          },
+          "runtimes/tizen-x86/native/libSkiaSharp.so": {
+            "assetType": "native",
+            "rid": "tizen-x86"
+          },
+          "runtimes/win-x64/native/libSkiaSharp.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/libSkiaSharp.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
+      "Smartcrop.net/1.0.2-beta": {
+        "type": "package",
+        "dependencies": {
+          "SkiaSharp": "1.68.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Smartcrop.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Smartcrop.dll": {}
+        }
+      },
       "System.Collections/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1567,6 +1610,7 @@
         "dependencies": {
           "BusinessObjects": "1.0.0",
           "DataObjects": "1.0.0",
+          "Smartcrop.net": "1.0.2-beta",
           "System.Drawing.Common": "4.7.0"
         },
         "compile": {
@@ -1574,7 +1618,10 @@
         },
         "runtime": {
           "bin/placeholder/ActionServices.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "BusinessObjects/1.0.0": {
         "type": "project",
@@ -1589,7 +1636,10 @@
         },
         "runtime": {
           "bin/placeholder/BusinessObjects.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "DataObjects/1.0.0": {
         "type": "project",
@@ -1607,7 +1657,10 @@
         },
         "runtime": {
           "bin/placeholder/DataObjects.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "ValidationUtilities/1.0.0": {
         "type": "project",
@@ -2653,6 +2706,66 @@
         "runtimes/win-x86/native/sni.dll",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "SkiaSharp/1.68.0": {
+      "sha512": "ptuxAKk9FiClNnAgWM8hVMCYw/B0hUJWZ8W6efnIAtJmJn/Xl4jvxxDF5WOqfQYCLVzxXw5gvBPVxvTLblFp0g==",
+      "type": "package",
+      "path": "skiasharp/1.68.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "THIRD-PARTY-NOTICES.txt",
+        "build/net45/SkiaSharp.targets",
+        "build/tizen40/SkiaSharp.targets",
+        "lib/MonoAndroid/SkiaSharp.dll",
+        "lib/MonoAndroid/SkiaSharp.xml",
+        "lib/Xamarin.Mac20/SkiaSharp.dll",
+        "lib/Xamarin.Mac20/SkiaSharp.xml",
+        "lib/Xamarin.TVOS/SkiaSharp.dll",
+        "lib/Xamarin.TVOS/SkiaSharp.xml",
+        "lib/Xamarin.WatchOS/SkiaSharp.dll",
+        "lib/Xamarin.WatchOS/SkiaSharp.xml",
+        "lib/Xamarin.iOS/SkiaSharp.dll",
+        "lib/Xamarin.iOS/SkiaSharp.xml",
+        "lib/net45/SkiaSharp.dll",
+        "lib/net45/SkiaSharp.xml",
+        "lib/netstandard1.3/SkiaSharp.dll",
+        "lib/netstandard1.3/SkiaSharp.xml",
+        "lib/tizen40/SkiaSharp.dll",
+        "lib/tizen40/SkiaSharp.xml",
+        "lib/uap10.0/SkiaSharp.dll",
+        "lib/uap10.0/SkiaSharp.xml",
+        "runtimes/osx/native/libSkiaSharp.dylib",
+        "runtimes/tizen-armel/native/libSkiaSharp.so",
+        "runtimes/tizen-x86/native/libSkiaSharp.so",
+        "runtimes/win-x64/native/libSkiaSharp.dll",
+        "runtimes/win-x86/native/libSkiaSharp.dll",
+        "runtimes/win10-arm/nativeassets/uap10.0/libEGL.dll",
+        "runtimes/win10-arm/nativeassets/uap10.0/libGLESv2.dll",
+        "runtimes/win10-arm/nativeassets/uap10.0/libSkiaSharp.dll",
+        "runtimes/win10-x64/nativeassets/uap10.0/libEGL.dll",
+        "runtimes/win10-x64/nativeassets/uap10.0/libGLESv2.dll",
+        "runtimes/win10-x64/nativeassets/uap10.0/libSkiaSharp.dll",
+        "runtimes/win10-x86/nativeassets/uap10.0/libEGL.dll",
+        "runtimes/win10-x86/nativeassets/uap10.0/libGLESv2.dll",
+        "runtimes/win10-x86/nativeassets/uap10.0/libSkiaSharp.dll",
+        "skiasharp.1.68.0.nupkg.sha512",
+        "skiasharp.nuspec",
+        "xamarin.interactive/SkiaSharp.Workbooks.dll"
+      ]
+    },
+    "Smartcrop.net/1.0.2-beta": {
+      "sha512": "Pok8d2ghbbUtMQEN6SXfXRDGHHgS8WghuLLZL+MXYjPiatJ0ltKifQzOTMpOQicmz1UZ/Geo1e86NsX7N09GFQ==",
+      "type": "package",
+      "path": "smartcrop.net/1.0.2-beta",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Smartcrop.dll",
+        "smartcrop.net.1.0.2-beta.nupkg.sha512",
+        "smartcrop.net.nuspec"
       ]
     },
     "System.Collections/4.3.0": {
@@ -5839,27 +5952,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\DELL\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Users\\ASUS\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\TekiBlog\\TekiBlog.csproj",
+      "projectUniqueName": "D:\\a_self_proj\\teki\\TekiBlog\\TekiBlog.csproj",
       "projectName": "TekiBlog",
-      "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\TekiBlog\\TekiBlog.csproj",
-      "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-      "outputPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\TekiBlog\\obj\\",
+      "projectPath": "D:\\a_self_proj\\teki\\TekiBlog\\TekiBlog.csproj",
+      "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+      "outputPath": "D:\\a_self_proj\\teki\\TekiBlog\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -5871,17 +5981,17 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ActionServices\\ActionServices.csproj": {
-              "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ActionServices\\ActionServices.csproj"
+            "D:\\a_self_proj\\teki\\ActionServices\\ActionServices.csproj": {
+              "projectPath": "D:\\a_self_proj\\teki\\ActionServices\\ActionServices.csproj"
             },
-            "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj": {
-              "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj"
+            "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj": {
+              "projectPath": "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj"
             },
-            "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\DataObjects\\DataObjects.csproj": {
-              "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\DataObjects\\DataObjects.csproj"
+            "D:\\a_self_proj\\teki\\DataObjects\\DataObjects.csproj": {
+              "projectPath": "D:\\a_self_proj\\teki\\DataObjects\\DataObjects.csproj"
             },
-            "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\ValidationUtilities.csproj": {
-              "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\ValidationUtilities.csproj"
+            "D:\\a_self_proj\\teki\\ValidationUtilities\\ValidationUtilities.csproj": {
+              "projectPath": "D:\\a_self_proj\\teki\\ValidationUtilities\\ValidationUtilities.csproj"
             }
           }
         }
