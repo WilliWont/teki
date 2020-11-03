@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessObjects;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -30,6 +31,6 @@ namespace TekiBlog.ViewModels
 
         public byte[] ThumbnailImage { get; set; }
 
-
+        public Status Status { get; set;}
     }
 }

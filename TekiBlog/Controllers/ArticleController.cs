@@ -152,7 +152,8 @@ namespace TekiBlog.Controllers
                         {
                             ArticleContent = article.ContentHtml,
                             Title = article.Title,
-                            Summary = article.Summary
+                            Summary = article.Summary,
+                            Status = article.Status
                         });
                     }
                 }
@@ -172,6 +173,7 @@ namespace TekiBlog.Controllers
         //}
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostArticle(CreateArticleViewModel article)
         {
@@ -235,13 +237,13 @@ namespace TekiBlog.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateArticle(CreateArticleViewModel article)
         {
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
             byte[] articleImage;
-   
             try
             {
                 _service.GetImage(out articleImage, this.Request);
@@ -272,6 +274,11 @@ namespace TekiBlog.Controllers
                     pastArticle.Summary = article.Summary?.Trim();
                     pastArticle.Status = active;
 
+                    if(pastArticle.DatePosted == DateTime.MinValue)
+                    {
+                        pastArticle.DatePosted = DateTime.UtcNow;
+                    }
+
                     if (articleImage!=null)
                     {
                         pastArticle.CoverImage = article.CoverImage;
@@ -289,6 +296,88 @@ namespace TekiBlog.Controllers
                 else // exit if invalid user
                     _logger.LogInformation($"user {user.Id} tried updating {pastArticle.User.Id}'s article");
             } // exit if invalid article
+
+            _logger.LogInformation($"user {user.Id} update article failed");
+            return NotFound();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> ArticleDraft(CreateArticleViewModel article)
+        {
+            // Get user in current context
+            var user = await _userManager.GetUserAsync(User);
+            byte[] articleImage;
+            try
+            {
+                _service.GetImage(out articleImage, this.Request);
+                // TODO: elimate magic number if have time
+                articleImage = _service.ResizeImgageByWidth(articleImage, 1280, ImageFormat.Jpeg);
+
+                article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, 1280, 720), ImageFormat.Jpeg);
+                article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(600 / 3, 0, 600, 450), ImageFormat.Jpeg);
+            }
+            catch
+            {
+                _logger.LogInformation("failed to retrieve image");
+                articleImage = null;
+            }
+
+            var pastArticle = _service.GetArticle(article.Id);
+            bool toUpdate = ( ( pastArticle != null ) && pastArticle.User.Id.Equals(user.Id) );
+
+            Status draft = _service.GetStatus("Draft");
+
+            if (toUpdate)
+            {
+                // Get active status for this post
+
+                // edit article model to update to Database
+                pastArticle.ContentHtml = article.ArticleContent;
+                pastArticle.ContentRaw = article.ArticleRaw?.Trim();
+                pastArticle.Title = article.Title?.Trim();
+                pastArticle.Summary = article.Summary?.Trim();
+                pastArticle.Status = draft;
+
+                if (articleImage != null)
+                {
+                    pastArticle.CoverImage = article.CoverImage;
+                    pastArticle.ThumbnailImage = article.ThumbnailImage;
+                }
+
+                _service.UpdateArticle(pastArticle);
+            }
+            else
+            {
+                Article toAdd = new Article
+                {
+                    ContentHtml = article.ArticleContent,
+                    ContentRaw = article.ArticleRaw?.Trim(),
+                    Title = article.Title?.Trim(),
+                    Summary = article.Summary?.Trim(),
+                    User = user,
+                    DatePosted =DateTime.UtcNow,
+                    Status = draft
+                };
+
+
+                if (articleImage != null)
+                {
+                    toAdd.CoverImage = article.CoverImage;
+                    toAdd.ThumbnailImage = article.ThumbnailImage;
+                }
+
+                _service.AddArticle(toAdd);
+            }
+
+
+            if (await _service.Commit())
+            {
+                _logger.LogInformation($"user {user.Id} saved existing article {pastArticle?.ID}");
+                return Ok();
+
+            } // exit if unable to update
 
             _logger.LogInformation($"user {user.Id} update article failed");
             return NotFound();
@@ -341,7 +430,7 @@ namespace TekiBlog.Controllers
             _logger.LogInformation("Search value " + searchValue);
             if (string.IsNullOrEmpty(searchValue) && (pageNumber == null))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Home", "Article");
             }
             ViewData["SearchValue"] = searchValue;
             IQueryable<Article> articles = _service.SearchArticle(searchValue);

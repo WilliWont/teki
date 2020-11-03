@@ -2,6 +2,10 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> userManager;
 
+@section Styles{ 
+    <link rel="stylesheet" href="~/css/profile.css"/>
+}
+
 @{
     var user = await userManager.GetUserAsync(User);
     <header>
@@ -15,21 +19,21 @@
             @user.Email
         </h5>
     </header>
-    <div class="container">
-        <div class="col-9">
+    <div class="container-fluid">
+        <div class="col-12">
             <table class="table">
                 <thead class="black white-text">
-                    <tr>
-                        <th scope="col">
+                    <tr class="d-flex">
+                        <th scope="col" class="col-1">
                             #
                         </th>
-                        <th scope="col">
+                        <th scope="col" class="col-5">
                             Title
                         </th>
-                        <th scope="col">
+                        <th scope="col" class="col-1">
                             Status
                         </th>
-                        <th scope="col">
+                        <th scope="col" class="col-5">
                             Action
                         </th>
                     </tr>
@@ -40,17 +44,24 @@
                         foreach (var item in Model)
                         {
                             num = num + 1;
-                            <tr>
-                                <td>
+                            <tr class="d-flex">
+                                <td class="col-1">
                                     @num
                                 </td>
-                                <td>
-                                    @item.Title
+                                <td class="col-5 tbl-title">
+                                    @if (item.Title != null)
+                                    {
+                                        <span>@item.Title</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="empty">untitled article</span>
+                                    }
                                 </td>
-                                <td>
+                                <td class="col-1">
                                     @item.Status.Name
                                 </td>
-                                <td>
+                                <td class="col-5">
                                     <a class="btn btn-secondary" asp-controller="Article" asp-action="Editor" asp-route-id="@item.ID">Update</a>
                                     @if (item.Status.Name.Equals("Disable"))
                                     {

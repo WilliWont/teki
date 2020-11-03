@@ -25,9 +25,11 @@ namespace ActionServices
         // Bookmark Services
         void AddBookmark(Bookmark bookmark);
         void RemoveBookmark(Bookmark bookmark);
+
         IQueryable<Bookmark> GetBookmarks(Article article, ApplicationUser user);
         IQueryable<Bookmark> GetBookmarks(Article article);
         IQueryable<Bookmark> GetBookmarks(ApplicationUser user);
+        IQueryable<Bookmark> GetBookmarks(ApplicationUser user, bool includeArticle);
 
 
         // Status Services

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ActionServices;
 using BusinessObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -27,6 +28,7 @@ namespace TekiBlog.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> BookmarkAdd(Guid id)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -55,11 +57,14 @@ namespace TekiBlog.Controllers
                 return Ok(0);
         }
 
-        public IActionResult BookmarkListDetail()
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UserBookmark()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            return View(_service.GetBookmarks(user, true));
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> BookmarkRemove(Guid id)
         {
             var user = await _userManager.GetUserAsync(User);

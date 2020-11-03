@@ -231,5 +231,10 @@ namespace ActionServices
         {
             return bookmarkRepository.GetBookmarks(user);
         }
+
+        public IQueryable<Bookmark> GetBookmarks(ApplicationUser user, bool includeArticle)
+        {
+            return bookmarkRepository.GetBookmarks(user, true);
+        }
     }
 }

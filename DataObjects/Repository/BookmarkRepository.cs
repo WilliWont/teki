@@ -34,6 +34,25 @@ namespace DataObjects.Repository
             return bookmarks;
         }
 
+        public IQueryable<Bookmark> GetBookmarks(ApplicationUser user, bool includeArticle)
+        {
+            IQueryable<Bookmark> bookmarks;
+            if (includeArticle)
+            {
+                bookmarks = _context.Bookmarks
+                    .Include(a => a.User)
+                    .Include(b => b.Article)
+                    .Select(a => a)
+                    .Where(a => a.User.Equals(user))
+                    .OrderByDescending(a => a.DatePosted);
+            }
+            else
+                bookmarks = this.GetBookmarks(user);
+
+
+            return bookmarks;
+        }
+
         public IQueryable<Bookmark> GetBookmarks(Article article)
         {
             IQueryable<Bookmark> bookmarks = _context.Bookmarks
