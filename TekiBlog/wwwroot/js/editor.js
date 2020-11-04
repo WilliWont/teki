@@ -89,3 +89,9 @@ jQuery(window).on('scroll', function () {
         $navbar.addClass('hide-nav');
     }
 });
+
+// terrible code, do not use in production
+// but it works, so i'll leave it here
+function hideField(fieldName) {
+    $(fieldName).addClass('d-none');
+}

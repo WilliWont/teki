@@ -15,6 +15,9 @@ for details on configuring this project to bundle and minify static web assets. 
     --register: rgb(254, 121, 78);*/
     --disabled: rgb(165,165,165);
 }
+.body-content{
+    position:relative;
+}
 /*------------------------------------*/
 a.navbar-brand {
     white-space: normal;
@@ -54,7 +57,10 @@ html {
         font-size: 16px;
     }
 }
-
+.empty{
+    font-family: serif;
+    font-style: italic;
+}
 .border-top {
     border-top: 1px solid #e5e5e5;
 }
@@ -139,18 +145,24 @@ nav.navbar {
     border-color: var(--disabled);
 }
 
-    .btn[disabled]:hover {
-        color: var(--disabled);
-        background-color: rgba(0,0,0,0);
-        border-color: var(--disabled);
-    }
+.btn[disabled]:hover {
+    color: var(--disabled);
+    background-color: rgba(0,0,0,0);
+    border-color: var(--disabled);
+}
 
-    .btn-outline {
-        background-color: rgb(255,255,255);
-        border-style: solid;
-        border-color: var(--main);
-        color: var(--main);
-    }
+.btn-outline {
+    background-color: rgb(255,255,255);
+    border-style: solid;
+    border-color: var(--main);
+    color: var(--main);
+}
+
+.btn-outline-alt {
+    background-color: rgba(0,0,0,0);
+    border-color: rgba(0,0,0,0);
+    box-shadow: -2px 1px 3px 1px rgba(0,0,0,.1);
+}
 
 .btn:hover {
     background-color: var(--main-hover);
@@ -158,11 +170,11 @@ nav.navbar {
     box-shadow: 0px 3px 5px rgb(198, 198, 198);
 }
 
-.blockquote{
-    padding:.5rem;
-    font-size:1.5rem;
-    color:rgb(128,128,128);
-    background-color:rgb(247,247,247);
+.blockquote {
+    padding: .5rem;
+    font-size: 1.5rem;
+    color: rgb(128,128,128);
+    background-color: rgb(247,247,247);
 }
 
 .title{

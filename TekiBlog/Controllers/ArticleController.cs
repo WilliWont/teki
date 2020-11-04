@@ -196,12 +196,10 @@ namespace TekiBlog.Controllers
                 articleImage = null;
             }
 
-
-            if (ModelState.IsValid && articleImage != null)
-            {
+            string statusType = (ModelState.IsValid) ? "Active" : "Draft";
 
                 // Get active status for this post
-                Status active = _service.GetStatus("Active");
+                Status status = _service.GetStatus(statusType);
 
                 string html = article.ArticleContent;
 
@@ -216,24 +214,32 @@ namespace TekiBlog.Controllers
                     CurrentVote = 0,
                     ContentHtml = html,
                     ContentRaw = raw?.Trim(),
-                    Status = active,
+                    Status = status,
                     User = user,
-                    CoverImage = article.CoverImage,
-                    ThumbnailImage = article.ThumbnailImage
+                    CoverImage = article?.CoverImage,
+                    ThumbnailImage = article?.ThumbnailImage
                 };
 
                 _service.AddArticle(articleModel);
+
                 if (await _service.Commit())
                 {
-                    _logger.LogInformation($"user {user.Id} posted article {articleModel.ID}");
-                    return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
+                    _logger.LogInformation($"user {user.Id} posted article {articleModel.ID} with status ${status.Name}");
 
+                    if (ModelState.IsValid)
+                    {
+                        return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Editor", "Article", new { id = articleModel.ID });
+                    }
+
+                } 
+                else
+                {
+                    return NotFound();
                 }
-            }
-            else
-                _logger.LogInformation($"user {user.Id} post article failed");
-
-            return NotFound();
         }
 
         [HttpPost]
@@ -258,23 +264,22 @@ namespace TekiBlog.Controllers
                 _logger.LogInformation("failed to retrieve image");
                 articleImage = null;
             }
-
-            if (ModelState.IsValid)
+            var pastArticle = _service.GetArticle(article.Id);
+            if (pastArticle.User.Id.Equals(user.Id))
             {
-                var pastArticle = _service.GetArticle(article.Id);
-                if (pastArticle.User.Id.Equals(user.Id))
-                {
+                string statusType = ( ModelState.IsValid ) ? "Active" : "Draft";
+
                     // Get active status for this post
-                    Status active = _service.GetStatus("Active");
+                    Status status = _service.GetStatus(statusType);
 
                     // edit article model to update to Database
                     pastArticle.ContentHtml = article.ArticleContent;
                     pastArticle.ContentRaw = article.ArticleRaw?.Trim();
                     pastArticle.Title = article.Title?.Trim();
                     pastArticle.Summary = article.Summary?.Trim();
-                    pastArticle.Status = active;
+                    pastArticle.Status = status;
 
-                    if(pastArticle.DatePosted == DateTime.MinValue)
+                    if(ModelState.IsValid && pastArticle.DatePosted == DateTime.MinValue)
                     {
                         pastArticle.DatePosted = DateTime.UtcNow;
                     }
@@ -286,18 +291,25 @@ namespace TekiBlog.Controllers
                     }
 
                     _service.UpdateArticle(pastArticle);
+
                     if (await _service.Commit())
                     {
-                        _logger.LogInformation($"user {user.Id} updated article {pastArticle.ID}");
-                        return RedirectToAction("Detail", "Article", new { id = pastArticle.ID });
+                        _logger.LogInformation($"user {user.Id} updated article {pastArticle.ID} with status ${status.Name}");
 
-                    } // exit if unable to update
-                }
-                else // exit if invalid user
-                    _logger.LogInformation($"user {user.Id} tried updating {pastArticle.User.Id}'s article");
-            } // exit if invalid article
+                        if (ModelState.IsValid)
+                        {
+                            return RedirectToAction("Detail", "Article", new { id = pastArticle.ID });
+                        }
+                        else
+                        {
+                            return RedirectToAction("Editor", "Article", new { id = pastArticle.ID });
+                        }
+                    }
 
-            _logger.LogInformation($"user {user.Id} update article failed");
+            } // exit if invalid user
+            else
+            _logger.LogInformation($"user {user?.Id} tried updating {pastArticle.User.Id}'s article");
+
             return NotFound();
         }
 

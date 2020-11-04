@@ -2,7 +2,31 @@
 .btn-compose-container {
     display:none;
 }
+:root {
+    --btn-size: 1rem;
+    --loader-size: 1rem;
+}
+.loader {
+    border: 3px solid rgb(255,255,255); /* Light grey */
+    border-top: 3px solid var(--main); /* Blue */
+    border-radius: 50%;
+    width: var(--loader-size);
+    height: var(--loader-size);
+    animation: spin 1s ease infinite;
+}
 
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.btn{
+    font-size: 1rem;
+}
 [contenteditable] {
     transition: .1s ease;
     outline: none;
@@ -69,19 +93,19 @@
     top:-1rem;
 }
 
-    .form-container .charcount-input {
-        transition: .1s ease;
-        opacity: 0;
-        text-align: right;
-        position: absolute;
-        font-size: .75rem;
-        right: 0;
-        bottom: -1rem;
-    }
+.form-container .charcount-input {
+    transition: .1s ease;
+    opacity: 0;
+    text-align: right;
+    position: absolute;
+    font-size: .75rem;
+    right: 0;
+    bottom: -1rem;
+}
 
-    .charcount-show{
-        opacity: 1 !important;
-    }
+.charcount-show{
+    opacity: 1 !important;
+}
 
 #titleHelp{
     text-align:right;
@@ -92,4 +116,12 @@
 }
 #form-title {
     border-style: none;
+}
+.hide-nav{
+    transition: .4s ease;
+    top:-25vh;
+}
+.toast {
+    top: 6.5vw;
+    right:3vw;
 }

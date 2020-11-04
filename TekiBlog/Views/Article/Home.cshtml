@@ -6,14 +6,21 @@
 @inject SignInManager<ApplicationUser> SignInManager;
 
 @section Styles{
-    <link rel="stylesheet" href="~/css/notification.css">
-    <link rel="stylesheet" href="~/css/article-card.css">
-    <link rel="stylesheet" href="~/css/homepage.css">
+
+    @*<link rel="stylesheet" href="~/css/notification.css">*@
+    @*<link rel="stylesheet" href="~/css/article-card.css">*@
+    @*<link rel="stylesheet" href="~/css/homepage.css">*@
+    <link rel="stylesheet" href="~/css/homepage.min.css" asp-append-version="true">
+
+
 }
 
+
 @section Scripts{
-    <script src="~/js/notification.js"></script>
-    <script src="~/js/readinglist.js"></script>
+    @*<script src="~/js/notification.js"></script>
+        <script src="~/js/readinglist.js"></script>*@
+    <script src="~/js/home.min.js" asp-append-version="true"></script>
+
     <script>$(".body-content").addClass("col-12");</script>
 }
 <div class="home-page-left">
@@ -107,5 +114,5 @@
     <div>
         <h1>tags</h1>
     </div>
-    @*<partial name="_NotificationPartial" />*@
+    <partial name="_NotificationPartial" />
 </div>

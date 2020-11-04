@@ -1,0 +1,103 @@
+[
+	{
+		"outputFileName": "wwwroot/css/site.min.css",
+		"inputFiles": [
+			"wwwroot/css/site.css"
+		]
+	},
+	{
+		"outputFileName": "wwwroot/css/detail.min.css",
+		"inputFiles": [
+			"wwwroot/css/detail.css"
+		]
+	},
+	{
+		"outputFileName": "wwwroot/css/editor.min.css",
+		"inputFiles": [
+			"wwwroot/css/notification.css",
+			"wwwroot/css/editor.css"
+		]
+	},
+	{
+		"outputFileName": "wwwroot/css/homepage.min.css",
+		"inputFiles": [
+			"wwwroot/css/notification.css",
+			"wwwroot/css/article-card.css",
+			"wwwroot/css/homepage.css"
+		]
+	},
+	{
+		"outputFileName": "wwwroot/css/bookmark.min.css",
+		"inputFiles": [
+			"wwwroot/css/article-card.css",
+			"wwwroot/css/bookmark-card.css"
+		]
+	},
+
+
+	{
+		"outputFileName": "wwwroot/js/site.min.js",
+		"inputFiles": [
+			"wwwroot/js/site.js"
+		],
+		"minify": {
+			"enabled": true,
+			"renameLocals": true
+		},
+		"sourceMap": false
+	},
+
+	{
+		"outputFileName": "wwwroot/js/detail.min.js",
+		"inputFiles": [
+			"wwwroot/js/detail.js"
+		],
+		"minify": {
+			"enabled": true,
+			"renameLocals": true
+		},
+		"sourceMap": false
+	},
+
+	{
+		"outputFileName": "wwwroot/js/editor.min.js",
+		"inputFiles": [
+			"wwwroot/js/notification.js",
+			"wwwroot/js/validation.js",
+			"wwwroot/js/charactercount.js",
+			"wwwroot/js/editor.js",
+			"wwwroot/js/draft.js"
+		],
+		"minify": {
+			"enabled": true,
+			"renameLocals": true
+		},
+		"sourceMap": false
+	},
+
+	{
+		"outputFileName": "wwwroot/js/home.min.js",
+		"inputFiles": [
+			"wwwroot/js/notification.js",
+			"wwwroot/js/readinglist.js"
+		],
+		"minify": {
+			"enabled": true,
+			"renameLocals": true
+		},
+		"sourceMap": false
+	},
+
+	{
+		"outputFileName": "wwwroot/js/bookmark.min.js",
+		"inputFiles": [
+			"wwwroot/js/readinglist.js"
+		],
+		"minify": {
+			"enabled": true,
+			"renameLocals": true
+		},
+		"sourceMap": false
+	}
+
+]

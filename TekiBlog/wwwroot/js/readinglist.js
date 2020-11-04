@@ -22,21 +22,23 @@ $('.read-later-link').click(function (event) {
                 let i = prevHref.lastIndexOf("/");
                 let id = prevHref.substring(i, prevHref.length);
                 let newHref = null;
-
+                let msg = 'service not available right now, please try again later';
                 if (response == 0) {
                     $lastA.children(":first").addClass('fa-bookmark');
                     $lastA.children(":first").removeClass('loader');
                     newHref = removeHref + id;
+                    msg = 'added article bookmark';
                 } else if (response == 1) {
                     $lastA.children(":first").addClass('fa-bookmark-o');
                     $lastA.children(":first").removeClass('loader');
                     newHref = addHref + id;
-                } else {
-                    alert('service not available right now, please try again later');
+                    msg = 'removed article bookmark';
                 }
 
                 if(newHref != null)
                     $lastA.attr("href", newHref);
+
+                displayNotification(msg);
 
             }
         },

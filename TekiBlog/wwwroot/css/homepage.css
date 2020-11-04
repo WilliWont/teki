@@ -2,3 +2,8 @@
     display:grid;
     grid-template-columns: 7fr 3fr;
 }
+
+.toast {
+    top: 6.5vw;
+    right: 3vw;
+}

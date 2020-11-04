@@ -1,5 +1,6 @@
 ﻿let firstValidation = true;
-let validationListeners = [];
+let validationResults = new Map();
+let validationFields = [];
 let submit;
 
 function toggleSubmit(bool) {
@@ -13,12 +14,17 @@ function setupValidation(btnSubmit) {
         let field = $(this).attr("validate-for");
 
         let displayName = $(this).attr('input-display-name');
+
         let required = $(this).attr('input-required');
+
         let minLen = $(this).attr('input-min-len');
         let maxLen = $(this).attr('input-max-len');
 
+        validationResults.set(field, $(this).attr("default-value") == 'true');
+        validationFields.push(document.getElementById(field));
+        document.getElementById(field).addEventListener("input", function () {
 
-        validationListeners.push(document.getElementById(field).addEventListener("input", function () {
+            //console.log('validate field: ' + field);
 
             let content = $("#" + field).text();
 
@@ -35,11 +41,14 @@ function setupValidation(btnSubmit) {
             if (required != null)
                 hasError |= validate(field, displayName + ' field is required', isEmpty(content));
 
+            validationResults.set(field, !hasError); 
+
             if (!hasError) {
                 clearError(field);
             }
 
-        }, false));
+        }, false);
+
     });
 }
 
@@ -69,6 +78,26 @@ function isMaxLen(content, maxLen) {
 
 function clearError(field) {
     $('.invalid-input[validate-for=\'' + field + '\']').text('');
-    $("#"+field).removeClass("invalid-form");
-    toggleSubmit(true);
+    $("#" + field).removeClass("invalid-form");
+    validateSubmit();
+}
+
+function fireAllValidation() {
+    for (let i = 0; i < validationFields.length; i++) {
+        let field = validationFields[i];
+        field.dispatchEvent(new Event('input'));
+    }
+}
+
+function fireValidation(field) {
+    document.getElementById(field).dispatchEvent(new Event('input'));
+}
+
+
+function validateSubmit() {
+    let toToggle = true;
+    for (let [key, value] of validationResults) {
+        toToggle &= value;
+    }
+    toggleSubmit(toToggle);
 }

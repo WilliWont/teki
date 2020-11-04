@@ -894,6 +894,58 @@
           }
         }
       },
+      "SkiaSharp/1.68.0": {
+        "runtime": {
+          "lib/netstandard1.3/SkiaSharp.dll": {
+            "assemblyVersion": "1.68.0.0",
+            "fileVersion": "1.68.0.0"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/osx/native/libSkiaSharp.dylib": {
+            "rid": "osx",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/tizen-armel/native/libSkiaSharp.so": {
+            "rid": "tizen-armel",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/tizen-x86/native/libSkiaSharp.so": {
+            "rid": "tizen-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/libSkiaSharp.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x86/native/libSkiaSharp.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.3/SkiaSharp.dll": {}
+        }
+      },
+      "Smartcrop.net/1.0.2-beta": {
+        "dependencies": {
+          "SkiaSharp": "1.68.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Smartcrop.dll": {
+            "assemblyVersion": "1.0.2.0",
+            "fileVersion": "1.0.2.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Smartcrop.dll": {}
+        }
+      },
       "System.Collections/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "3.1.0",
@@ -1477,6 +1529,7 @@
         "dependencies": {
           "BusinessObjects": "1.0.0",
           "DataObjects": "1.0.0",
+          "Smartcrop.net": "1.0.2-beta",
           "System.Drawing.Common": "4.7.0"
         },
         "runtime": {
@@ -3437,6 +3490,20 @@
       "sha512": "sha512-YhEdSQUsTx+C8m8Bw7ar5/VesXvCFMItyZF7G1AUY+OM0VPZUOeAVpJ4Wl6fydBGUYZxojTDR3I6Bj/+BPkJNA==",
       "path": "runtime.win-x86.runtime.native.system.data.sqlclient.sni/4.4.0",
       "hashPath": "runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512"
+    },
+    "SkiaSharp/1.68.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ptuxAKk9FiClNnAgWM8hVMCYw/B0hUJWZ8W6efnIAtJmJn/Xl4jvxxDF5WOqfQYCLVzxXw5gvBPVxvTLblFp0g==",
+      "path": "skiasharp/1.68.0",
+      "hashPath": "skiasharp.1.68.0.nupkg.sha512"
+    },
+    "Smartcrop.net/1.0.2-beta": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Pok8d2ghbbUtMQEN6SXfXRDGHHgS8WghuLLZL+MXYjPiatJ0ltKifQzOTMpOQicmz1UZ/Geo1e86NsX7N09GFQ==",
+      "path": "smartcrop.net/1.0.2-beta",
+      "hashPath": "smartcrop.net.1.0.2-beta.nupkg.sha512"
     },
     "System.Collections/4.3.0": {
       "type": "package",
