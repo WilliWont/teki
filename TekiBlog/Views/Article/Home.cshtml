@@ -1,0 +1,89 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using BusinessObjects
+
+@model TekiBlog.ViewModels.HomePageViewModel
+
+@inject SignInManager<ApplicationUser> SignInManager;
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/article-card.css">
+}
+@section Scripts{
+    <script src="~/js/readinglist.js"></script>
+    <script>$(".body-content").addClass("col-12");</script>
+}
+@if (Model.Articles.Any())
+{
+<div class="article-card-list-container">
+    <a id="href-remove-template" class="d-none" asp-controller="Bookmark" asp-action="BookmarkRemove"></a>
+    <a id="href-add-template" class="d-none" asp-controller="Bookmark" asp-action="BookmarkAdd"></a>
+
+
+    @foreach (var item in Model.Articles)
+    {
+        <div class="article-card-container">
+            @{
+                string imgSrc = "img/empty.jpg";
+                if (item.ThumbnailImage != null)
+                {
+                    var base64 = Convert.ToBase64String(item.ThumbnailImage);
+                    imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+                }
+            }
+            <div class="article-link-container">
+                <div class="article-thumbnail-container">
+                    <a class="article-link" asp-action="Detail" asp-route-id="@item.ID">
+                        <img class="article-link-img" src="@imgSrc" />
+                    </a>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        if (Model.UserBookmarks.Find(x => x.ArticleID.Equals(item.ID)) != null)
+                        {
+                            <a class="read-later-link btn" asp-controller="Bookmark" asp-action="BookmarkRemove" asp-route-id="@item.ID"><i class="fa fa-check-square"></i></a>
+
+                        }
+                        else
+                        {
+                            <a class="read-later-link btn" asp-controller="Bookmark" asp-action="BookmarkAdd" asp-route-id="@item.ID"><i class="fa fa-bookmark"></i></a>
+
+                        }
+                    }
+                </div>
+                <div class="article-info-container">
+                    <a class="article-link" asp-action="Detail" asp-route-id="@item.ID">
+                        <h3 class="article-link-title">@item.Title</h3>
+                    </a>
+                    <div class="article-user-container">
+                        by <a asp-controller="Profile" asp-action="Info" asp-route-id="@item.User.Id">@item.User.FirstName @item.User.LastName</a>
+                        | @item.DatePosted.ToString("MMM d, yyyy")
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    }
+</div>
+
+
+    var prevDisabled = !Model.Articles.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Articles.HasNextPage ? "disabled" : "";
+
+    <a asp-controller="Article"
+       asp-action="Search"
+       asp-route-pageNumber="@(Model.Articles.PageIndex - 1)"
+       asp-route-searchValue="@ViewData["SearchValue"]"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-controller="Article"
+       asp-action="Search"
+       asp-route-pageNumber="@(Model.Articles.PageIndex + 1)"
+       asp-route-searchValue="@ViewData["SearchValue"]"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+}
+else
+{
+    <h1>no article found, come again later</h1>
+}

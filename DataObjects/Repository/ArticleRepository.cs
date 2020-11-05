@@ -61,6 +61,17 @@ namespace DataObjects.Repository
             return articles;
         }
 
+        public IQueryable<Article> GetArticleByStatus(string status)
+        {
+            IQueryable<Article> articles = _context.Articles
+                .Include(a => a.Status)
+                .Include(a => a.User)
+                .Select(a => a)
+                .Where(a => a.Status.Name.Equals("Active"))
+                .OrderByDescending(a => a.DatePosted);
+            return articles;
+        }
+
         // Implement all additional methods in IArticleRepository
         public bool UpdateArticle(Article article)
         {

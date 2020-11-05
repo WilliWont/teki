@@ -7,7 +7,7 @@
 {
     var user = await UserManager.GetUserAsync(User);
     <div class="dropdown">
-        <div>Hello</div>
+        @*<div>Hello</div>*@
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             @user.FirstName @user.LastName
         </button>

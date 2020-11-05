@@ -43,9 +43,9 @@
 }
 
 .invalid-form {
-    color: var(--main);
-    border-style: solid;
-    border-color: var(--main);
+    color: var(--main) !important;
+    border-style: solid !important;
+    border-color: var(--main) !important;
 }
 
 .invalid-form:hover {
@@ -82,3 +82,14 @@
     .charcount-show{
         opacity: 1 !important;
     }
+
+#titleHelp{
+    text-align:right;
+    color:rgb(240,240,240)!important;
+}
+.charcount-input[count-for='form-title'] {
+    color: rgb(240,240,240) !important;
+}
+#form-title {
+    border-style: none;
+}

@@ -19,10 +19,15 @@ namespace DataObjects
 
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Article> Articles { get; set; }
-
+        public DbSet<Bookmark> Bookmarks { get; set; }
         // This funtion is used to create identity tables to database when migration.
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Bookmark>().HasKey(x => new { x.UserID, x.ArticleID });
+            builder.Entity<Bookmark>().HasOne(x => x.User).WithMany(x => x.BookmarkList).HasForeignKey(x => x.UserID);
+            builder.Entity<Bookmark>().HasOne(x => x.Article).WithMany(x => x.BookmarkedUsers).HasForeignKey(x => x.ArticleID);
+
+
             base.OnModelCreating(builder);
             builder.HasDefaultSchema("Teki");
             builder.Entity<ApplicationUser>(entity =>
@@ -61,6 +66,7 @@ namespace DataObjects
             {
                 entity.ToTable("Article");
             });
+            
         }
     }
 

@@ -20,10 +20,23 @@ namespace ActionServices
         bool UpdateArticle(Article article);
         IQueryable<Article> SearchArticle(string searchValue);
         IQueryable<Article> GetArticleForViewer(ApplicationUser user);
-        // Status Service
+        IQueryable<Article> GetArticleByStatus(string status);
+        
+        // Bookmark Services
+        void AddBookmark(Bookmark bookmark);
+        void RemoveBookmark(Bookmark bookmark);
+        IQueryable<Bookmark> GetBookmarks(Article article, ApplicationUser user);
+        IQueryable<Bookmark> GetBookmarks(Article article);
+        IQueryable<Bookmark> GetBookmarks(ApplicationUser user);
+
+
+        // Status Services
         Status GetStatus(string name);
         Task<bool> Commit();
         void GetImage(out byte[] img, HttpRequest req);
-        void ProcessImage(ref byte[] originalBytes, Size size, Rectangle crop, ImageFormat format);
+        byte[] ResizeImgageByWidth(byte[] originalBytes, int w, ImageFormat format);
+        byte[] CropImage(byte[] originalBytes, Rectangle crop, ImageFormat format);
+
+
     }
 }

@@ -1,26 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\TekiBlog\\TekiBlog.csproj": {}
+    "D:\\a_self_proj\\teki\\TekiBlog\\TekiBlog.csproj": {}
   },
   "projects": {
-    "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ActionServices\\ActionServices.csproj": {
+    "D:\\a_self_proj\\teki\\ActionServices\\ActionServices.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ActionServices\\ActionServices.csproj",
+        "projectUniqueName": "D:\\a_self_proj\\teki\\ActionServices\\ActionServices.csproj",
         "projectName": "ActionServices",
-        "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ActionServices\\ActionServices.csproj",
-        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ActionServices\\obj\\",
+        "projectPath": "D:\\a_self_proj\\teki\\ActionServices\\ActionServices.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "D:\\a_self_proj\\teki\\ActionServices\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -32,11 +30,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj": {
-                "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj"
+              "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj": {
+                "projectPath": "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj"
               },
-              "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\DataObjects\\DataObjects.csproj": {
-                "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\DataObjects\\DataObjects.csproj"
+              "D:\\a_self_proj\\teki\\DataObjects\\DataObjects.csproj": {
+                "projectPath": "D:\\a_self_proj\\teki\\DataObjects\\DataObjects.csproj"
               }
             }
           }
@@ -50,6 +48,10 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Smartcrop.net": {
+              "target": "Package",
+              "version": "[1.0.2-beta, )"
+            },
             "System.Drawing.Common": {
               "target": "Package",
               "version": "[4.7.0, )"
@@ -77,23 +79,21 @@
         }
       }
     },
-    "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj": {
+    "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj",
+        "projectUniqueName": "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj",
         "projectName": "BusinessObjects",
-        "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj",
-        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\obj\\",
+        "projectPath": "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "D:\\a_self_proj\\teki\\BusinessObjects\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -151,23 +151,21 @@
         }
       }
     },
-    "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\DataObjects\\DataObjects.csproj": {
+    "D:\\a_self_proj\\teki\\DataObjects\\DataObjects.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\DataObjects\\DataObjects.csproj",
+        "projectUniqueName": "D:\\a_self_proj\\teki\\DataObjects\\DataObjects.csproj",
         "projectName": "DataObjects",
-        "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\DataObjects\\DataObjects.csproj",
-        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\DataObjects\\obj\\",
+        "projectPath": "D:\\a_self_proj\\teki\\DataObjects\\DataObjects.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "D:\\a_self_proj\\teki\\DataObjects\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -179,8 +177,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj": {
-                "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj"
+              "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj": {
+                "projectPath": "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj"
               }
             }
           }
@@ -237,23 +235,21 @@
         }
       }
     },
-    "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\TekiBlog\\TekiBlog.csproj": {
+    "D:\\a_self_proj\\teki\\TekiBlog\\TekiBlog.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\TekiBlog\\TekiBlog.csproj",
+        "projectUniqueName": "D:\\a_self_proj\\teki\\TekiBlog\\TekiBlog.csproj",
         "projectName": "TekiBlog",
-        "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\TekiBlog\\TekiBlog.csproj",
-        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\TekiBlog\\obj\\",
+        "projectPath": "D:\\a_self_proj\\teki\\TekiBlog\\TekiBlog.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "D:\\a_self_proj\\teki\\TekiBlog\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -265,17 +261,17 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ActionServices\\ActionServices.csproj": {
-                "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ActionServices\\ActionServices.csproj"
+              "D:\\a_self_proj\\teki\\ActionServices\\ActionServices.csproj": {
+                "projectPath": "D:\\a_self_proj\\teki\\ActionServices\\ActionServices.csproj"
               },
-              "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj": {
-                "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\BusinessObjects\\BusinessObjects.csproj"
+              "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj": {
+                "projectPath": "D:\\a_self_proj\\teki\\BusinessObjects\\BusinessObjects.csproj"
               },
-              "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\DataObjects\\DataObjects.csproj": {
-                "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\DataObjects\\DataObjects.csproj"
+              "D:\\a_self_proj\\teki\\DataObjects\\DataObjects.csproj": {
+                "projectPath": "D:\\a_self_proj\\teki\\DataObjects\\DataObjects.csproj"
               },
-              "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\ValidationUtilities.csproj": {
-                "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\ValidationUtilities.csproj"
+              "D:\\a_self_proj\\teki\\ValidationUtilities\\ValidationUtilities.csproj": {
+                "projectPath": "D:\\a_self_proj\\teki\\ValidationUtilities\\ValidationUtilities.csproj"
               }
             }
           }
@@ -332,23 +328,21 @@
         }
       }
     },
-    "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\ValidationUtilities.csproj": {
+    "D:\\a_self_proj\\teki\\ValidationUtilities\\ValidationUtilities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\ValidationUtilities.csproj",
+        "projectUniqueName": "D:\\a_self_proj\\teki\\ValidationUtilities\\ValidationUtilities.csproj",
         "projectName": "ValidationUtilities",
-        "projectPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\ValidationUtilities.csproj",
-        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "E:\\FPTdocument\\TERM5\\PRN292\\Assignment3\\teki\\ValidationUtilities\\obj\\",
+        "projectPath": "D:\\a_self_proj\\teki\\ValidationUtilities\\ValidationUtilities.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "D:\\a_self_proj\\teki\\ValidationUtilities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"

@@ -136,6 +136,24 @@ namespace DataObjects.Migrations
                     b.ToTable("Article");
                 });
 
+            modelBuilder.Entity("BusinessObjects.Bookmark", b =>
+                {
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("ArticleID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DatePosted")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserID", "ArticleID");
+
+                    b.HasIndex("ArticleID");
+
+                    b.ToTable("Bookmarks");
+                });
+
             modelBuilder.Entity("BusinessObjects.Status", b =>
                 {
                     b.Property<int>("ID")
@@ -291,6 +309,21 @@ namespace DataObjects.Migrations
                     b.HasOne("BusinessObjects.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Bookmark", b =>
+                {
+                    b.HasOne("BusinessObjects.Article", "Article")
+                        .WithMany("BookmarkedUsers")
+                        .HasForeignKey("ArticleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BusinessObjects.ApplicationUser", "User")
+                        .WithMany("BookmarkList")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
