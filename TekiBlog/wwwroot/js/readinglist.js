@@ -7,6 +7,10 @@ let addHref = $("#href-add-template").attr('href');
 $('.read-later-link').click(function (event) {
     event.preventDefault();
     $lastA = $(this);
+    $lastA.children(":first").removeClass('fa-bookmark-o');
+    $lastA.children(":first").removeClass('fa-bookmark');
+    $lastA.children(":first").addClass('loader');
+
 
     $.ajax({
         url: $(this).attr('href'),
@@ -17,23 +21,29 @@ $('.read-later-link').click(function (event) {
                 let prevHref = $lastA.attr("href");
                 let i = prevHref.lastIndexOf("/");
                 let id = prevHref.substring(i, prevHref.length);
-                let newHref;
-
+                let newHref = null;
+                let msg = 'service not available right now, please try again later';
                 if (response == 0) {
-                    $lastA.children(":first").addClass('fa-check-square');
-                    $lastA.children(":first").removeClass('fa-bookmark');
-                    newHref = removeHref + id;
-                } else if (response == 1) {
                     $lastA.children(":first").addClass('fa-bookmark');
-                    $lastA.children(":first").removeClass('fa-check-square');
+                    $lastA.children(":first").removeClass('loader');
+                    newHref = removeHref + id;
+                    msg = 'added article bookmark';
+                } else if (response == 1) {
+                    $lastA.children(":first").addClass('fa-bookmark-o');
+                    $lastA.children(":first").removeClass('loader');
                     newHref = addHref + id;
+                    msg = 'removed article bookmark';
                 }
 
-                $lastA.attr("href", newHref);
+                if(newHref != null)
+                    $lastA.attr("href", newHref);
+
+                displayNotification(msg);
 
             }
         },
         error: function(req, status, error) {
+            $lastA.children(":first").removeClass('loader');
             console.log('fail: ' + re + ', ' + status + ', ' + error);
         }
     });

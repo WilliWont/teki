@@ -1,0 +1,75 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using BusinessObjects
+
+@model IQueryable<Bookmark>
+
+@inject SignInManager<ApplicationUser> SignInManager;
+
+@section Styles{
+    @*<link rel="stylesheet" href="~/css/article-card.css">
+        <link rel="stylesheet" href="~/css/bookmark-card.css">*@
+    <link rel="stylesheet" href="~/css/bookmark.css" asp-append-version="true">
+}
+@section Scripts{
+    @*<script src="~/js/readinglist.js"></script>*@
+    <script src="~/js/bookmark.min.js" asp-append-version="true"></script>
+    <script>$(".body-content").addClass("col-12");$('main').addclass("flex-container")</script>
+}
+
+@if (Model.Any())
+{
+    <div class="article-card-list-container col-8">
+        <h1>My Bookmarks</h1>
+        <a id="href-remove-template" class="d-none" asp-controller="Bookmark" asp-action="BookmarkRemove"></a>
+        <a id="href-add-template" class="d-none" asp-controller="Bookmark" asp-action="BookmarkAdd"></a>
+
+        @foreach (var item in Model)
+        {
+            <div class="article-card-container">
+                <div class="article-link-container">
+                    <div class="article-thumbnail-container">
+                        <a class="article-link" asp-controller="Article" asp-action="Detail" asp-route-id="@item.Article.ID">
+                            @if (item.Article.ThumbnailImage != null)
+                            {
+                                var base64 = Convert.ToBase64String(item.Article.ThumbnailImage);
+                                var imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+                                <img class="article-link-img" src="@imgSrc" />
+                            }
+                            else
+                            {
+                                <img class="article-link-img" src="~/img/empty.jpg" />
+                            }
+
+                        </a>
+                    </div>
+                    <div class="article-info-container">
+
+                        <a class="read-later-link" asp-controller="Bookmark" asp-action="BookmarkRemove" asp-route-id="@item.Article.ID"><i class="fa fa-bookmark"></i></a>
+                        <a class="article-link article-link-title-container" asp-controller="Article" asp-action="Detail" asp-route-id="@item.Article.ID">
+                            <h3 class="article-link-title">@item.Article.Title</h3>
+                        </a>
+                        <div class="article-user-container">
+                            by <a asp-controller="Profile" asp-action="Info" asp-route-id="@item.User.Id">@item.User.FirstName @item.User.LastName</a>
+                            | @item.DatePosted.ToString("MMM d, yyyy")
+                        </div>
+                        <div class="article-summary-container">
+                            @if (item.Article.Summary != null)
+                            {
+                                <p class="summary">@item.Article.Summary</p>
+                            }
+                            else
+                            {
+                                <p class="summary summary-empty">this article has no summary</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        }
+    </div>
+}
+else
+{
+    <h1>no article found, come again later</h1>
+}

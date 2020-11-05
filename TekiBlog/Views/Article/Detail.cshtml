@@ -9,11 +9,15 @@
 
 
 @section Styles{
-    <link rel="stylesheet" href="~/css/detail.css" />
+    @*<link rel="stylesheet" href="~/css/detail.css" />*@
+    <link rel="stylesheet" href="~/css/detail.min.css" asp-append-version="true" />
+
 }
 
 @section Scripts{
-    <script src="~/js/detail.js"></script>
+@*    <script src="~/js/detail.js"></script>*@
+    <script src="~/js/detail.min.js" asp-append-version="true"></script>
+
 }
 
 @section CoverImg{
@@ -25,14 +29,28 @@
             <div class="article-header-info-inner col-9">
                 <h1 id="form-title"
                     class="title article-input">
-                    @Model?.Title
+                    @if (Model.Title != null)
+                    {
+                        <span>@Model.Title</span>
+                    }
+                    else
+                    {
+                        <span class="empty">untitled article</span>
+                    }
                 </h1>
                 <div class="article-user-info">
                     <small id="titleHelp" class="user-link-container">
                         <span>By <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@Model.User.Id">@Model.User.FirstName @Model.User.LastName</a></span>
                     </small>
                     <small>
-                        @Html.DisplayFor(model => model.DatePosted)
+                        @if (Model.Status.Name.Equals("Draft"))
+                        {
+                            <a class="btn btn-outline-secondary btn-alt my-2 my-sm-0" asp-controller="Article" asp-action="Editor" asp-route-id="@Model.ID">continue editing</a>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.DatePosted)
+                        }
                     </small>
                 </div>
             </div>
@@ -63,6 +81,10 @@
 
                 <div id="form-content" class="article-input" aria-describedby="contentHelp">
                     @Html.Raw(Model.ContentHtml)
+                    @if (Model.ContentHtml == null)
+                    {
+                        <span class="empty">this article has no content</span>
+                    }
                 </div>
             </div>
 

@@ -153,7 +153,8 @@ namespace TekiBlog.Controllers
                         {
                             ArticleContent = article.ContentHtml,
                             Title = article.Title,
-                            Summary = article.Summary
+                            Summary = article.Summary,
+                            Status = article.Status
                         });
                     }
                 }
@@ -173,6 +174,7 @@ namespace TekiBlog.Controllers
         //}
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostArticle(CreateArticleViewModel article)
         {
@@ -195,12 +197,10 @@ namespace TekiBlog.Controllers
                 articleImage = null;
             }
 
-
-            if (ModelState.IsValid && articleImage != null)
-            {
+            string statusType = (ModelState.IsValid) ? "Active" : "Draft";
 
                 // Get active status for this post
-                Status active = _service.GetStatus("Active");
+                Status status = _service.GetStatus(statusType);
 
                 string html = article.ArticleContent;
 
@@ -215,34 +215,113 @@ namespace TekiBlog.Controllers
                     CurrentVote = 0,
                     ContentHtml = html,
                     ContentRaw = raw?.Trim(),
-                    Status = active,
+                    Status = status,
                     User = user,
-                    CoverImage = article.CoverImage,
-                    ThumbnailImage = article.ThumbnailImage
+                    CoverImage = article?.CoverImage,
+                    ThumbnailImage = article?.ThumbnailImage
                 };
 
                 _service.AddArticle(articleModel);
+
                 if (await _service.Commit())
                 {
-                    _logger.LogInformation($"user {user.Id} posted article {articleModel.ID}");
-                    return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
+                    _logger.LogInformation($"user {user.Id} posted article {articleModel.ID} with status ${status.Name}");
 
+                    if (ModelState.IsValid)
+                    {
+                        return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Editor", "Article", new { id = articleModel.ID });
+                    }
+
+                } 
+                else
+                {
+                    return NotFound();
                 }
-            }
-            else
-                _logger.LogInformation($"user {user.Id} post article failed");
-
-            return NotFound();
         }
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateArticle(CreateArticleViewModel article)
         {
             // Get user in current context
             var user = await _userManager.GetUserAsync(User);
             byte[] articleImage;
-   
+            try
+            {
+                _service.GetImage(out articleImage, this.Request);
+                // TODO: elimate magic number if have time
+                articleImage = _service.ResizeImgageByWidth(articleImage, 1280, ImageFormat.Jpeg);
+
+                article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, 1280, 720), ImageFormat.Jpeg);
+                article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(600 / 3, 0, 600, 450), ImageFormat.Jpeg);
+            }
+            catch
+            {
+                _logger.LogInformation("failed to retrieve image");
+                articleImage = null;
+            }
+            var pastArticle = _service.GetArticle(article.Id);
+            if (pastArticle.User.Id.Equals(user.Id))
+            {
+                string statusType = ( ModelState.IsValid ) ? "Active" : "Draft";
+
+                    // Get active status for this post
+                    Status status = _service.GetStatus(statusType);
+
+                    // edit article model to update to Database
+                    pastArticle.ContentHtml = article.ArticleContent;
+                    pastArticle.ContentRaw = article.ArticleRaw?.Trim();
+                    pastArticle.Title = article.Title?.Trim();
+                    pastArticle.Summary = article.Summary?.Trim();
+                    pastArticle.Status = status;
+
+                    if(ModelState.IsValid && pastArticle.DatePosted == DateTime.MinValue)
+                    {
+                        pastArticle.DatePosted = DateTime.UtcNow;
+                    }
+
+                    if (articleImage!=null)
+                    {
+                        pastArticle.CoverImage = article.CoverImage;
+                        pastArticle.ThumbnailImage = article.ThumbnailImage;
+                    }
+
+                    _service.UpdateArticle(pastArticle);
+
+                    if (await _service.Commit())
+                    {
+                        _logger.LogInformation($"user {user.Id} updated article {pastArticle.ID} with status ${status.Name}");
+
+                        if (ModelState.IsValid)
+                        {
+                            return RedirectToAction("Detail", "Article", new { id = pastArticle.ID });
+                        }
+                        else
+                        {
+                            return RedirectToAction("Editor", "Article", new { id = pastArticle.ID });
+                        }
+                    }
+
+            } // exit if invalid user
+            else
+            _logger.LogInformation($"user {user?.Id} tried updating {pastArticle.User.Id}'s article");
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> ArticleDraft(CreateArticleViewModel article)
+        {
+            // Get user in current context
+            var user = await _userManager.GetUserAsync(User);
+            byte[] articleImage;
             try
             {
                 _service.GetImage(out articleImage, this.Request);
@@ -258,38 +337,60 @@ namespace TekiBlog.Controllers
                 articleImage = null;
             }
 
-            if (ModelState.IsValid)
+            var pastArticle = _service.GetArticle(article.Id);
+            bool toUpdate = ( ( pastArticle != null ) && pastArticle.User.Id.Equals(user.Id) );
+
+            Status draft = _service.GetStatus("Draft");
+
+            if (toUpdate)
             {
-                var pastArticle = _service.GetArticle(article.Id);
-                if (pastArticle.User.Id.Equals(user.Id))
+                // Get active status for this post
+
+                // edit article model to update to Database
+                pastArticle.ContentHtml = article.ArticleContent;
+                pastArticle.ContentRaw = article.ArticleRaw?.Trim();
+                pastArticle.Title = article.Title?.Trim();
+                pastArticle.Summary = article.Summary?.Trim();
+                pastArticle.Status = draft;
+
+                if (articleImage != null)
                 {
-                    // Get active status for this post
-                    Status active = _service.GetStatus("Active");
-
-                    // edit article model to update to Database
-                    pastArticle.ContentHtml = article.ArticleContent;
-                    pastArticle.ContentRaw = article.ArticleRaw?.Trim();
-                    pastArticle.Title = article.Title?.Trim();
-                    pastArticle.Summary = article.Summary?.Trim();
-                    pastArticle.Status = active;
-
-                    if (articleImage!=null)
-                    {
-                        pastArticle.CoverImage = article.CoverImage;
-                        pastArticle.ThumbnailImage = article.ThumbnailImage;
-                    }
-
-                    _service.UpdateArticle(pastArticle);
-                    if (await _service.Commit())
-                    {
-                        _logger.LogInformation($"user {user.Id} updated article {pastArticle.ID}");
-                        return RedirectToAction("Detail", "Article", new { id = pastArticle.ID });
-
-                    } // exit if unable to update
+                    pastArticle.CoverImage = article.CoverImage;
+                    pastArticle.ThumbnailImage = article.ThumbnailImage;
                 }
-                else // exit if invalid user
-                    _logger.LogInformation($"user {user.Id} tried updating {pastArticle.User.Id}'s article");
-            } // exit if invalid article
+
+                _service.UpdateArticle(pastArticle);
+            }
+            else
+            {
+                Article toAdd = new Article
+                {
+                    ContentHtml = article.ArticleContent,
+                    ContentRaw = article.ArticleRaw?.Trim(),
+                    Title = article.Title?.Trim(),
+                    Summary = article.Summary?.Trim(),
+                    User = user,
+                    DatePosted =DateTime.UtcNow,
+                    Status = draft
+                };
+
+
+                if (articleImage != null)
+                {
+                    toAdd.CoverImage = article.CoverImage;
+                    toAdd.ThumbnailImage = article.ThumbnailImage;
+                }
+
+                _service.AddArticle(toAdd);
+            }
+
+
+            if (await _service.Commit())
+            {
+                _logger.LogInformation($"user {user.Id} saved existing article {pastArticle?.ID}");
+                return Ok();
+
+            } // exit if unable to update
 
             _logger.LogInformation($"user {user.Id} update article failed");
             return NotFound();
@@ -342,7 +443,7 @@ namespace TekiBlog.Controllers
             _logger.LogInformation("Search value " + searchValue);
             if (string.IsNullOrEmpty(searchValue) && (pageNumber == null))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Home", "Article");
             }
             ViewData["SearchValue"] = searchValue;
             IQueryable<Article> articles = _service.SearchArticle(searchValue);

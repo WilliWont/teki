@@ -11,6 +11,8 @@ namespace DataObjects.IRepository
         IQueryable<Bookmark> GetBookmarks(Article article, ApplicationUser user);
         IQueryable<Bookmark> GetBookmarks(Article article);
         IQueryable<Bookmark> GetBookmarks(ApplicationUser user);
+        IQueryable<Bookmark> GetBookmarks(ApplicationUser user, bool includeArticle);
+
 
     }
 }

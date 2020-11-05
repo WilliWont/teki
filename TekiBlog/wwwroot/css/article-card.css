@@ -1,4 +1,4 @@
-﻿:root {
+﻿/*:root {
     --card-width: 24vw;
     --card-height: 18vw;
     --card-black: rgb(64,64,64);
@@ -24,6 +24,7 @@
 }
 
 .article-info-container {
+    position:relative;
     bottom: 0;
     left: 0;
     background-color: white;
@@ -108,4 +109,187 @@
 
 .read-later-link:hover {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+*/
+
+:root {
+    --card-width: 16vw;
+    --card-height: 12vw;
+    --card-black: rgb(64,64,64);
+    --card-white: rgb(255,255,255);
+    --bookmark-size: 1rem;
+    --loader-size: 1.25rem;
+}
+
+.article-card-list-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.article-card-container {
+    transition: .25s ease;
+    position: relative;
+    padding: .1vw;
+    margin-bottom: 1vh;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.13);
+    width: 100%;
+}
+
+    .article-card-container:hover {
+        transition: .25s ease;
+        box-shadow: 0 7px 12px rgba(0,0,0,0.15), 0 6px 6px rgba(0,0,0,0.18);
+    }
+
+.article-info-container {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+    width: 100%;
+    height: var(--card-height);
+}
+
+.article-user-container {
+    padding: 0 .5vw;
+}
+
+.article-thumbnail-container {
+    position: relative;
+}
+
+.article-link {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    width: var(--card-width);
+    height: var(--card-height);
+}
+
+.article-link:hover {
+    text-decoration: none;
+}
+
+    .article-link > .article-link-title {
+        width: 100%;
+        height: auto;
+        margin: 0 !important;
+        padding: .25vw .5vw;
+        white-space: -moz-pre-wrap; /* Mozilla */
+        white-space: -hp-pre-wrap; /* HP printers */
+        white-space: -o-pre-wrap; /* Opera 7 */
+        white-space: -pre-wrap; /* Opera 4-6 */
+        white-space: pre-wrap; /* CSS 2.1 */
+        white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+        word-wrap: break-word; /* IE */
+        word-break: break-all;
+        bottom: 0;
+        font-size: 1.25rem;
+        font-weight: bold;
+        background-color: white;
+        color: var(--card-black);
+        z-index: 5;
+    }
+
+.article-link-title-container {
+    width: 100% !important;
+}
+
+.article-info-container .article-link {
+    height: auto;
+    left: 0;
+    bottom: 0;
+    width: 100% !important;
+}
+
+.article-link-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+.article-link {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.article-link img {
+    transition: .5s ease;
+    width: var(--card-width);
+    padding: .5vw;
+    height: auto;
+    filter: grayscale(20%);
+    z-index: 9;
+}
+
+.article-link img:hover {
+    transition: 1s ease;
+    filter: grayscale(0%);
+}
+
+.read-later-link {
+    transition: .25s ease;
+    font-size:var(--bookmark-size);
+    position: absolute;
+    bottom: .25vw;
+    right: .25vw;
+    margin: 0;
+    min-width: 3vw;
+    min-height: 3vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.wait-cursor{
+    cursor:wait;
+}
+
+.fa {
+    height: auto;
+}
+
+.read-later-link:hover {
+    transform: scale(1.5);
+    text-shadow: 0 5px 7px rgba(0,0,0,0.25);
+}
+
+.article-summary-container {
+    margin: .4vw;
+}
+
+.summary {
+    display: block;
+    color: rgb(157,157,157);
+    font-size: 1rem;
+    font-style: italic;
+    border-style: solid;
+    border-color: rgb(240,240,240);
+    border-width: 1px;
+    background-color: rgb(247,247,247);
+    width: 100%;
+    padding: .25vw .5vw;
+}
+
+.summary-empty {
+    font-family: serif;
+}
+
+.loader {
+    border: 3px solid rgb(255,255,255); /* Light grey */
+    border-top: 3px solid var(--main); /* Blue */
+    border-radius: 50%;
+    width: var(--loader-size);
+    height: var(--loader-size);
+    animation: spin 1s ease infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
