@@ -43,9 +43,9 @@ namespace TekiBlog
                 {
                     Name = "Active"
                 };
-                var deactiveStatus = new Status
+                var deletedStatus = new Status
                 {
-                    Name = "Deactive"
+                    Name = "Deleted"
                 };
                 var draftStatus = new Status
                 {
@@ -54,7 +54,7 @@ namespace TekiBlog
                 if (!ctx.Statuses.Any())
                 {
                     ctx.Statuses.Add(activeStatus);
-                    ctx.Statuses.Add(deactiveStatus);
+                    ctx.Statuses.Add(deletedStatus);
                     ctx.Statuses.Add(draftStatus);
 
                     ctx.SaveChanges();

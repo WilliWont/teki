@@ -259,7 +259,10 @@ namespace ActionServices
             tagRepository.Remove(tag);
             return true;
         }
-
+        public IQueryable<Bookmark> GetBookmarks(ApplicationUser user, bool includeArticle)
+        {
+            return bookmarkRepository.GetBookmarks(user, true);
+        }
         //public bool DeleteArticlesByAdmin(Guid id)
         //{
         //    Article article = articleRepository.GetArticleInfo(id);
