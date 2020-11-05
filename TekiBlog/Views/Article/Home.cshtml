@@ -2,7 +2,7 @@
 @using BusinessObjects
 
 @model TekiBlog.ViewModels.HomePageViewModel
-
+@inject UserManager<ApplicationUser> UserManager;
 @inject SignInManager<ApplicationUser> SignInManager;
 
 @section Styles{
@@ -52,22 +52,27 @@
                         <div class="article-info-container">
                             @if (SignInManager.IsSignedIn(User))
                             {
-                                if (Model.UserBookmarks.Find(x => x.ArticleID.Equals(item.ID)) != null)
+                                var user = await UserManager.GetUserAsync(User);
+                                //var role = await UserManager
+                                var role = await UserManager.GetRolesAsync(user);
+                                if (!role.Contains("Admin"))
                                 {
-                                    <a class="read-later-link" asp-controller="Bookmark" asp-action="BookmarkRemove" asp-route-id="@item.ID"><i class="fa fa-bookmark"></i></a>
+                                    if (Model.UserBookmarks.Find(x => x.ArticleID.Equals(item.ID)) != null)
+                                    {
+                                        <a class="read-later-link" asp-controller="Bookmark" asp-action="BookmarkRemove" asp-route-id="@item.ID"><i class="fa fa-bookmark"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a class="read-later-link" asp-controller="Bookmark" asp-action="BookmarkAdd" asp-route-id="@item.ID"><i class="fa fa-bookmark-o"></i></a>
 
-                                }
-                                else
-                                {
-                                    <a class="read-later-link" asp-controller="Bookmark" asp-action="BookmarkAdd" asp-route-id="@item.ID"><i class="fa fa-bookmark-o"></i></a>
-
+                                    }
                                 }
                             }
                             <a class="article-link article-link-title-container" asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">
                                 <h3 class="article-link-title">@item.Title</h3>
                             </a>
                             <div class="article-user-container">
-                                by <a asp-controller="Profile" asp-action="Info" asp-route-id="@item.User.Id">@item.User.FirstName @item.User.LastName</a>
+                                by <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@item.User.Id">@item.User.FirstName @item.User.LastName</a>
                                 | @item.DatePosted.ToString("MMM d, yyyy")
                             </div>
                             <div class="article-summary-container">

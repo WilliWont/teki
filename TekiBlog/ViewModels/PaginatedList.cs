@@ -15,7 +15,7 @@ namespace TekiBlog.ViewModels
         {
             get
             {
-                return 2;
+                return 10;
             }
         }
 
