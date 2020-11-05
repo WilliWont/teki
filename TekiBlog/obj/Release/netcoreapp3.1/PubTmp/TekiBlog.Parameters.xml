@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="IIS Web Application Name" description="" value="teki-blog" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^D:\\a_self_proj\\teki\\TekiBlog\\obj\\Release\\netcoreapp3\.1\\PubTmp\\Out\\$" />
-  </parameter>
-</parameters>
