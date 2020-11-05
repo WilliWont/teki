@@ -41,7 +41,7 @@ namespace TekiBlog.Controllers
             }
             else
             {
-                IQueryable<Article> articles = _service.GetArticleWithUserID(user);
+                IQueryable<Article> articles = _service.GetArticleWithUser(user);
                 //_logger.LogInformation($"Article any {articles.Any()}");
                 return View(articles);
             }

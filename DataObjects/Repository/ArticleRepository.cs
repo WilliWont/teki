@@ -27,7 +27,7 @@ namespace DataObjects.Repository
             return article;
         }
 
-        public IQueryable<Article> GetArticlesByID(ApplicationUser user)
+        public IQueryable<Article> GetArticlesByUser(ApplicationUser user)
         {
             IQueryable<Article> articles = _context.Articles
                 .Include(a => a.Status)
@@ -78,6 +78,15 @@ namespace DataObjects.Repository
             _context.Articles.Update(article);
 
             return true;
+        }
+
+        public IQueryable<Article> GetArticlesForAdmin()
+        {
+            IQueryable<Article> articles = _context.Articles
+                .Include(a => a.Status)
+                .Include(a => a.User)
+                .OrderByDescending(a => a.DatePosted);
+            return articles;
         }
     }
 }

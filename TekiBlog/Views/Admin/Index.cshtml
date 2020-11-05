@@ -1,5 +1,104 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model TekiBlog.ViewModels.PaginatedList<Article>
+
+
+<partial name="_ManageNav" />
+<span class="text-success">
+    @TempData["DeleteMessageStatus"]
+</span>
+@if (Model.Any())
+{
+    <div class="container">
+        <div class="col-9">
+            <table class="table">
+                <thead class="black white-text">
+                    <tr>
+                        <th scope="col">
+                            #
+                        </th>
+                        <th scope="col">
+                            Title
+                        </th>
+                        <th>
+                            Author
+                        </th>
+                        <th scope="col">
+                            Date posted
+                        </th>
+                        <th scope="col">
+                            Status
+                        </th>
+                        <th scope="col">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var count = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @count
+                            </td>
+                            @{
+                                count = count + 1;
+                            }
+                            <td>
+                                <a asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">@item.Title</a>
+                            </td>
+                            <td>
+                                <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@item.User.Id">@item.User.UserName</a>
+                            </td>
+                            <td>
+                                Posted in @item.DatePosted.ToLongDateString()
+                            </td>
+                            <td>
+                                @item.Status.Name
+                            </td>
+                            <td>
+                                @if (!item.Status.Name.Equals("Deleted"))
+                                {
+                                    <a class="btn btn-light" asp-controller="Admin" asp-action="DeleteArticle"
+                                       asp-route-id="@item.ID" asp-route-pageNumber="@Model.PageIndex">
+                                        Delete
+                                    </a>
+                                }
+                                @*else
+                                {
+                                    <a class="btn btn-light" asp-controller="Admin" asp-action="RestoreArticle"
+                                       asp-route-id="@item.ID" asp-route-pageNumber="@Model.PageIndex">
+                                        Restore
+                                    </a>
+                                }*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+    <a asp-controller="Admin"
+       asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-controller="Admin"
+       asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
 }
+else
+{
+    <h1>No article found</h1>
+}
+
+

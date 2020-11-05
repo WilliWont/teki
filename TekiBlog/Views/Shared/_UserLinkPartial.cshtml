@@ -6,18 +6,27 @@
 @if (SignInManager.IsSignedIn(User))
 {
     var user = await UserManager.GetUserAsync(User);
-    <div class="dropdown">
-        @*<div>Hello</div>*@
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            @user.FirstName @user.LastName
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" asp-controller="Profile" asp-action="Index">Your Page</a>
-            <a class="dropdown-item" asp-controller="Profile" asp-action="Info">Edit Your Profile</a>
-            <a class="dropdown-item" asp-controller="Profile" asp-action="ChangePassword">Change password</a>
-        </div>
+    //var role = await UserManager
+    var role = await UserManager.GetRolesAsync(user);
+    if (role.Contains("Admin"))
+    {
+        <a class=" nav-item btn btn-outline-secondary btn-outline my-2 my-sm-0" asp-area="" asp-controller="Admin" asp-action="Index">@user.FirstName @user.LastName</a>
+    }
+    else
+    {
+        <div class="dropdown">
+            @*<div>Hello</div>*@
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @user.FirstName @user.LastName
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" asp-controller="Profile" asp-action="Index">Your Page</a>
+                <a class="dropdown-item" asp-controller="Profile" asp-action="Info">Edit Your Profile</a>
+                <a class="dropdown-item" asp-controller="Profile" asp-action="ChangePassword">Change password</a>
+            </div>
 
-        @*<a class="" asp-area="" asp-controller="Profile" asp-action="Index" title="Manage">@user.FirstName @user.LastName</a>*@
-    </div>
+            @*<a class="" asp-area="" asp-controller="Profile" asp-action="Index" title="Manage">@user.FirstName @user.LastName</a>*@
+        </div>
+    }
 }
 

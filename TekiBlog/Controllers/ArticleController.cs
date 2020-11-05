@@ -43,6 +43,7 @@ namespace TekiBlog.Controllers
 
         public async Task<IActionResult> Home(int? pageNumber)
         {
+            _logger.LogInformation("Article home is called");
             IQueryable<Article> articles = _service.GetArticleByStatus("Active");
 
             int pageSize = PaginatedList<Article>.PerPage;

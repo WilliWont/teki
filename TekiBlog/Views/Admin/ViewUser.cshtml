@@ -1,0 +1,79 @@
+﻿@model TekiBlog.ViewModels.PaginatedList<ApplicationUser>
+
+<partial name="_ManageNav" />
+@if (Model.Any())
+{
+    <div class="container">
+        <div class="col-9">
+            <table class="table">
+                <thead class="black white-text">
+                    <tr>
+                        <th scope="col">
+                            UserID
+                        </th>
+                        <th scope="col">
+                            User Name
+                        </th>
+                        <th>
+                            Full Name
+                        </th>
+                        <th scope="col">
+                            Email
+                        </th>
+                        <th scope="col">
+                            Status
+                        </th>
+                        <th scope="col">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>
+                                @user.Id
+                            </td>
+                            <td>
+                                <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@user.Id">@user.UserName</a>
+                            </td>
+                            <td>
+                                @user.FirstName @user.LastName
+                            </td>
+                            <td>
+                                @user.Email
+                            </td>
+                            <td>
+                                
+                            </td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+    <a asp-controller="Admin"
+       asp-action="ViewUser"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-controller="Admin"
+       asp-action="ViewUser"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+}
+else
+{
+    <h1>No user found</h1>
+}

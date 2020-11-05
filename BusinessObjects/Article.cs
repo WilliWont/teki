@@ -33,5 +33,9 @@ namespace BusinessObjects
 
         public List<Bookmark> BookmarkedUsers { get; set;}
 
+       // public List<Tag> Tags { get; set; }
+        // public ICollection<Tag> Tags { get; set; }
+        public List<ArticleTag> ArticleTags { get; set; }
+
     }
 }

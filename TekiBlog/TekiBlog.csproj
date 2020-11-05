@@ -21,4 +21,9 @@
 	  <ProjectReference Include="..\DataObjects\DataObjects.csproj" />
 	  <ProjectReference Include="..\ValidationUtilities\ValidationUtilities.csproj" />
 	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="ViewModels\Admin\" />
+	</ItemGroup>
 </Project>

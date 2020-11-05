@@ -20,6 +20,8 @@ namespace DataObjects
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Article> Articles { get; set; }
         public DbSet<Bookmark> Bookmarks { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<ArticleTag> ArticleTags { get; set; }
         // This funtion is used to create identity tables to database when migration.
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -66,7 +68,17 @@ namespace DataObjects
             {
                 entity.ToTable("Article");
             });
-            
+
+            builder.Entity<Tag>(entity =>
+            {
+                entity.ToTable("Tag");
+            });
+            builder.Entity<ArticleTag>(entity =>
+            {
+                entity.ToTable("ArticleTag");
+                entity.HasKey(articleTag => new { articleTag.ArticleId, articleTag.TagId });
+            });
+            //builder.Entity<A>
         }
     }
 

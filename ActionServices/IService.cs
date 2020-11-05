@@ -16,12 +16,17 @@ namespace ActionServices
         Article GetArticle(Guid id);
         IEnumerable<Article> GetAllArticle();
         void AddArticle(Article article);
-        IQueryable<Article> GetArticleWithUserID(ApplicationUser user);
+        IQueryable<Article> GetArticleWithUser(ApplicationUser user);
         bool UpdateArticle(Article article);
         IQueryable<Article> SearchArticle(string searchValue);
         IQueryable<Article> GetArticleForViewer(ApplicationUser user);
         IQueryable<Article> GetArticleByStatus(string status);
-        
+        IQueryable<Article> GetArticleForAdmin();
+        void GetImage(out byte[] img, HttpRequest req);
+        byte[] ResizeImgageByWidth(byte[] originalBytes, int w, ImageFormat format);
+        byte[] CropImage(byte[] originalBytes, Rectangle crop, ImageFormat format);
+        //bool DeleteArticlesByAdmin(Guid id);
+
         // Bookmark Services
         void AddBookmark(Bookmark bookmark);
         void RemoveBookmark(Bookmark bookmark);
@@ -32,11 +37,12 @@ namespace ActionServices
 
         // Status Services
         Status GetStatus(string name);
+        
+        // Tag Services
+        IEnumerable<Tag> GetAllTags();
+        void CreateTag(Tag tag);
+        bool DeleteTag(int id);
+
         Task<bool> Commit();
-        void GetImage(out byte[] img, HttpRequest req);
-        byte[] ResizeImgageByWidth(byte[] originalBytes, int w, ImageFormat format);
-        byte[] CropImage(byte[] originalBytes, Rectangle crop, ImageFormat format);
-
-
     }
 }

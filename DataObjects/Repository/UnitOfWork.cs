@@ -1,4 +1,6 @@
-﻿using DataObjects.IRepository;
+﻿using BusinessObjects;
+using DataObjects.IRepository;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +23,7 @@ namespace DataObjects.Repository
         public IStatusRepository StatusRepository { get; private set; }
 
         public IBookmarkRepository BookmarkRepository {get; private set; }
+        public ITagRepository TagRepository { get; private set; }
 
         // Initialize all repositories with the same DBContext.
         private void InitRepositories()
@@ -28,6 +31,8 @@ namespace DataObjects.Repository
             ArticleRepository = new ArticleRepository(_context);
             StatusRepository = new StatusRepository(_context);
             BookmarkRepository = new BookmarkRepository(_context);
+            TagRepository = new TagRepository(_context);
+ 
         }
 
         // Commit: This function is used to save any change into database when updates, delete , etc 

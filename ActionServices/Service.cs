@@ -19,9 +19,10 @@ namespace ActionServices
     {
         private readonly ApplicationDBContext _context;
         private readonly UnitOfWork unitOfwork;
-        private readonly IArticleRepository articleRepository ;
-        private readonly IStatusRepository statusRepository ;
+        private readonly IArticleRepository articleRepository;
+        private readonly IStatusRepository statusRepository;
         private readonly IBookmarkRepository bookmarkRepository;
+        private readonly ITagRepository tagRepository;
 
         public Service(ApplicationDBContext context)
         {
@@ -30,7 +31,8 @@ namespace ActionServices
             articleRepository = unitOfwork.ArticleRepository;
             statusRepository = unitOfwork.StatusRepository;
             bookmarkRepository = unitOfwork.BookmarkRepository;
-        } 
+            tagRepository = unitOfwork.TagRepository;
+        }
 
         // Article Service implemetation
         public IEnumerable<Article> GetAllArticle()
@@ -60,9 +62,9 @@ namespace ActionServices
             return await unitOfwork.Commit();
         }
 
-        public IQueryable<Article> GetArticleWithUserID(ApplicationUser user)
+        public IQueryable<Article> GetArticleWithUser(ApplicationUser user)
         {
-            return articleRepository.GetArticlesByID(user);
+            return articleRepository.GetArticlesByUser(user);
         }
 
         public bool UpdateArticle(Article article)
@@ -82,18 +84,18 @@ namespace ActionServices
 
         public void GetImage(out byte[] img, HttpRequest req)
         {
-                foreach (var file in req.Form.Files)
-                {
-                    // TODO: Compress Image if have time
-                    MemoryStream ms = new MemoryStream();
-                    file.CopyTo(ms);
-                    img = ms.ToArray();
-                    ms.Close();
+            foreach (var file in req.Form.Files)
+            {
+                // TODO: Compress Image if have time
+                MemoryStream ms = new MemoryStream();
+                file.CopyTo(ms);
+                img = ms.ToArray();
+                ms.Close();
 
-                    ms.Dispose();
+                ms.Dispose();
 
-                    return;
-                }
+                return;
+            }
             img = null;
 
         }
@@ -114,7 +116,7 @@ namespace ActionServices
 
                 //get the ideal width and height for the resize (to the next whole number)
                 var width = w;
-                var height = (int) Math.Floor(ratio * w);
+                var height = (int)Math.Floor(ratio * w);
 
                 //actually resize it
                 using (var resizedBmp = new Bitmap(width, height))
@@ -125,7 +127,7 @@ namespace ActionServices
                         graphics.DrawImage(imgOriginal, 0, 0, width, height);
                     }
 
-                    System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(0,0, width, height);
+                    System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(0, 0, width, height);
 
                     using (var croppedBmp = resizedBmp.Clone(rectangle, resizedBmp.PixelFormat))
                     using (var ms = new MemoryStream())
@@ -164,9 +166,9 @@ namespace ActionServices
                 // https://github.com/softawaregmbh/smartcrop.net
                 var cropCoords = new ImageCrop(crop.Width, crop.Height).Crop(originalBytes);
                 System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(
-                    cropCoords.Area.X, 
-                    cropCoords.Area.Y, 
-                    cropCoords.Area.Width, 
+                    cropCoords.Area.X,
+                    cropCoords.Area.Y,
+                    cropCoords.Area.Width,
                     cropCoords.Area.Height
                 );
                 ///////////////////////////////////////////////////
@@ -231,5 +233,44 @@ namespace ActionServices
         {
             return bookmarkRepository.GetBookmarks(user);
         }
+
+        public IQueryable<Article> GetArticleForAdmin()
+        {
+            return articleRepository.GetArticlesForAdmin();
+        }
+
+        public IEnumerable<Tag> GetAllTags()
+        {
+            return tagRepository.GetAll();
+        }
+
+        public void CreateTag(Tag tag)
+        {
+            tagRepository.Add(tag);
+        }
+
+        public bool DeleteTag(int id)
+        {
+            Tag tag = tagRepository.GetByID(id);
+            if (tag == null)
+            {
+                return false;
+            }
+            tagRepository.Remove(tag);
+            return true;
+        }
+
+        //public bool DeleteArticlesByAdmin(Guid id)
+        //{
+        //    Article article = articleRepository.GetArticleInfo(id);
+        //    if (article != null)
+        //    {
+        //        Status deleteStatus = statusRepository.GetStatus("Deleted");
+        //        article.Status = deleteStatus;
+        //        articleRepository.UpdateArticle(article);
+        //        return true;
+        //    }
+        //    return false;
+        //}
     }
 }
