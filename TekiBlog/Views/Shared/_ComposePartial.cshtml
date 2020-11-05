@@ -5,12 +5,18 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="btn-compose-container">
-        <a asp-area="" asp-controller="Article" asp-action="Editor">
-            <span class="circle">
-                <div class="vertical"></div>
-                <div class="horizontal"></div>
-            </span>
-        </a>
-    </div>
+    var user = await UserManager.GetUserAsync(User);
+    //var role = await UserManager
+    var role = await UserManager.GetRolesAsync(user);
+    if (!role.Contains("Admin"))
+    {
+        <div class="btn-compose-container">
+            <a asp-area="" asp-controller="Article" asp-action="Editor">
+                <span class="circle">
+                    <div class="vertical"></div>
+                    <div class="horizontal"></div>
+                </span>
+            </a>
+        </div>
+    }
 }

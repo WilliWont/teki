@@ -1,9 +1,0 @@
-D:\a_self_proj\teki\ValidationUtilities\bin\Debug\netcoreapp3.1\ValidationUtilities.deps.json
-D:\a_self_proj\teki\ValidationUtilities\bin\Debug\netcoreapp3.1\ValidationUtilities.dll
-D:\a_self_proj\teki\ValidationUtilities\bin\Debug\netcoreapp3.1\ValidationUtilities.pdb
-D:\a_self_proj\teki\ValidationUtilities\obj\Debug\netcoreapp3.1\ValidationUtilities.csprojAssemblyReference.cache
-D:\a_self_proj\teki\ValidationUtilities\obj\Debug\netcoreapp3.1\ValidationUtilities.AssemblyInfoInputs.cache
-D:\a_self_proj\teki\ValidationUtilities\obj\Debug\netcoreapp3.1\ValidationUtilities.AssemblyInfo.cs
-D:\a_self_proj\teki\ValidationUtilities\obj\Debug\netcoreapp3.1\ValidationUtilities.csproj.CoreCompileInputs.cache
-D:\a_self_proj\teki\ValidationUtilities\obj\Debug\netcoreapp3.1\ValidationUtilities.dll
-D:\a_self_proj\teki\ValidationUtilities\obj\Debug\netcoreapp3.1\ValidationUtilities.pdb
