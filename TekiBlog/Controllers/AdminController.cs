@@ -58,7 +58,8 @@ namespace TekiBlog.Controllers
             }
             Tag newTag = new Tag
             {
-                Name = tagName
+                Name = tagName,
+                IsActive = true
             };
             _service.CreateTag(newTag);
             if (await _service.Commit())

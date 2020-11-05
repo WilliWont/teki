@@ -67,7 +67,7 @@
                                 <h3 class="article-link-title">@item.Title</h3>
                             </a>
                             <div class="article-user-container">
-                                by <a asp-controller="Profile" asp-action="Info" asp-route-id="@item.User.Id">@item.User.FirstName @item.User.LastName</a>
+                                by <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@item.User.Id">@item.User.FirstName @item.User.LastName</a>
                                 | @item.DatePosted.ToString("MMM d, yyyy")
                             </div>
                             <div class="article-summary-container">

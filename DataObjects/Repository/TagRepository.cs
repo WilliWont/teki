@@ -13,6 +13,9 @@ namespace DataObjects.Repository
 
         }
 
-       
+        public void UpdateTag(Tag tag)
+        {
+            _context.Update(tag);
+        }
     }
 }

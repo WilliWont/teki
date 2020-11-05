@@ -252,11 +252,12 @@ namespace ActionServices
         public bool DeleteTag(int id)
         {
             Tag tag = tagRepository.GetByID(id);
-            if (tag == null)
+            if (!tag.IsActive)
             {
                 return false;
             }
-            tagRepository.Remove(tag);
+            tag.IsActive = false;
+            tagRepository.UpdateTag(tag);
             return true;
         }
         public IQueryable<Bookmark> GetBookmarks(ApplicationUser user, bool includeArticle)
