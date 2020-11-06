@@ -8,6 +8,7 @@ namespace BusinessObjects
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool IsActive { get; set; }
         // Navigation properties
         //public ICollection<Article> Articles { get; set; }
         public List<ArticleTag> ArticleTags { get; set; }
