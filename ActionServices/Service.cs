@@ -1,4 +1,7 @@
-﻿using BusinessObjects;
+﻿using Amazon.Runtime;
+using Amazon.S3;
+using Amazon.S3.Transfer;
+using BusinessObjects;
 using DataObjects;
 using DataObjects.IRepository;
 using DataObjects.Repository;
@@ -262,6 +265,29 @@ namespace ActionServices
         public IQueryable<Bookmark> GetBookmarks(ApplicationUser user, bool includeArticle)
         {
             return bookmarkRepository.GetBookmarks(user, true);
+        }
+
+        public async Task UploadToS3(string bucketName, byte[] file, string fileName)
+        {
+            var credentials = new BasicAWSCredentials("AKIAI5KVREZYILJBEQJQ", "7E8hfo/u1epkWQf6LaPldokLPn94pxgCIy/zA/vQ");
+            var config = new AmazonS3Config
+            {
+                RegionEndpoint = Amazon.RegionEndpoint.APSoutheast1
+            };
+            using var client = new AmazonS3Client(credentials, config);
+
+            await using var newMemoryStream = new MemoryStream(file);
+
+            var uploadRequest = new TransferUtilityUploadRequest
+            {
+                InputStream = newMemoryStream,
+                Key = fileName,
+                BucketName = bucketName,
+                CannedACL = S3CannedACL.PublicRead
+            };
+
+            var fileTransferUtility = new TransferUtility(client);
+            await fileTransferUtility.UploadAsync(uploadRequest);
         }
         //public bool DeleteArticlesByAdmin(Guid id)
         //{

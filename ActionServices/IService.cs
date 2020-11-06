@@ -46,5 +46,8 @@ namespace ActionServices
         bool DeleteTag(int id);
 
         Task<bool> Commit();
+
+        // Cloud Service
+        Task UploadToS3(string bucketName, byte[] file, string fileName);
     }
 }

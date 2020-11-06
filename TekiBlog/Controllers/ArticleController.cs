@@ -190,6 +190,7 @@ namespace TekiBlog.Controllers
                 
                 article.CoverImage = _service.CropImage(articleImage, new Rectangle(0,0,1280, 720),ImageFormat.Jpeg);
                 article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(600 / 3, 0, 600, 450), ImageFormat.Jpeg);
+
             }
             catch
             {
@@ -227,7 +228,11 @@ namespace TekiBlog.Controllers
                 {
                     _logger.LogInformation($"user {user.Id} posted article {articleModel.ID} with status ${status.Name}");
 
-                    if (ModelState.IsValid)
+                await _service.UploadToS3("teki-cover-bucket",article.CoverImage, $"{articleModel.ID}");
+                await _service.UploadToS3("teki-thumbnail-bucket",article.ThumbnailImage, $"{articleModel.ID}");
+
+
+                if (ModelState.IsValid)
                     {
                         return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
                     }
@@ -289,6 +294,9 @@ namespace TekiBlog.Controllers
                     {
                         pastArticle.CoverImage = article.CoverImage;
                         pastArticle.ThumbnailImage = article.ThumbnailImage;
+
+                        await _service.UploadToS3("teki-cover-bucket", article.CoverImage, $"{pastArticle.ID}");
+                        await _service.UploadToS3("teki-thumbnail-bucket", article.ThumbnailImage, $"{pastArticle.ID}");
                     }
 
                     _service.UpdateArticle(pastArticle);
@@ -379,6 +387,9 @@ namespace TekiBlog.Controllers
                 {
                     toAdd.CoverImage = article.CoverImage;
                     toAdd.ThumbnailImage = article.ThumbnailImage;
+
+                    await _service.UploadToS3("teki-cover-bucket", toAdd.CoverImage, $"{toAdd.ID}");
+                    await _service.UploadToS3("teki-thumbnail-bucket", toAdd.ThumbnailImage, $"{toAdd.ID}");
                 }
 
                 _service.AddArticle(toAdd);

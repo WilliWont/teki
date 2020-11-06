@@ -23,7 +23,9 @@
 @section CoverImg{
     <div class="article-header">
         <div class="article-img-container">
-            <img id="article-img-cover" src="@ViewData["ArticleCoverImg"]" />
+            @*<img id="article-img-cover" src="@ViewData["ArticleCoverImg"]" />*@
+            <img id="article-img-cover" src="https://teki-cover-bucket.s3.amazonaws.com/@Model.ID" />
+
         </div>
         <div class="flx-container article-header-info-container">
             <div class="article-header-info-inner col-9">
