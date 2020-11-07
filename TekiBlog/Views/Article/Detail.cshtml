@@ -7,6 +7,8 @@
     ViewData["Title"] = "Detail";
 }
 
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 @section Styles{
     @*<link rel="stylesheet" href="~/css/detail.css" />*@
@@ -15,17 +17,20 @@
 }
 
 @section Scripts{
-@*    <script src="~/js/detail.js"></script>*@
+    @*    <script src="~/js/detail.js"></script>*@
     <script src="~/js/detail.min.js" asp-append-version="true"></script>
 
 }
 
 @section CoverImg{
+    @{
+        string img = $"{@Configuration["Credentials:AWS:ImagePathPre"]}{Configuration["Credentials:AWS:ImageBucket"]}{@Configuration["Credentials:AWS:ImagePathPost"]}";
+    }
+
     <div class="article-header">
         <div class="article-img-container">
             @*<img id="article-img-cover" src="@ViewData["ArticleCoverImg"]" />*@
-            <img id="article-img-cover" src="https://teki-cover-bucket.s3.amazonaws.com/@Model.ID" />
-
+            <img id="article-img-cover" src="@img/@Model.ID" />
         </div>
         <div class="flx-container article-header-info-container">
             <div class="article-header-info-inner col-9">

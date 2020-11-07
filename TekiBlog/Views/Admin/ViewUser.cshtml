@@ -1,79 +1,93 @@
 ﻿@model TekiBlog.ViewModels.PaginatedList<ApplicationUser>
 
-<partial name="_ManageNav" />
-@if (Model.Any())
-{
-    <div class="container">
-        <div class="col-9">
-            <table class="table">
-                <thead class="black white-text">
-                    <tr>
-                        <th scope="col">
-                            UserID
-                        </th>
-                        <th scope="col">
-                            User Name
-                        </th>
-                        <th>
-                            Full Name
-                        </th>
-                        <th scope="col">
-                            Email
-                        </th>
-                        <th scope="col">
-                            Status
-                        </th>
-                        <th scope="col">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var user in Model)
-                    {
-                        <tr>
-                            <td>
-                                @user.Id
-                            </td>
-                            <td>
-                                <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@user.Id">@user.UserName</a>
-                            </td>
-                            <td>
-                                @user.FirstName @user.LastName
-                            </td>
-                            <td>
-                                @user.Email
-                            </td>
-                            <td>
-                                
-                            </td>
-                            <td>
-                                
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+@section Styles{
+    <link rel="stylesheet" href="~/css/admin.min.css" asp-append-version="true">
+}
+
+@section Scripts{
+    <script>
+        $("#user-nav").addClass("selected");
+        $(".body-content").addClass("col-12");
+    </script>
+}
+
+<div class="main-container">
+    <div class="container-left">
+        <partial name="_ManageNav" />
     </div>
+    <div class="container-right">
+        @if (Model.Any())
+        {
+            <div class="">
+                <div class="col-12">
+                    <table class="table">
+                        <thead class="black white-text">
+                            <tr>
+                                <th scope="col">
+                                    UserID
+                                </th>
+                                <th scope="col">
+                                    User Name
+                                </th>
+                                <th>
+                                    Full Name
+                                </th>
+                                <th scope="col">
+                                    Email
+                                </th>
+                                <th scope="col">
+                                    Status
+                                </th>
+                                <th scope="col">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @user.Id
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@user.Id">@user.UserName</a>
+                                    </td>
+                                    <td>
+                                        @user.FirstName @user.LastName
+                                    </td>
+                                    <td>
+                                        @user.Email
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            <div class="page-btn-container">
 
-    <a asp-controller="Admin"
-       asp-action="ViewUser"
-       asp-route-pageNumber="@(Model.PageIndex - 1)"
-       class="btn btn-default @prevDisabled">
-        Previous
-    </a>
-    <a asp-controller="Admin"
-       asp-action="ViewUser"
-       asp-route-pageNumber="@(Model.PageIndex + 1)"
-       class="btn btn-default @nextDisabled">
-        Next
-    </a>
-}
-else
-{
-    <h1>No user found</h1>
-}
+                <a asp-controller="Admin"
+                   asp-action="ViewUser"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   class="btn btn-default btn-prev @prevDisabled">
+                </a>
+                <a asp-controller="Admin"
+                   asp-action="ViewUser"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   class="btn btn-default btn-next @nextDisabled">
+                </a>
+            </div>
+                }
+                else
+                {
+                <h1>No user found</h1>
+                }
+            </div>

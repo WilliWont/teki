@@ -1,67 +1,80 @@
 ﻿@model IEnumerable<Tag>
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/admin.min.css" asp-append-version="true">
+}
 
+@section Scripts{
+    <script>
+        $("#tag-nav").addClass("selected");
+        $(".body-content").addClass("col-12");
+    </script>
+}
 
-<partial name="_ManageNav" />
+<div class="main-container">
+    <div class="container-left">
+        <partial name="_ManageNav" />
+    </div>
+<div class="container-right">
+        <span class="text-success">
+            @TempData["CreateMessageStatus"]
+        </span>
+        <span class="text-danger">
+            @TempData["DeleteMessageStatus"]
+        </span>
 
-<span class="text-danger">
-    @TempData["CreateMessageStatus"]
-</span>
-<span class="text-danger">
-    @TempData["DeleteMessageStatus"]
-</span>
-
-<form asp-controller="Admin" asp-action="CreateTag" class="form-inline my-2 my-lg-0" method="get">
-    <input class="form-control" type="text" name="tagName" placeholder="Add new Tag here" />
-    <input class="btn btn-success" type="submit" value="Add" />
-</form>
-<br />
-@if (Model.Any())
-{
-    <table class="table">
-        <thead class="black white-text">
-            <tr>
-                <th scope="col">
-                    ID
-                </th>
-                <th scope="col">
-                    Name
-                </th>
-                <th scope="col">
-                    Update
-                </th>
-                <th scope="col">
-                    Delete
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @item.Id
-                    </td>
-                    <td>
-                        @item.Name
-                    </td>
-                    <td>
-                        <button class="btn btn-info">Update</button>
-                    </td>
-                    <td>
-                        <a asp-controller="Admin"
-                           asp-action="DeleteTag"
-                           asp-route-id="@item.Id"
-                           class="btn btn-danger">
+        <form asp-controller="Admin" asp-action="CreateTag" class="form-inline my-2 my-lg-0" method="get">
+            <input class="form-control" type="text" name="tagName" placeholder="Add new Tag here" />
+            <input class="btn btn-success" type="submit" value="Add" />
+        </form>
+        <br />
+        @if (Model.Any())
+        {
+            <table class="table">
+                <thead class="black white-text">
+                    <tr>
+                        <th scope="col">
+                            ID
+                        </th>
+                        <th scope="col">
+                            Name
+                        </th>
+                        <th scope="col">
+                            Update
+                        </th>
+                        <th scope="col">
                             Delete
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <h2>No tag is displayed</h2>
-}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                <button class="btn btn-info">Update</button>
+                            </td>
+                            <td>
+                                <a asp-controller="Admin"
+                                   asp-action="DeleteTag"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-danger">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h2>No tag is displayed</h2>
+        }
+</div>

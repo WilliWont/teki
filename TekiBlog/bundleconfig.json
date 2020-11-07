@@ -1,5 +1,11 @@
 [
 	{
+		"outputFileName": "wwwroot/css/error.min.css",
+		"inputFiles": [
+			"wwwroot/css/error.css"
+		]
+	},
+	{
 		"outputFileName": "wwwroot/css/site.min.css",
 		"inputFiles": [
 			"wwwroot/css/site.css"
@@ -24,6 +30,19 @@
 			"wwwroot/css/notification.css",
 			"wwwroot/css/article-card.css",
 			"wwwroot/css/homepage.css"
+		]
+	},
+	{
+		"outputFileName": "wwwroot/css/admin.min.css",
+		"inputFiles": [
+			"wwwroot/css/admin.css"
+		]
+	},
+	{
+		"outputFileName": "wwwroot/css/search.min.css",
+		"inputFiles": [
+			"wwwroot/css/article-card.css",
+			"wwwroot/css/search.css"
 		]
 	},
 	{

@@ -1,0 +1,11 @@
+﻿:root {
+    --card-width: 24vw;
+    --card-height: 18vw;
+}
+.article-link > .article-link-title {
+    font-size: 2rem;
+}
+
+.btn-compose-container{
+    display:none;
+}

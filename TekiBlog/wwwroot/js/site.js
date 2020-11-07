@@ -2,3 +2,6 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+$("img").on("error", function () {
+    $(this).attr("src", "/img/empty.jpg");
+});

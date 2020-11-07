@@ -5,16 +5,15 @@
 @inject UserManager<ApplicationUser> UserManager;
 @inject SignInManager<ApplicationUser> SignInManager;
 
-@section Styles{
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
+@section Styles{
     @*<link rel="stylesheet" href="~/css/notification.css">*@
     @*<link rel="stylesheet" href="~/css/article-card.css">*@
     @*<link rel="stylesheet" href="~/css/homepage.css">*@
     <link rel="stylesheet" href="~/css/homepage.min.css" asp-append-version="true">
-
-
 }
-
 
 @section Scripts{
     @*<script src="~/js/notification.js"></script>
@@ -29,24 +28,16 @@
         <div class="article-card-list-container col-12">
             <a id="href-remove-template" class="d-none" asp-controller="Bookmark" asp-action="BookmarkRemove"></a>
             <a id="href-add-template" class="d-none" asp-controller="Bookmark" asp-action="BookmarkAdd"></a>
-
+            @{
+                string img = $"{@Configuration["Credentials:AWS:ImagePathPre"]}{Configuration["Credentials:AWS:ThumbnailBucket"]}{@Configuration["Credentials:AWS:ImagePathPost"]}";
+            }
             @foreach (var item in Model.Articles)
             {
                 <div class="article-card-container">
                     <div class="article-link-container">
                         <div class="article-thumbnail-container">
                             <a class="article-link" asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">
-                                @if (item.ThumbnailImage != null)
-                                {
-                                    var base64 = Convert.ToBase64String(item.ThumbnailImage);
-                                    var imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
-                                    <img class="article-link-img" src="https://teki-thumbnail-bucket.s3.amazonaws.com/@item.ID" />
-                                }
-                                else
-                                {
-                                    <img class="article-link-img" src="~/img/empty.jpg" />
-                                }
-
+                                <img class="article-link-img" src="@img/@item.ID" />
                             </a>
                         </div>
                         <div class="article-info-container">
@@ -97,18 +88,18 @@
         var prevDisabled = !Model.Articles.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.Articles.HasNextPage ? "disabled" : "";
 
-        <a asp-controller="Article"
-           asp-action="Home"
-           asp-route-pageNumber="@(Model.Articles.PageIndex - 1)"
-           class="btn btn-default @prevDisabled">
-            Previous
-        </a>
-        <a asp-controller="Article"
-           asp-action="Home"
-           asp-route-pageNumber="@(Model.Articles.PageIndex + 1)"
-           class="btn btn-default @nextDisabled">
-            Next
-        </a>
+        <div class="page-btn-container">
+            <a asp-controller="Article"
+               asp-action="Home"
+               asp-route-pageNumber="@(Model.Articles.PageIndex - 1)"
+               class="btn btn-default btn-prev @prevDisabled">
+            </a>
+            <a asp-controller="Article"
+               asp-action="Home"
+               asp-route-pageNumber="@(Model.Articles.PageIndex + 1)"
+               class="btn btn-default btn-next @nextDisabled">
+            </a>
+        </div>
     }
     else
     {

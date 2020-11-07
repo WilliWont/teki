@@ -268,13 +268,26 @@ namespace ActionServices
             return bookmarkRepository.GetBookmarks(user, true);
         }
 
-        public async Task UploadToS3(string bucketName, byte[] file, string fileName)
+        public async Task UploadToS3(string credAddr, string bucketName, byte[] file, string fileName)
         {
-            var credentials = new BasicAWSCredentials("AKIAI5KVREZYILJBEQJQ", "7E8hfo/u1epkWQf6LaPldokLPn94pxgCIy/zA/vQ");
+            List<string> keys = new List<string>();
+            using (var reader = new StreamReader(credAddr))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split('=');
+
+                    keys.Add(values[1]);
+                }
+            }
+
+            var credentials = new BasicAWSCredentials(keys[0], keys[1]);
             var config = new AmazonS3Config
             {
                 RegionEndpoint = Amazon.RegionEndpoint.APSoutheast1
             };
+
             using var client = new AmazonS3Client(credentials, config);
 
             await using var newMemoryStream = new MemoryStream(file);

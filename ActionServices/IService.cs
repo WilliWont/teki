@@ -48,6 +48,6 @@ namespace ActionServices
         Task<bool> Commit();
 
         // Cloud Service
-        Task UploadToS3(string bucketName, byte[] file, string fileName);
+        Task UploadToS3(string credAddr, string bucketName, byte[] file, string fileName);
     }
 }

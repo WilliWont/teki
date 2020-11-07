@@ -1,0 +1,25 @@
+﻿@model TekiBlog.ViewModels.ErrorViewModel
+@{
+    Layout = "";
+}
+<head>
+<link rel="icon" href="~/favicon.png" sizes="32x32" type="image/png">
+<title>Error - @Model?.StatusCode</title>
+<link rel="stylesheet" href="~/css/error.min.css">
+</head>
+<body>
+    <div class="error-container">
+        <h1>@Model?.StatusCode</h1>
+
+        @if (Model.StatusDescription == null)
+        {
+            <div>Looks like something went wrong</div>
+        }
+        else
+        {
+            <div>@Model.StatusDescription</div>
+        }
+
+        <a asp-action="Home" asp-controller="Article">Home</a>
+    </div>
+</body>
