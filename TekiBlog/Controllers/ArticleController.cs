@@ -44,7 +44,7 @@ namespace TekiBlog.Controllers
             _service = service;
             _validation = validation;
         }
-
+        
         public async Task<IActionResult> Home(int? pageNumber)
         {
             _logger.LogInformation("Article home is called");
@@ -219,8 +219,12 @@ namespace TekiBlog.Controllers
                     string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
                     string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
                     string addr = _configuration.GetValue<string>("Credentials:AWS:CredentialAddress");
-                    await _service.UploadToS3(addr, iB, article.CoverImage, $"{articleModel.ID}");
-                    await _service.UploadToS3(addr, tB, article.ThumbnailImage, $"{articleModel.ID}");
+
+                    string k = $"{_configuration.GetValue<string>("Credentials:AWS:k1")}{_configuration.GetValue<string>("Credentials:AWS:k2")}{_configuration.GetValue<string>("Credentials:AWS:k3")}";
+                    string sK = $"{_configuration.GetValue<string>("Credentials:AWS:k4")}{_configuration.GetValue<string>("Credentials:AWS:k5")}{_configuration.GetValue<string>("Credentials:AWS:k6")}";
+
+                    await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{articleModel.ID}");
+                    await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{articleModel.ID}");
                 }
                 catch
                 {
@@ -304,9 +308,12 @@ namespace TekiBlog.Controllers
                         {
                             string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
                             string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
-                            string addr = _configuration.GetValue<string>("Credentials:AWS:CredentialAddress");
-                            await _service.UploadToS3(addr, iB, article.CoverImage, $"{pastArticle.ID}");
-                            await _service.UploadToS3(addr, tB, article.ThumbnailImage, $"{pastArticle.ID}");
+
+                            string k = $"{_configuration.GetValue<string>("Credentials:AWS:k1")}{_configuration.GetValue<string>("Credentials:AWS:k2")}{_configuration.GetValue<string>("Credentials:AWS:k3")}";
+                            string sK = $"{_configuration.GetValue<string>("Credentials:AWS:k4")}{_configuration.GetValue<string>("Credentials:AWS:k5")}{_configuration.GetValue<string>("Credentials:AWS:k6")}";
+
+                            await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{pastArticle.ID}");
+                            await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{pastArticle.ID}");
                         }
                         catch
                         {
@@ -401,11 +408,14 @@ namespace TekiBlog.Controllers
                 if (article.CoverImage != null & article.ThumbnailImage != null)
                     try
                     {
-                    string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
-                    string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
-                    string addr = _configuration.GetValue<string>("Credentials:AWS:CredentialAddress");
-                    await _service.UploadToS3(addr, iB, article.CoverImage, $"{draftArticle.ID}");
-                    await _service.UploadToS3(addr, tB, article.ThumbnailImage, $"{draftArticle.ID}");
+                        string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
+                        string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
+
+                        string k = $"{_configuration.GetValue<string>("Credentials:AWS:k1")}{_configuration.GetValue<string>("Credentials:AWS:k2")}{_configuration.GetValue<string>("Credentials:AWS:k3")}";
+                        string sK = $"{_configuration.GetValue<string>("Credentials:AWS:k4")}{_configuration.GetValue<string>("Credentials:AWS:k5")}{_configuration.GetValue<string>("Credentials:AWS:k6")}";
+
+                        await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{draftArticle.ID}");
+                        await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{draftArticle.ID}");
                     }
                     catch
                     {
