@@ -1,5 +1,7 @@
 ﻿@model TekiBlog.ViewModels.LoginViewModel
-
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
 <h2>Log in</h2>
 <div class="row">
     <div class="col-md-4">

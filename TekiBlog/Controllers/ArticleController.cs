@@ -125,6 +125,7 @@ namespace TekiBlog.Controllers
 
             ViewData["ContentMaxLen"] = _validation.GetMaxLen("ArticleRaw");
             ViewData["ContentMinLen"] = _validation.GetMinLen("ArticleRaw");
+
             #endregion
 
             if (id != null)
@@ -137,6 +138,7 @@ namespace TekiBlog.Controllers
                     {
                         return View(new CreateArticleViewModel
                         {
+                            Id = article.ID,
                             ArticleContent = article.ContentHtml,
                             Title = article.Title,
                             Summary = article.Summary,
@@ -164,6 +166,7 @@ namespace TekiBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostArticle(CreateArticleViewModel article)
         {
+
             try
             {
                 int iW = _configuration.GetValue<int>("Article:Image:Width");
@@ -202,6 +205,7 @@ namespace TekiBlog.Controllers
                 Title = article.Title?.Trim(),
                 Summary = article.Summary?.Trim(),
                 DatePosted = publishDate,
+                LastUpdate = DateTime.UtcNow,
                 CurrentVote = 0,
                 ContentHtml = html,
                 ContentRaw = raw?.Trim(),
@@ -213,6 +217,7 @@ namespace TekiBlog.Controllers
 
             if (await _service.Commit())
             {
+                bool uploadValid;
 
                 try
                 {
@@ -225,15 +230,18 @@ namespace TekiBlog.Controllers
 
                     await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{articleModel.ID}");
                     await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{articleModel.ID}");
+
+                    uploadValid = true;
                 }
                 catch
                 {
+                    uploadValid = false;
                     _logger.LogInformation($"failed to upload image of article {articleModel.ID} to AWS");
                 }
 
                 _logger.LogInformation($"user {user.Id} posted article {articleModel.ID} with status ${status.Name}");
 
-                if (ModelState.IsValid)
+                if (ModelState.IsValid && uploadValid)
                     {
                         return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
                     }
@@ -258,6 +266,7 @@ namespace TekiBlog.Controllers
             {
                 int iW = _configuration.GetValue<int>("Article:Image:Width");
                 int iH = _configuration.GetValue<int>("Article:Image:Height");
+
                 int tW = _configuration.GetValue<int>("Article:Thumbnail:Width");
                 int tH = _configuration.GetValue<int>("Article:Thumbnail:Height");
 
@@ -279,7 +288,9 @@ namespace TekiBlog.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
+
             var pastArticle = _service.GetArticle(article.Id);
+            
             if (pastArticle.User.Id.Equals(user.Id))
             {
                 string statusType = ( ModelState.IsValid ) ? "Active" : "Draft";
@@ -292,6 +303,7 @@ namespace TekiBlog.Controllers
                 pastArticle.ContentRaw = article.ArticleRaw?.Trim();
                 pastArticle.Title = article.Title?.Trim();
                 pastArticle.Summary = article.Summary?.Trim();
+                pastArticle.LastUpdate = DateTime.UtcNow;
                 pastArticle.Status = status;
 
                 if(ModelState.IsValid && pastArticle.DatePosted == DateTime.MinValue)
@@ -303,6 +315,8 @@ namespace TekiBlog.Controllers
 
                 if (await _service.Commit())
                 {
+                    bool uploadValid = true;
+
                     if(article.CoverImage != null & article.ThumbnailImage != null)
                         try
                         {
@@ -317,12 +331,13 @@ namespace TekiBlog.Controllers
                         }
                         catch
                         {
+                            uploadValid = false;
                             _logger.LogInformation($"failed to upload image of article {pastArticle.ID} to AWS");
                         }
 
                     _logger.LogInformation($"user {user.Id} updated article {pastArticle.ID} with status ${status.Name}");
 
-                    if (ModelState.IsValid)
+                    if (ModelState.IsValid && uploadValid)
                     {
                         return RedirectToAction("Detail", "Article", new { id = pastArticle.ID });
                     }
@@ -336,7 +351,7 @@ namespace TekiBlog.Controllers
             else
             _logger.LogInformation($"user {user?.Id} tried updating {pastArticle.User.Id}'s article");
 
-            return NotFound();
+            return Forbid();
         }
 
         [HttpPost]
@@ -368,7 +383,9 @@ namespace TekiBlog.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
+
             var draftArticle = _service.GetArticle(article.Id);
+            
             bool toUpdate = ( ( draftArticle != null ) && draftArticle.User.Id.Equals(user.Id) );
 
             Status draft = _service.GetStatus("Draft");
@@ -382,6 +399,7 @@ namespace TekiBlog.Controllers
                 draftArticle.ContentRaw = article.ArticleRaw?.Trim();
                 draftArticle.Title = article.Title?.Trim();
                 draftArticle.Summary = article.Summary?.Trim();
+                draftArticle.LastUpdate = DateTime.UtcNow;
                 draftArticle.Status = draft;
 
                 _service.UpdateArticle(draftArticle);
@@ -395,7 +413,8 @@ namespace TekiBlog.Controllers
                     Title = article.Title?.Trim(),
                     Summary = article.Summary?.Trim(),
                     User = user,
-                    DatePosted =DateTime.UtcNow,
+                    DatePosted = DateTime.UtcNow,
+                    LastUpdate = DateTime.UtcNow,
                     Status = draft
                 };
 
@@ -423,7 +442,7 @@ namespace TekiBlog.Controllers
                     }
 
                 _logger.LogInformation($"user {user.Id} saved article {draftArticle?.ID}");
-                return Ok();
+                return Ok(draftArticle.ID);
 
             } // exit if unable to update
 
@@ -497,6 +516,15 @@ namespace TekiBlog.Controllers
             }
 
             return View(viewModel);
+        }
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UserDrafts()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            List<Article> drafts = await _service.GetUserDrafts(user).ToListAsync();
+            _logger.LogInformation($"user {user.Id} requested {drafts.Count} drafts");
+            return PartialView("_UserDraftListPartial", drafts);
         }
     }
 }

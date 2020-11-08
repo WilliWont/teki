@@ -1,0 +1,50 @@
+﻿@model List<Article>
+
+<div id="draft-modal" class="modal fade show" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa fa-pencil-square"></i> Your Drafts</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody class="draft-tbody">
+                        @foreach (Article article in Model)
+                        {
+                        <tr editor-id="@article.ID" class="draft-row">
+                            @if (article.Title == null)
+                            {
+                                <td class="empty">Untitled Article</td>
+                            }
+                            else
+                            {
+                                <td>@article.Title</td>
+                            }
+                            <td>@article.LastUpdate</td>
+                        </tr>
+                        }
+                        <tr class="draft-row">
+                            <td colspan="2">New Article...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-dismiss="modal">Close</button>
+                <form asp-controller="Article" asp-action="Editor">
+                    <input id="editor-id" type="hidden" name="id"/>
+                    <input type="submit" class="btn btn-primary" value="Accept"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

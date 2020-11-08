@@ -2,86 +2,113 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> userManager;
 
-@section Styles{ 
-    <link rel="stylesheet" href="~/css/profile.css"/>
+@section Styles{
+    <link rel="stylesheet" href="~/css/notification.css" />
+    <link rel="stylesheet" href="~/css/profile.css" />
 }
 
-@{
-    var user = await userManager.GetUserAsync(User);
-    <header>
-        <h1>
-            @user.FirstName @user.LastName
-        </h1>
-        <h4>
-            @user.UserName
-        </h4>
-        <h5>
-            @user.Email
-        </h5>
-    </header>
-    <div class="container-fluid">
-        <div class="col-12">
-            <table class="table">
-                <thead class="black white-text">
-                    <tr class="d-flex">
-                        <th scope="col" class="col-1">
-                            #
-                        </th>
-                        <th scope="col" class="col-5">
-                            Title
-                        </th>
-                        <th scope="col" class="col-1">
-                            Status
-                        </th>
-                        <th scope="col" class="col-5">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        var num = 0;
-                        foreach (var item in Model)
-                        {
-                            num = num + 1;
-                            <tr class="d-flex">
-                                <td class="col-1">
-                                    @num
-                                </td>
-                                <td class="col-5 tbl-title">
-                                    @if (item.Title != null)
-                                    {
-                                        <span>@item.Title</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="empty">untitled article</span>
-                                    }
-                                </td>
-                                <td class="col-1">
-                                    @item.Status.Name
-                                </td>
-                                <td class="col-5">
-                                    <a class="btn btn-secondary" asp-controller="Article" asp-action="Editor" asp-route-id="@item.ID">Update</a>
-                                    @if (item.Status.Name.Equals("Disable"))
-                                    {
-                                        <a class="btn btn-secondary" asp-controller="Article" asp-action="ModifyArticle" asp-route-id="@item.ID" asp-route-type="Active">Enable</a>
-                                    }
-                                    @if (item.Status.Name.Equals("Active"))
-                                    {
-                                        <a class="btn btn-secondary" asp-controller="Article" asp-action="ModifyArticle" asp-route-id="@item.ID" asp-route-type="Disable">Disable</a>
-                                    }
-                                    <a class="btn btn-secondary" asp-controller="Article" asp-action="ModifyArticle" asp-route-id="@item.ID" asp-route-type="Deleted">Delete</a>
-                                    <a class="btn btn-secondary" asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">View</a>
-                                </td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+@section Scripts{
+    <script src="~/js/compose.js" asp-append-version="true"></script>
+    <script src="~/js/notification.js"></script>
 }
+
+@section MidBody{
+    <partial name="_ComposePartial" />
+}
+
+<partial name="_NotificationPartial">
+
+    @{
+        var user = await userManager.GetUserAsync(User);
+        <header>
+            <h1>
+                @user.FirstName @user.LastName
+            </h1>
+            <h4>
+                @user.UserName
+            </h4>
+            <h5>
+                @user.Email
+            </h5>
+        </header>
+        <div class="container-fluid">
+            <div class="col-12">
+                <table class="table">
+                    <thead class="black white-text">
+                        <tr class="d-flex">
+                            <th scope="col" class="col-1">
+                                #
+                            </th>
+                            <th scope="col" class="col-5">
+                                Title
+                            </th>
+                            <th scope="col" class="col-1">
+                                Status
+                            </th>
+                            <th scope="col" class="col-5">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var num = 0;
+                            foreach (var item in Model)
+                            {
+                                num = num + 1;
+                                <tr class="d-flex">
+                                    <td class="col-1">
+                                        @num
+                                    </td>
+                                    <td class="col-5 tbl-title">
+                                        @if (item.Title != null)
+                                        {
+                                            <span>@item.Title</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="empty">untitled article</span>
+                                        }
+                                    </td>
+                                    <td class="col-1">
+                                        @if (item.Status.Name.Equals("Deleted"))
+                                        {
+                                            <span class="badge badge-danger">@item.Status.Name</span>
+                                        }
+                                        else if (item.Status.Name.Equals("Active"))
+                                        {
+                                            <span class="badge badge-success">@item.Status.Name</span>
+                                        }
+                                        else if (item.Status.Name.Equals("Draft"))
+                                        {
+                                            <span class="badge badge-info">@item.Status.Name</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-secondary">@item.Status.Name</span>
+                                        }
+                                    </td>
+                                    <td class="col-5">
+                                        <a class="btn btn-secondary" asp-controller="Article" asp-action="Editor" asp-route-id="@item.ID">Update</a>
+                                        @if (item.Status.Name.Equals("Disable"))
+                                        {
+                                            <a class="btn btn-secondary" asp-controller="Article" asp-action="ModifyArticle" asp-route-id="@item.ID" asp-route-type="Active">Enable</a>
+                                        }
+                                        @if (item.Status.Name.Equals("Active"))
+                                        {
+                                            <a class="btn btn-secondary" asp-controller="Article" asp-action="ModifyArticle" asp-route-id="@item.ID" asp-route-type="Disable">Disable</a>
+                                        }
+                                        <a class="btn btn-secondary" asp-controller="Article" asp-action="ModifyArticle" asp-route-id="@item.ID" asp-route-type="Deleted">Delete</a>
+                                        <a class="btn btn-secondary" asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">View</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
 
 
 

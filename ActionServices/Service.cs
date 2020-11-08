@@ -70,6 +70,11 @@ namespace ActionServices
             return articleRepository.GetArticlesByUser(user);
         }
 
+        public IQueryable<Article> GetUserDrafts(ApplicationUser user)
+        {
+            return articleRepository.GetUserDrafts(user);
+        }
+
         public bool UpdateArticle(Article article)
         {
             return articleRepository.UpdateArticle(article);

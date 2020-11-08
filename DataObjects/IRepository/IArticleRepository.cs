@@ -19,5 +19,7 @@ namespace DataObjects
 
         IQueryable<Article> GetArticlesForViewer(ApplicationUser user);
         IQueryable<Article> GetArticlesForAdmin();
+
+        IQueryable<Article> GetUserDrafts(ApplicationUser user);
     }
 }

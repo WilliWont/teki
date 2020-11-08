@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TekiBlog</title>
+    <title>Teki</title>
     <link rel="icon" href="~/favicon.png" sizes="32x32" type="image/png">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -31,18 +31,19 @@
 
         </nav>
     </header>
-
-    <partial name="_ComposePartial" />
+    @RenderSection("MidBody", required: false)
     @RenderSection("CoverImg", required: false)
-    <div class="container body-content">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+<div class="container body-content">
+    <div id="modal-container"></div>
+
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - TekiBlog - <a href="#">Project Report</a>
+            &copy; 2020 - Teki - <a href="#">Project Report</a>
         </div>
     </footer>
 

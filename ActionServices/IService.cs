@@ -22,6 +22,7 @@ namespace ActionServices
         IQueryable<Article> GetArticleForViewer(ApplicationUser user);
         IQueryable<Article> GetArticleByStatus(string status);
         IQueryable<Article> GetArticleForAdmin();
+        IQueryable<Article> GetUserDrafts(ApplicationUser user);
         void GetImage(out byte[] img, HttpRequest req);
         byte[] ResizeImgageByWidth(byte[] originalBytes, int w, ImageFormat format);
         byte[] CropImage(byte[] originalBytes, Rectangle crop, ImageFormat format);

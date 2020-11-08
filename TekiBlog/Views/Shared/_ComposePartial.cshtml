@@ -11,8 +11,9 @@
     if (!role.Contains("Admin"))
     {
         <div class="btn-compose-container">
-            <a asp-area="" asp-controller="Article" asp-action="Editor">
+            <a id="btn-compose">
                 <span class="circle">
+                    <div class="loader-compose d-none"></div>
                     <div class="vertical"></div>
                     <div class="horizontal"></div>
                 </span>

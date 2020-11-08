@@ -137,7 +137,7 @@
 
 .article-card-container:hover {
     transition: .25s ease;
-    box-shadow: 0 7px 12px rgba(0,0,0,0.15), 0 6px 6px rgba(0,0,0,0.18);
+    box-shadow: 0 7px 10px rgba(0,0,0,0.125), 0 6px 3px rgba(0,0,0,0.13);
 }
 
 .article-info-container {
@@ -276,22 +276,12 @@
 }
 
 .loader {
-    border: 3px solid rgb(255,255,255); /* Light grey */
-    border-top: 3px solid var(--main); /* Blue */
+    border: 3px solid rgb(255,255,255);
+    border-top: 3px solid var(--main);
     border-radius: 50%;
     width: var(--loader-size);
     height: var(--loader-size);
     animation: spin 1s ease infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
 }
 
 .page-btn-container {

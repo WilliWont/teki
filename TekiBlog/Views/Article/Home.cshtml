@@ -18,10 +18,16 @@
 @section Scripts{
     @*<script src="~/js/notification.js"></script>
         <script src="~/js/readinglist.js"></script>*@
+    <script src="~/js/compose.js" asp-append-version="true"></script>
     <script src="~/js/home.min.js" asp-append-version="true"></script>
 
     <script>$(".body-content").addClass("col-12");</script>
 }
+
+@section MidBody{
+    <partial name="_ComposePartial" />
+}
+
 <div class="home-page-left">
     @if (Model.Articles.Any())
     {

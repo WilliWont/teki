@@ -27,8 +27,9 @@ namespace DataObjects.Repository
         {
             IQueryable<Bookmark> bookmarks = _context.Bookmarks
                  .Include(a => a.User)
+                 .Include(a => a.Article)
                  .Select(a => a)
-                 .Where(a => a.User.Equals(user))
+                 .Where(a => a.User.Equals(user) && a.Article.Status.Name.Equals("Active"))
                  .OrderByDescending(a => a.DatePosted);
 
             return bookmarks;
@@ -43,7 +44,7 @@ namespace DataObjects.Repository
                     .Include(a => a.User)
                     .Include(b => b.Article)
                     .Select(a => a)
-                    .Where(a => a.User.Equals(user))
+                    .Where(a => a.User.Equals(user) && a.Article.Status.Name.Equals("Active"))
                     .OrderByDescending(a => a.DatePosted);
             }
             else
@@ -57,8 +58,9 @@ namespace DataObjects.Repository
         {
             IQueryable<Bookmark> bookmarks = _context.Bookmarks
                  .Include(a => a.User)
+                 .Include(b => b.Article)
                  .Select(a => a)
-                 .Where(a => a.Article.Equals(article))
+                 .Where(a => a.Article.Equals(article) && a.Article.Status.Name.Equals("Active"))
                  .OrderByDescending(a => a.DatePosted);
 
             return bookmarks;
