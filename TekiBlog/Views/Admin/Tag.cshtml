@@ -1,18 +1,27 @@
 ﻿@model IEnumerable<Tag>
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/admin.min.css" asp-append-version="true">
+}
 
+@section Scripts{
+    <script>
+        $("#tag-nav").addClass("selected");
+        $(".body-content").addClass("col-12");
+    </script>
+}
 
-<partial name="_ManageNav" />
-
-<span class="text-danger">
-    @TempData["CreateMessageStatus"]
-</span>
-<span class="text-danger">
-    @TempData["DeleteMessageStatus"]
-</span>
-<span class="text-danger">
-    @TempData["RestoreMessageStatus"]
-</span>
+<div class="main-container">
+    <div class="container-left">
+        <partial name="_ManageNav" />
+    </div>
+<div class="container-right">
+        <span class="text-success">
+            @TempData["CreateMessageStatus"]
+        </span>
+        <span class="text-danger">
+            @TempData["DeleteMessageStatus"]
+        </span>
 
 <form asp-controller="Admin" asp-action="CreateTag" class="form-inline my-2 my-lg-0" method="get">
     <input class="form-control" type="text" name="tagName" placeholder="Add new Tag here" />

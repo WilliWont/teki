@@ -13,3 +13,8 @@ jQuery(window).on('scroll', function () {
         $navbar.addClass('dark-nav');
     }
 });
+
+// Write your JavaScript code.
+$("img").on("error", function () {
+    $(this).addClass("d-none");
+});

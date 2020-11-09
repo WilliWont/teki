@@ -22,11 +22,7 @@
         cache: false,
         timeout: 600000,
         success: function (response) {
-            if (response != 0 && response != 1) {
-                displayNotification('Service not available right now, please try again later');
-            } else {
-                displayNotification('Drafted successfully');
-            }
+            displayNotification('Drafted successfully');
 
             $('#btnReturn').prop('disabled', false);
             $('#btnSave').prop('disabled', false);
@@ -34,6 +30,9 @@
             $('#btnSave').children(":first").removeClass('loader');
             fireAllValidation();
             validateSubmit();
+
+            $("#input-id").val(response);
+            $("#form").attr("action",$("#update-action-template").attr("action"));
         },
         error: function (req, status, error) {
             //$lastA.children(":first").removeClass('loader');

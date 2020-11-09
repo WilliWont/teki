@@ -1,5 +1,63 @@
-﻿@model TekiBlog.ViewModels.PaginatedList<Article>
+﻿@using Microsoft.AspNetCore.Identity
+@using BusinessObjects
 
+@model TekiBlog.ViewModels.HomePageViewModel
+@inject UserManager<ApplicationUser> UserManager;
+@inject SignInManager<ApplicationUser> SignInManager;
+
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@section Styles{
+    @*<link rel="stylesheet" href="~/css/notification.css">*@
+    @*<link rel="stylesheet" href="~/css/article-card.css">*@
+    @*<link rel="stylesheet" href="~/css/homepage.css">*@
+    <link rel="stylesheet" href="~/css/search.min.css" asp-append-version="true">
+}
+
+@section Scripts{
+    @*<script src="~/js/notification.js"></script>
+        <script src="~/js/readinglist.js"></script>*@
+    <script src="~/js/home.min.js" asp-append-version="true"></script>
+
+    <script>$(".body-content").addClass("col-12");</script>
+}
+
+@if (Model.Articles.Any())
+{
+
+    <div class="article-card-list-container col-12">
+        <h3>Search Result</h3>
+
+        <a id="href-remove-template" class="d-none" asp-controller="Bookmark" asp-action="BookmarkRemove"></a>
+        <a id="href-add-template" class="d-none" asp-controller="Bookmark" asp-action="BookmarkAdd"></a>
+        @{
+            string img = $"{@Configuration["Credentials:AWS:ImagePathPre"]}{Configuration["Credentials:AWS:ThumbnailBucket"]}{@Configuration["Credentials:AWS:ImagePathPost"]}";
+        }
+        @foreach (var item in Model.Articles)
+        {
+            <div class="article-card-container">
+                <div class="article-link-container">
+                    <div class="article-thumbnail-container">
+                        <a class="article-link" asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">
+                            <img class="article-link-img" src="@img/@item.ID" />
+                        </a>
+                    </div>
+                    <div class="article-info-container">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            var user = await UserManager.GetUserAsync(User);
+                            //var role = await UserManager
+                            var role = await UserManager.GetRolesAsync(user);
+                            if (!role.Contains("Admin"))
+                            {
+                                if (Model.UserBookmarks.Find(x => x.ArticleID.Equals(item.ID)) != null)
+                                {
+                                    <a class="read-later-link" asp-controller="Bookmark" asp-action="BookmarkRemove" asp-route-id="@item.ID"><i class="fa fa-bookmark"></i></a>
+                                }
+                                else
+                                {
+                                    <a class="read-later-link" asp-controller="Bookmark" asp-action="BookmarkAdd" asp-route-id="@item.ID"><i class="fa fa-bookmark-o"></i></a>
 
 @if (Model.Any())
 {
@@ -31,30 +89,32 @@
                     @item.Summary
                 </div>
             </div>
+
             <br />
         }
     </div>
 
+    var prevDisabled = !Model.Articles.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Articles.HasNextPage ? "disabled" : "";
 
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-
-    <a asp-controller="Article"
-       asp-action="Search"
-       asp-route-pageNumber="@(Model.PageIndex - 1)"
-       asp-route-searchValue = "@ViewData["SearchValue"]"
-       class="btn btn-default @prevDisabled">
-        Previous
-    </a>
-    <a asp-controller="Article"
-       asp-action="Search"
-       asp-route-pageNumber="@(Model.PageIndex + 1)"
-       asp-route-searchValue = "@ViewData["SearchValue"]"
-       class="btn btn-default @nextDisabled">
-        Next
-    </a>
+    <div class="page-btn-container">
+        <a asp-controller="Article"
+           asp-action="Search"
+           asp-route-pageNumber="@(Model.Articles.PageIndex - 1)"
+           asp-route-searchValue = "@ViewData["SearchValue"]"
+           class="btn btn-default btn-prev @prevDisabled">
+        </a>
+        <a asp-controller="Article"
+           asp-action="Search"
+           asp-route-pageNumber="@(Model.Articles.PageIndex + 1)"
+           asp-route-searchValue = "@ViewData["SearchValue"]"
+           class="btn btn-default btn-next @nextDisabled">
+        </a>
+    </div>
 }
 else
 {
-    <h1>No result found</h1>
+<div class="col-12 flx-container">
+    <h3>No result found</h3>
+</div>
 }

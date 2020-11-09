@@ -9,7 +9,8 @@ $(document).ready(function () {
             editor.on('init', function (e) {
                 editor.setContent($("#input-content").val());
                 firstValidation = false;
-                if ($('#input-id').val() != null) {
+                let input = $("#input-id").val();
+                if (input != null && input.length > 0) {
                     fireAllValidation();
                 }
                 validateSubmit();
@@ -73,6 +74,7 @@ function previewFile(input) {
         var reader = new FileReader();
 
         reader.onload = function () {
+            $("#article-img-cover").removeClass("d-none");
             $("#article-img-cover").attr("src", reader.result);
         }
         //$("#input-img-update").prop("checked", true);
@@ -95,3 +97,7 @@ jQuery(window).on('scroll', function () {
 function hideField(fieldName) {
     $(fieldName).addClass('d-none');
 }
+// Write your JavaScript code.
+$("img").on("error", function () {
+    $(this).addClass("d-none");
+});

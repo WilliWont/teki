@@ -20,21 +20,25 @@ using ValidationUtilities;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using Microsoft.Extensions.Configuration;
 
 namespace TekiBlog.Controllers
 {
     public class ArticleController : Controller
     {
+        private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<ArticleController> _logger;
         private readonly IService _service;
         private readonly IGenericValidationUtil<CreateArticleViewModel> _validation;
 
-        public ArticleController(UserManager<ApplicationUser> userManager,
+        public ArticleController(IConfiguration configuration, 
+            UserManager<ApplicationUser> userManager,
             ILogger<ArticleController> logger,
             IService service,
             IGenericValidationUtil<CreateArticleViewModel> validation)
         {
+            _configuration = configuration;
             _userManager = userManager;
             _logger = logger;
             _service = service;
@@ -132,17 +136,6 @@ namespace TekiBlog.Controllers
                 }
             }
 
-
-
-            // Temporary block, will remove during deployment
-            if (article.CoverImage != null)
-            {
-                string imageBase64Data = Convert.ToBase64String(article.CoverImage);
-                string imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
-                ViewData["ArticleCoverImg"] = imageDataURL;
-            }
-
-            //article.User = _context.Users.First(m => m.Id == article.User);
             _logger.LogInformation($"user receives article {article.ID}");
 
             return View(article);
@@ -160,6 +153,7 @@ namespace TekiBlog.Controllers
 
             ViewData["ContentMaxLen"] = _validation.GetMaxLen("ArticleRaw");
             ViewData["ContentMinLen"] = _validation.GetMinLen("ArticleRaw");
+
             #endregion
 
             if (id != null)
@@ -170,15 +164,9 @@ namespace TekiBlog.Controllers
                     var user = await _userManager.GetUserAsync(User);
                     if (article.User.Id.Equals(user?.Id))
                     {
-                        if (article.CoverImage != null)
-                        {
-                            string imageBase64Data = Convert.ToBase64String(article.CoverImage);
-                            string imageDataURL = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
-                            ViewData["ArticleCoverImg"] = imageDataURL;
-                        }
-
                         return View(new CreateArticleViewModel
                         {
+                            Id = article.ID,
                             ArticleContent = article.ContentHtml,
                             Title = article.Title,
                             Summary = article.Summary,
@@ -207,63 +195,89 @@ namespace TekiBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostArticle(CreateArticleViewModel article)
         {
-            // Get user in current context
-            var user = await _userManager.GetUserAsync(User);
-            byte[] articleImage;
 
             try
             {
-                _service.GetImage(out articleImage, this.Request);
-                // TODO: elimate magic number if have time
-                articleImage = _service.ResizeImgageByWidth(articleImage, 1280, ImageFormat.Jpeg);
+                int iW = _configuration.GetValue<int>("Article:Image:Width");
+                int iH = _configuration.GetValue<int>("Article:Image:Height");
+                int tW = _configuration.GetValue<int>("Article:Thumbnail:Width");
+                int tH = _configuration.GetValue<int>("Article:Thumbnail:Height");
 
-                article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, 1280, 720), ImageFormat.Jpeg);
-                article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(600 / 3, 0, 600, 450), ImageFormat.Jpeg);
+                _service.GetImage(out byte[] articleImage, this.Request);
+
+                articleImage = _service.ResizeImgageByWidth(articleImage, iW, ImageFormat.Jpeg);
+
+                article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, iW, iH), ImageFormat.Jpeg);
+                article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(tW / 3, 0, tW, tH), ImageFormat.Jpeg);
+
             }
             catch
             {
                 _logger.LogInformation("failed to retrieve image");
-                articleImage = null;
             }
 
             string statusType = (ModelState.IsValid) ? "Active" : "Draft";
 
-            // Get active status for this post
+            var user = await _userManager.GetUserAsync(User);
+
+            // Get status for this post
             Status status = _service.GetStatus(statusType);
 
             string html = article.ArticleContent;
 
             string raw = article.ArticleRaw;
 
+            DateTime publishDate = ( ModelState.IsValid ) ? DateTime.UtcNow : DateTime.MinValue;
             // Create article model to insert to Database
             Article articleModel = new Article
             {
                 Title = article.Title?.Trim(),
                 Summary = article.Summary?.Trim(),
-                DatePosted = DateTime.UtcNow,
+                DatePosted = publishDate,
+                LastUpdate = DateTime.UtcNow,
                 CurrentVote = 0,
                 ContentHtml = html,
                 ContentRaw = raw?.Trim(),
                 Status = status,
-                User = user,
-                CoverImage = article?.CoverImage,
-                ThumbnailImage = article?.ThumbnailImage
+                User = user
             };
 
             _service.AddArticle(articleModel);
 
             if (await _service.Commit())
             {
+                bool uploadValid;
+
+                try
+                {
+                    string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
+                    string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
+                    string addr = _configuration.GetValue<string>("Credentials:AWS:CredentialAddress");
+
+                    string k = $"{_configuration.GetValue<string>("Credentials:AWS:k1")}{_configuration.GetValue<string>("Credentials:AWS:k2")}{_configuration.GetValue<string>("Credentials:AWS:k3")}";
+                    string sK = $"{_configuration.GetValue<string>("Credentials:AWS:k4")}{_configuration.GetValue<string>("Credentials:AWS:k5")}{_configuration.GetValue<string>("Credentials:AWS:k6")}";
+
+                    await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{articleModel.ID}");
+                    await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{articleModel.ID}");
+
+                    uploadValid = true;
+                }
+                catch
+                {
+                    uploadValid = false;
+                    _logger.LogInformation($"failed to upload image of article {articleModel.ID} to AWS");
+                }
+
                 _logger.LogInformation($"user {user.Id} posted article {articleModel.ID} with status ${status.Name}");
 
-                if (ModelState.IsValid)
-                {
-                    return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
-                }
-                else
-                {
-                    return RedirectToAction("Editor", "Article", new { id = articleModel.ID });
-                }
+                if (ModelState.IsValid && uploadValid)
+                    {
+                        return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Editor", "Article", new { id = articleModel.ID });
+                    }
 
             }
             else
@@ -277,24 +291,35 @@ namespace TekiBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateArticle(CreateArticleViewModel article)
         {
-            // Get user in current context
-            var user = await _userManager.GetUserAsync(User);
-            byte[] articleImage;
             try
             {
-                _service.GetImage(out articleImage, this.Request);
-                // TODO: elimate magic number if have time
-                articleImage = _service.ResizeImgageByWidth(articleImage, 1280, ImageFormat.Jpeg);
+                int iW = _configuration.GetValue<int>("Article:Image:Width");
+                int iH = _configuration.GetValue<int>("Article:Image:Height");
 
-                article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, 1280, 720), ImageFormat.Jpeg);
-                article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(600 / 3, 0, 600, 450), ImageFormat.Jpeg);
+                int tW = _configuration.GetValue<int>("Article:Thumbnail:Width");
+                int tH = _configuration.GetValue<int>("Article:Thumbnail:Height");
+
+                _service.GetImage(out byte[] articleImage, this.Request);
+
+                if(articleImage != null)
+                {
+                    articleImage = _service.ResizeImgageByWidth(articleImage, iW, ImageFormat.Jpeg);
+
+                    article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, iW, iH), ImageFormat.Jpeg);
+                    article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(tW / 3, 0, tW, tH), ImageFormat.Jpeg);
+                }
             }
             catch
             {
+                article.CoverImage = null;
+                article.ThumbnailImage = null;
                 _logger.LogInformation("failed to retrieve image");
-                articleImage = null;
             }
+
+            var user = await _userManager.GetUserAsync(User);
+
             var pastArticle = _service.GetArticle(article.Id);
+            
             if (pastArticle.User.Id.Equals(user.Id))
             {
                 string statusType = (ModelState.IsValid) ? "Active" : "Draft";
@@ -307,26 +332,41 @@ namespace TekiBlog.Controllers
                 pastArticle.ContentRaw = article.ArticleRaw?.Trim();
                 pastArticle.Title = article.Title?.Trim();
                 pastArticle.Summary = article.Summary?.Trim();
+                pastArticle.LastUpdate = DateTime.UtcNow;
                 pastArticle.Status = status;
 
-                if (ModelState.IsValid && pastArticle.DatePosted == DateTime.MinValue)
+                if(ModelState.IsValid && pastArticle.DatePosted == DateTime.MinValue)
                 {
                     pastArticle.DatePosted = DateTime.UtcNow;
-                }
-
-                if (articleImage != null)
-                {
-                    pastArticle.CoverImage = article.CoverImage;
-                    pastArticle.ThumbnailImage = article.ThumbnailImage;
                 }
 
                 _service.UpdateArticle(pastArticle);
 
                 if (await _service.Commit())
                 {
+                    bool uploadValid = true;
+
+                    if(article.CoverImage != null & article.ThumbnailImage != null)
+                        try
+                        {
+                            string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
+                            string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
+
+                            string k = $"{_configuration.GetValue<string>("Credentials:AWS:k1")}{_configuration.GetValue<string>("Credentials:AWS:k2")}{_configuration.GetValue<string>("Credentials:AWS:k3")}";
+                            string sK = $"{_configuration.GetValue<string>("Credentials:AWS:k4")}{_configuration.GetValue<string>("Credentials:AWS:k5")}{_configuration.GetValue<string>("Credentials:AWS:k6")}";
+
+                            await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{pastArticle.ID}");
+                            await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{pastArticle.ID}");
+                        }
+                        catch
+                        {
+                            uploadValid = false;
+                            _logger.LogInformation($"failed to upload image of article {pastArticle.ID} to AWS");
+                        }
+
                     _logger.LogInformation($"user {user.Id} updated article {pastArticle.ID} with status ${status.Name}");
 
-                    if (ModelState.IsValid)
+                    if (ModelState.IsValid && uploadValid)
                     {
                         return RedirectToAction("Detail", "Article", new { id = pastArticle.ID });
                     }
@@ -340,7 +380,7 @@ namespace TekiBlog.Controllers
             else
                 _logger.LogInformation($"user {user?.Id} tried updating {pastArticle.User.Id}'s article");
 
-            return NotFound();
+            return Forbid();
         }
 
         [HttpPost]
@@ -349,25 +389,33 @@ namespace TekiBlog.Controllers
         public async Task<IActionResult> ArticleDraft(CreateArticleViewModel article)
         {
             // Get user in current context
-            var user = await _userManager.GetUserAsync(User);
-            byte[] articleImage;
             try
             {
-                _service.GetImage(out articleImage, this.Request);
-                // TODO: elimate magic number if have time
-                articleImage = _service.ResizeImgageByWidth(articleImage, 1280, ImageFormat.Jpeg);
+                int iW = _configuration.GetValue<int>("Article:Image:Width");
+                int iH = _configuration.GetValue<int>("Article:Image:Height");
+                int tW = _configuration.GetValue<int>("Article:Thumbnail:Width");
+                int tH = _configuration.GetValue<int>("Article:Thumbnail:Height");
 
-                article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, 1280, 720), ImageFormat.Jpeg);
-                article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(600 / 3, 0, 600, 450), ImageFormat.Jpeg);
+                _service.GetImage(out byte[] articleImage, this.Request);
+
+                if (articleImage != null)
+                {
+                    articleImage = _service.ResizeImgageByWidth(articleImage, iW, ImageFormat.Jpeg);
+
+                    article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, iW, iH), ImageFormat.Jpeg);
+                    article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(tW / 3, 0, tW, tH), ImageFormat.Jpeg);
+                }
             }
             catch
             {
                 _logger.LogInformation("failed to retrieve image");
-                articleImage = null;
             }
 
-            var pastArticle = _service.GetArticle(article.Id);
-            bool toUpdate = ((pastArticle != null) && pastArticle.User.Id.Equals(user.Id));
+            var user = await _userManager.GetUserAsync(User);
+
+            var draftArticle = _service.GetArticle(article.Id);
+            
+            bool toUpdate = ( ( draftArticle != null ) && draftArticle.User.Id.Equals(user.Id) );
 
             Status draft = _service.GetStatus("Draft");
 
@@ -376,23 +424,18 @@ namespace TekiBlog.Controllers
                 // Get active status for this post
 
                 // edit article model to update to Database
-                pastArticle.ContentHtml = article.ArticleContent;
-                pastArticle.ContentRaw = article.ArticleRaw?.Trim();
-                pastArticle.Title = article.Title?.Trim();
-                pastArticle.Summary = article.Summary?.Trim();
-                pastArticle.Status = draft;
+                draftArticle.ContentHtml = article.ArticleContent;
+                draftArticle.ContentRaw = article.ArticleRaw?.Trim();
+                draftArticle.Title = article.Title?.Trim();
+                draftArticle.Summary = article.Summary?.Trim();
+                draftArticle.LastUpdate = DateTime.UtcNow;
+                draftArticle.Status = draft;
 
-                if (articleImage != null)
-                {
-                    pastArticle.CoverImage = article.CoverImage;
-                    pastArticle.ThumbnailImage = article.ThumbnailImage;
-                }
-
-                _service.UpdateArticle(pastArticle);
+                _service.UpdateArticle(draftArticle);
             }
             else
             {
-                Article toAdd = new Article
+                draftArticle = new Article
                 {
                     ContentHtml = article.ArticleContent,
                     ContentRaw = article.ArticleRaw?.Trim(),
@@ -400,24 +443,35 @@ namespace TekiBlog.Controllers
                     Summary = article.Summary?.Trim(),
                     User = user,
                     DatePosted = DateTime.UtcNow,
+                    LastUpdate = DateTime.UtcNow,
                     Status = draft
                 };
 
-
-                if (articleImage != null)
-                {
-                    toAdd.CoverImage = article.CoverImage;
-                    toAdd.ThumbnailImage = article.ThumbnailImage;
-                }
-
-                _service.AddArticle(toAdd);
+                _service.AddArticle(draftArticle);
             }
 
 
             if (await _service.Commit())
             {
-                _logger.LogInformation($"user {user.Id} saved existing article {pastArticle?.ID}");
-                return Ok();
+                if (article.CoverImage != null & article.ThumbnailImage != null)
+                    try
+                    {
+                        string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
+                        string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
+
+                        string k = $"{_configuration.GetValue<string>("Credentials:AWS:k1")}{_configuration.GetValue<string>("Credentials:AWS:k2")}{_configuration.GetValue<string>("Credentials:AWS:k3")}";
+                        string sK = $"{_configuration.GetValue<string>("Credentials:AWS:k4")}{_configuration.GetValue<string>("Credentials:AWS:k5")}{_configuration.GetValue<string>("Credentials:AWS:k6")}";
+
+                        await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{draftArticle.ID}");
+                        await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{draftArticle.ID}");
+                    }
+                    catch
+                    {
+                        _logger.LogInformation($"failed to upload image of article {draftArticle.ID} to AWS");
+                    }
+
+                _logger.LogInformation($"user {user.Id} saved article {draftArticle?.ID}");
+                return Ok(draftArticle.ID);
 
             } // exit if unable to update
 
@@ -476,27 +530,30 @@ namespace TekiBlog.Controllers
             }
             ViewData["SearchValue"] = searchValue;
             IQueryable<Article> articles = _service.SearchArticle(searchValue);
-            foreach (var a in articles)
+            PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize);
+
+            HomePageViewModel viewModel = new HomePageViewModel
             {
-                _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
-                foreach (var at in a.ArticleTags)
-                {
-                    _logger.LogInformation($"Tag {at.TagId}");
-                    _logger.LogInformation($"Tag {at.Tag.Name}");
-                }
+                Articles = result,
+            };
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user?.Id != null)
+            {
+                List<Bookmark> bookmarks = await _service.GetBookmarks(user).ToListAsync();
+                viewModel.UserBookmarks = bookmarks;
             }
-            PaginatedList<Article> result = PaginatedList<Article>.Create(articles, pageNumber ?? 1, pageSize);
-            //_logger.LogInformation("result size : " + result.Count());
-            //foreach (var a in result)
-            //{
-            //    _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
-            //    foreach (var at in a.ArticleTags)
-            //    {
-            //        _logger.LogInformation($"Tag {at.TagId}");
-            //        _logger.LogInformation($"Tag {at.Tag}");
-            //    }
-            //}
-            return View(result);
+
+            return View(viewModel);
+        }
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UserDrafts()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            List<Article> drafts = await _service.GetUserDrafts(user).ToListAsync();
+            _logger.LogInformation($"user {user.Id} requested {drafts.Count} drafts");
+            return PartialView("_UserDraftListPartial", drafts);
         }
 
         [HttpGet]

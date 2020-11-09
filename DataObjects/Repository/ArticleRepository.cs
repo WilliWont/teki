@@ -174,7 +174,6 @@ namespace DataObjects.Repository
             return articles;
         }
 
-        // Implement all additional methods in IArticleRepository
         public bool UpdateArticle(Article article)
         {
             _context.Articles.Update(article);
@@ -220,6 +219,17 @@ namespace DataObjects.Repository
                 })
                 .Where(a => a.Status.Name.Equals("Active") && articleIDs.Contains(a.ID))
                 .OrderByDescending(a => a.DatePosted);
+            return articles;
+        }
+
+        public IQueryable<Article> GetUserDrafts(ApplicationUser user)
+        {
+            IQueryable<Article> articles = _context.Articles
+                .Include(a => a.Status)
+                .Include(a => a.User)
+                .Select(a => new Article { ID = a.ID, User = a.User, Status = a.Status, Title = a.Title, LastUpdate = a.LastUpdate })
+                .Where(a => a.User.Equals(user) && ( a.Status.Name.Equals("Draft") ))
+                .OrderByDescending(a => a.LastUpdate);
             return articles;
         }
     }

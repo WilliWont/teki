@@ -9,13 +9,10 @@
     ViewData["Title"] = "Editor";
 }
 
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 @section Styles{
-    @*<link rel="stylesheet" href="~/css/notification.css" />
-        <link rel="stylesheet" href="~/css/editor.css" />*@
-    @*<link rel="stylesheet" href="~/css/detail.css" />*@
-
-
     <link rel="stylesheet" href="~/css/editor.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/detail.min.css" asp-append-version="true" />
 
@@ -29,12 +26,6 @@
         const DRAFT_ADDR = "@Url.Action("ArticleDraft", "Article")";
     </script>
     <script type="text/javascript" src="~/js/tinymce/tinymce.min.js"></script>
-    @*    <script type="text/javascript" src="~/js/notification.js"></script>
-        <script type="text/javascript" src="~/js/validation.js"></script>
-        <script type="text/javascript" src="~/js/charactercount.js"></script>
-        <script type="text/javascript" src="~/js/editor.js"></script>
-        <script type="text/javascript" src="~/js/draft.js"></script>*@
-
     <script type="text/javascript" src="~/js/editor.min.js" asp-append-version="true"></script>
 
     @*<script type="text/javascript" src="~/js/bootstrap-tagsinput.js"></script>
@@ -86,7 +77,12 @@
         <script>
             $(document).ready(function () {
                 firstValidation = false;
-                //fireAllValidation();
+                // Write your JavaScript code.
+                $("input[type='file']").prop('required', false);
+                $("img").on("error", function () {
+                    $("input[type='file']").prop('required', true);
+                    $("#file-invalid").removeClass("d-none");
+                });
             });
         </script>
     }
@@ -95,7 +91,10 @@
 @section CoverImg{
     <div class="article-header">
         <div class="article-img-container">
-            <img id="article-img-cover" src="@ViewData["ArticleCoverImg"]" />
+            @{
+                string img = $"{@Configuration["Credentials:AWS:ImagePathPre"]}{Configuration["Credentials:AWS:ImageBucket"]}{@Configuration["Credentials:AWS:ImagePathPost"]}";
+            }
+            <img id="article-img-cover" src="@img/@Model?.Id" />
         </div>
         <div class="flx-container article-header-info-container">
             <div class="article-header-info-inner col-9">
@@ -128,6 +127,10 @@
 
 <partial name="_NotificationPartial">
 
+    <form id="add-action-template" asp-controller="Article" asp-action="PostArticle"></form>
+    <form id="update-action-template" asp-controller="Article" asp-action="UpdateArticle"></form>
+
+
     <div class="flx-container">
         <div class="col-9 article-detail">
             <form id="form" asp-controller="Article"
@@ -145,20 +148,11 @@
                            name="file1" class="fileinput form-control-file"
                            accept="image/*"
                            onchange="previewFile(this); hideField('#file-invalid');"
-                           @((ViewData["ArticleCoverImg"] != null || (ViewData["ArticleCoverImg"] != null && Model.Status.Name.Equals("Draft"))) ? "" : "required" ) />
+                           required/>
 
+                    <small id="file-invalid" class="invalid-input d-none">Empty image field</small>
+                </div>
 
-                    @if (Model != null && ViewData["ArticleCoverImg"] == null && Model.Status.Name.Equals("Draft"))
-                    {
-                        <small id="file-invalid" class="invalid-input">Empty image field</small>
-                    }
-                </div>
-                <small class="form-text text-muted">
-                    Please choose tag here
-                </small>
-                <div class="form-container">
-                    <input id="bootstrap-tagsinput" type="text" placeholder="Add tags" class="form-control" />
-                </div>
                 <small id="tldrHelp" class="form-text text-muted">
                     Write a brief summary for your article
                 </small>
@@ -178,10 +172,7 @@
                            default-value=true></small>
                 </div>
 
-                @if (Model != null)
-                {
-                    <input type="hidden" id="input-id" asp-for="@Model.Id">
-                }
+                <input type="hidden" id="input-id" asp-for="@Model.Id">
 
                 <input type="hidden" id="input-raw" asp-for="@Model.ArticleRaw">
                 <input type="hidden" id="input-title" asp-for="@Model.Title">
@@ -217,9 +208,7 @@
                 <button id="btnSubmit" class="btn btn-outline-secondary my-2 my-sm-0" type="submit">
                     <i class="fa fa-pencil"></i> @(Model != null ? "Update Article" : "Post Article" )
                 </button>
-                <button id="btnTest" onclick="GetData()">
-                    Test
-                </button>
+
             </form>
 
         </div>

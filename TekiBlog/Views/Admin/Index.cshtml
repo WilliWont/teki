@@ -1,104 +1,128 @@
 ﻿@model TekiBlog.ViewModels.PaginatedList<Article>
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/admin.min.css" asp-append-version="true">
+}
 
-<partial name="_ManageNav" />
-<span class="text-success">
-    @TempData["DeleteMessageStatus"]
-</span>
-@if (Model.Any())
-{
-    <div class="container">
-        <div class="col-9">
-            <table class="table">
-                <thead class="black white-text">
-                    <tr>
-                        <th scope="col">
-                            #
-                        </th>
-                        <th scope="col">
-                            Title
-                        </th>
-                        <th>
-                            Author
-                        </th>
-                        <th scope="col">
-                            Date posted
-                        </th>
-                        <th scope="col">
-                            Status
-                        </th>
-                        <th scope="col">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        var count = 1;
-                    }
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @count
-                            </td>
-                            @{
-                                count = count + 1;
-                            }
-                            <td>
-                                <a asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">@item.Title</a>
-                            </td>
-                            <td>
-                                <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@item.User.Id">@item.User.UserName</a>
-                            </td>
-                            <td>
-                                Posted in @item.DatePosted.ToLongDateString()
-                            </td>
-                            <td>
-                                @item.Status.Name
-                            </td>
-                            <td>
-                                @if (!item.Status.Name.Equals("Deleted"))
-                                {
-                                    <a class="btn btn-light" asp-controller="Admin" asp-action="DeleteArticle"
-                                       asp-route-id="@item.ID" asp-route-pageNumber="@Model.PageIndex">
-                                        Delete
-                                    </a>
-                                }
-                                @*else
-                                {
-                                    <a class="btn btn-light" asp-controller="Admin" asp-action="RestoreArticle"
-                                       asp-route-id="@item.ID" asp-route-pageNumber="@Model.PageIndex">
-                                        Restore
-                                    </a>
-                                }*@
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+@section Scripts{
+    <script>
+        $("#blog-nav").addClass("selected");
+        $(".body-content").addClass("col-12");
+    </script>
+}
+
+<div class="main-container">
+    <div class="container-left">
+        <partial name="_ManageNav" />
     </div>
+    <div class="container-right">
+        <span class="text-success">
+            @TempData["DeleteMessageStatus"]
+        </span>
+        @if (Model.Any())
+        {
+            <div class="">
+                <div class="col-12">
+                    <table class="table">
+                        <thead class="black white-text">
+                            <tr class="d-flex">
+                                <th scope="col" class="col-5">
+                                    Title
+                                </th>
+                                <th scope="col" class="col-2">
+                                    Author
+                                </th>
+                                <th scope="col" class="col-3">
+                                    Date posted
+                                </th>
+                                <th scope="col" class="col-1">
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="d-flex">
+                                    <td class="col-5 tbl-title">
+                                        <a asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">
+                                        @if (item.Title == null)
+                                        {
+                                            <span class="empty">untitled article</span>
+                                        } else
+                                        {
+                                            @item.Title
+                                        }
+                                        </a>
+                                    </td>
+                                    <td class="col-2">
+                                        <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@item.User.Id">@item.User.UserName</a>
+                                    </td>
+                                    <td class="col-3">
+                                        @item.DatePosted.ToLongDateString()
+                                    </td>
+                                    <td class="col-1">
+                                        @if (item.Status.Name.Equals("Deleted"))
+                                        {
+                                            <span class="badge badge-danger">@item.Status.Name</span>
+                                        }
+                                        else if (item.Status.Name.Equals("Active"))
+                                        {
+                                            <span class="badge badge-success">@item.Status.Name</span>
+                                        }
+                                        else if (item.Status.Name.Equals("Draft"))
+                                        {
+                                            <span class="badge badge-info">@item.Status.Name</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-secondary">@item.Status.Name</span>
+                                        }
+                                    </td>
+                                    <td class="tbl-action">
+                                        @if (!item.Status.Name.Equals("Deleted"))
+                                        {
+                                            <a class="tbl-action-link" asp-controller="Admin" asp-action="DeleteArticle"
+                                               asp-route-id="@item.ID" asp-route-pageNumber="@Model.PageIndex">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        }
+                                        @*else
+                                        {
+                                            <a class="btn btn-light" asp-controller="Admin" asp-action="RestoreArticle"
+                                               asp-route-id="@item.ID" asp-route-pageNumber="@Model.PageIndex">
+                                                Restore
+                                            </a>
+                                        }*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 
-    <a asp-controller="Admin"
-       asp-action="Index"
-       asp-route-pageNumber="@(Model.PageIndex - 1)"
-       class="btn btn-default @prevDisabled">
-        Previous
-    </a>
-    <a asp-controller="Admin"
-       asp-action="Index"
-       asp-route-pageNumber="@(Model.PageIndex + 1)"
-       class="btn btn-default @nextDisabled">
-        Next
-    </a>
-}
-else
-{
-    <h1>No article found</h1>
-}
+    <div class="page-btn-container">
+        <a asp-controller="Admin"
+           asp-action="Index"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           class="btn btn-default btn-prev @prevDisabled">
+        </a>
+        <a asp-controller="Admin"
+           asp-action="Index"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           class="btn btn-default btn-next @nextDisabled">
+        </a>
+    </div>
+                }
+                else
+                {
+                <h1>No article found</h1>
+                }
+            </div>
+        </div>
 
 

@@ -1,4 +1,7 @@
-﻿using BusinessObjects;
+﻿using Amazon.Runtime;
+using Amazon.S3;
+using Amazon.S3.Transfer;
+using BusinessObjects;
 using DataObjects;
 using DataObjects.IRepository;
 using DataObjects.Repository;
@@ -65,6 +68,11 @@ namespace ActionServices
         public IQueryable<Article> GetArticleWithUser(ApplicationUser user)
         {
             return articleRepository.GetArticlesByUser(user);
+        }
+
+        public IQueryable<Article> GetUserDrafts(ApplicationUser user)
+        {
+            return articleRepository.GetUserDrafts(user);
         }
 
         public bool UpdateArticle(Article article)
@@ -269,6 +277,43 @@ namespace ActionServices
         public IQueryable<Bookmark> GetBookmarks(ApplicationUser user, bool includeArticle)
         {
             return bookmarkRepository.GetBookmarks(user, true);
+        }
+
+        public async Task UploadToS3(string k, string sK, string bucketName, byte[] file, string fileName)
+        {
+            //List<string> keys = new List<string>();
+            //using (var reader = new StreamReader(credAddr))
+            //{
+            //    while (!reader.EndOfStream)
+            //    {
+            //        var line = reader.ReadLine();
+            //        var values = line.Split('=');
+
+            //        keys.Add(values[1]);
+            //    }
+            //}
+
+            //var credentials = new BasicAWSCredentials(keys[0], keys[1]);
+            var credentials = new BasicAWSCredentials(k, sK);
+            var config = new AmazonS3Config
+            {
+                RegionEndpoint = Amazon.RegionEndpoint.APSoutheast1
+            };
+
+            using var client = new AmazonS3Client(credentials, config);
+
+            await using var newMemoryStream = new MemoryStream(file);
+
+            var uploadRequest = new TransferUtilityUploadRequest
+            {
+                InputStream = newMemoryStream,
+                Key = fileName,
+                BucketName = bucketName,
+                CannedACL = S3CannedACL.PublicRead
+            };
+
+            var fileTransferUtility = new TransferUtility(client);
+            await fileTransferUtility.UploadAsync(uploadRequest);
         }
 
         public IEnumerable<Tag> GetAllActiveTags()

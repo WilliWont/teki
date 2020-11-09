@@ -22,6 +22,7 @@ namespace ActionServices
         IQueryable<Article> GetArticleForViewer(ApplicationUser user);
         IQueryable<Article> GetArticleByStatus(string status);
         IQueryable<Article> GetArticleForAdmin();
+        IQueryable<Article> GetUserDrafts(ApplicationUser user);
         IQueryable<Article> GetArticleByTag(int tagid);
         void GetImage(out byte[] img, HttpRequest req);
         byte[] ResizeImgageByWidth(byte[] originalBytes, int w, ImageFormat format);
@@ -48,5 +49,8 @@ namespace ActionServices
         IEnumerable<Tag> GetAllActiveTags();
         bool RestoreTag(int id);
         Task<bool> Commit();
+
+        // Cloud Service
+        Task UploadToS3(string k, string sK, string bucketName, byte[] file, string fileName);
     }
 }

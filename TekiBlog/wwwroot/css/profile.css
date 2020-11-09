@@ -12,3 +12,8 @@
     justify-content: left;
     align-content: center;
 }
+
+.toast {
+    top: 6.5vw;
+    right: 3vw;
+}

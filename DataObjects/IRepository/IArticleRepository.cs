@@ -18,6 +18,8 @@ namespace DataObjects
         IQueryable<Article> GetArticleByStatus(string status);
         IQueryable<Article> GetArticlesForViewer(ApplicationUser user);
         IQueryable<Article> GetArticlesForAdmin();
+
+        IQueryable<Article> GetUserDrafts(ApplicationUser user);
         IQueryable<Article> GetArtcilesByTag(int tagid);
     }
 }
