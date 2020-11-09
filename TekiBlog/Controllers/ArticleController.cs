@@ -72,16 +72,16 @@ namespace TekiBlog.Controllers
 
             PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles, pageNumber ?? 1, pageSize);
 
-            //_logger.LogInformation("result size : " + result.Count());
-            //foreach (var a in result)
-            //{
-            //    _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
-            //    foreach (var at in a.ArticleTags)
-            //    {
-            //        _logger.LogInformation($"Tag {at.TagId}");
-            //        _logger.LogInformation($"Tag {at.Tag}");
-            //    }
-            //}
+            _logger.LogInformation("result size : " + result.Count());
+            foreach (var a in result)
+            {
+                _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
+                foreach (var at in a.ArticleTags)
+                {
+                    _logger.LogInformation($"Tag {at.TagId}");
+                    _logger.LogInformation($"Tag {at.Tag}");
+                }
+            }
             HomePageViewModel viewModel = new HomePageViewModel
             {
                 Articles = result,
@@ -519,19 +519,39 @@ namespace TekiBlog.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult Search(string searchValue, int? pageNumber)
+        
+        public async Task<IActionResult> Search(string searchValue, int? pageNumber)
         {
-            int pageSize = PaginatedList<Article>.PerPage;
+            _logger.LogInformation("Article search is called");
             _logger.LogInformation("Search value " + searchValue);
             if (string.IsNullOrEmpty(searchValue) && (pageNumber == null))
             {
                 return RedirectToAction("Home", "Article");
             }
             ViewData["SearchValue"] = searchValue;
-            IQueryable<Article> articles = _service.SearchArticle(searchValue);
-            PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize);
-
+            IQueryable<Article> articles = null;
+            articles = _service.SearchArticle(searchValue);
+            foreach (var a in articles)
+            {
+                _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
+                foreach (var at in a.ArticleTags)
+                {
+                    _logger.LogInformation($"Tag {at.TagId}");
+                    _logger.LogInformation($"Tag {at.Tag.Name}");
+                }
+            }
+            int pageSize = PaginatedList<Article>.PerPage;
+            PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles, pageNumber ?? 1, pageSize);
+            _logger.LogInformation("result size : " + result.Count());
+            //foreach (var a in result)
+            //{
+            //    _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
+            //    foreach (var at in a.ArticleTags)
+            //    {
+            //        _logger.LogInformation($"Tag {at.TagId}");
+            //        _logger.LogInformation($"Tag {at.Tag}");
+            //    }
+            //}
             HomePageViewModel viewModel = new HomePageViewModel
             {
                 Articles = result,

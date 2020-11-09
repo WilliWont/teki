@@ -40,19 +40,6 @@ namespace BusinessObjects
         // public ICollection<Tag> Tags { get; set; }
         public List<ArticleTag> ArticleTags { get; set; }
 
-        public void SetArticleInfo(Article article)
-        {
-            this.ID = article.ID;
-            this.Title = article.Title;
-            this.Summary = article.Summary;
-            this.ContentHtml = article.ContentHtml;
-            this.ContentRaw = article.ContentRaw;
-            this.CoverImage = article.CoverImage;
-            this.DatePosted = article.DatePosted;
-            this.ThumbnailImage = article.ThumbnailImage;
-            this.CurrentVote = article.CurrentVote;
-            //return this;
-        }
 
     }
 }

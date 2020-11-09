@@ -59,34 +59,41 @@
                                 {
                                     <a class="read-later-link" asp-controller="Bookmark" asp-action="BookmarkAdd" asp-route-id="@item.ID"><i class="fa fa-bookmark-o"></i></a>
 
-@if (Model.Any())
-{
-    <div>
-        @foreach (var item in Model)
-        {
-            <div>
-                <div>
-                    <a asp-action="Detail" asp-route-id="@item.ID">@item.Title</a> 
-                    by <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@item.User.Id">@item.User.UserName</a>
-                </div>
-                <div>
-                    Posted in @item.DatePosted.ToLongDateString()
-                </div>
-                <div>
-                    @if (item.ArticleTags.Count() != 0)
-                    {
-                        @foreach (var articleTag in item.ArticleTags)
-                        {
-                            <span class="badge badge-secondary">
-                                <a style="color:white; text-decoration:none" asp-controller="Article" asp-action="Home" asp-route-tagid="@articleTag.TagId">
-                                    @articleTag.Tag.Name
-                                </a>
-                            </span>
+                                }
+                            }
                         }
-                    }
-                </div>
-                <div>
-                    @item.Summary
+                        <a class="article-link article-link-title-container" asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">
+                            <h3 class="article-link-title">@item.Title</h3>
+                        </a>
+                        <div class="article-user-container">
+                            by <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@item.User.Id">@item.User.FirstName @item.User.LastName</a>
+                            | @item.DatePosted.ToString("MMM d, yyyy")
+                        </div>
+                        <div>
+                            @if (item.ArticleTags.Count() != 0)
+                            {
+                                @foreach (var articleTag in item.ArticleTags)
+                                {
+                                    <span class="badge badge-secondary">
+                                        <a style="color:white; text-decoration:none" asp-controller="Article" asp-action="Home" asp-route-tagid="@articleTag.TagId">
+                                            @articleTag.Tag.Name
+                                        </a>
+                                    </span>
+                                }
+                            }
+
+                        </div>
+                        <div class="article-summary-container">
+                            @if (item.Summary != null)
+                            {
+                                <p class="summary">@item.Summary</p>
+                            }
+                            else
+                            {
+                                <p class="summary summary-empty">this article has no summary</p>
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -101,20 +108,20 @@
         <a asp-controller="Article"
            asp-action="Search"
            asp-route-pageNumber="@(Model.Articles.PageIndex - 1)"
-           asp-route-searchValue = "@ViewData["SearchValue"]"
+           asp-route-searchValue="@ViewData["SearchValue"]"
            class="btn btn-default btn-prev @prevDisabled">
         </a>
         <a asp-controller="Article"
            asp-action="Search"
            asp-route-pageNumber="@(Model.Articles.PageIndex + 1)"
-           asp-route-searchValue = "@ViewData["SearchValue"]"
+           asp-route-searchValue="@ViewData["SearchValue"]"
            class="btn btn-default btn-next @nextDisabled">
         </a>
     </div>
 }
 else
 {
-<div class="col-12 flx-container">
-    <h3>No result found</h3>
-</div>
+    <div class="col-12 flx-container">
+        <h3>No result found</h3>
+    </div>
 }

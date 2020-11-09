@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="~/css/editor.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/detail.min.css" asp-append-version="true" />
 
-    
-    <link rel="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/assets/app.css"/>
+
+    <link rel="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/assets/app.css" />
     <link rel="stylesheet" href="~/css/bootstrap-tagsinput.css">
 }
 
@@ -148,9 +148,16 @@
                            name="file1" class="fileinput form-control-file"
                            accept="image/*"
                            onchange="previewFile(this); hideField('#file-invalid');"
-                           required/>
+                           required />
 
                     <small id="file-invalid" class="invalid-input d-none">Empty image field</small>
+                </div>
+
+                <small class="form-text text-muted">
+                    Please choos article tag
+                </small>
+                <div class="form-container">
+                    <input id="bootstrap-tagsinput" type="text" placeholder="Add tags" class="form-control" />
                 </div>
 
                 <small id="tldrHelp" class="form-text text-muted">
