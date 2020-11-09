@@ -75,6 +75,20 @@
                                 by <a asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@item.User.Id">@item.User.FirstName @item.User.LastName</a>
                                 | @item.DatePosted.ToString("MMM d, yyyy")
                             </div>
+                            <div>
+                                @if (item.ArticleTags.Count() != 0)
+                                {
+                                    @foreach (var articleTag in item.ArticleTags)
+                                    {
+                                        <span class="badge badge-secondary">
+                                            <a style="color:white; text-decoration:none" asp-controller="Article" asp-action="Home" asp-route-tagid="@articleTag.TagId">
+                                                @articleTag.Tag.Name
+                                            </a>
+                                        </span>
+                                    }
+                                }
+
+                            </div>
                             <div class="article-summary-container">
                                 @if (item.Summary != null)
                                 {
@@ -116,8 +130,6 @@
     }
 </div>
 <div class="home-page-right">
-    <div>
-        <h1>tags</h1>
-    </div>
+    <partial name="_Tags" />
     <partial name="_NotificationPartial" />
 </div>

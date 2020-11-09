@@ -1,0 +1,72 @@
+[
+  {
+    "value": 1,
+    "text": "Python",
+    "continent": "tag"
+  },
+  {
+    "value": 2,
+    "text": "Java",
+    "continent": "tag"
+  },
+  {
+    "value": 3,
+    "text": "C#",
+    "continent": "tag"
+  },
+  {
+    "value": 4,
+    "text": "C++",
+    "continent": "tag"
+  },
+  {
+    "value": 5,
+    "text": "JSP",
+    "continent": "tag"
+  },
+  {
+    "value": 6,
+    "text": "Servlet ",
+    "continent": "tag"
+  },
+  {
+    "value": 7,
+    "text": "Machine learning",
+    "continent": "tag"
+  },
+  {
+    "value": 8,
+    "text": "Big Data",
+    "continent": "tag"
+  },
+  {
+    "value": 9,
+    "text": ".Net Core 3.1",
+    "continent": "tag"
+  },
+  {
+    "value": 12,
+    "text": "Deep Learning",
+    "continent": "tag"
+  },
+  {
+    "value": 13,
+    "text": "Computer Vision",
+    "continent": "tag"
+  },
+  {
+    "value": 14,
+    "text": "Docker",
+    "continent": "tag"
+  },
+  {
+    "value": 15,
+    "text": "Android",
+    "continent": "tag"
+  },
+  {
+    "value": 16,
+    "text": "IOS",
+    "continent": "tag"
+  }
+]

@@ -41,22 +41,50 @@ namespace TekiBlog.Controllers
             _validation = validation;
         }
 
-        public async Task<IActionResult> Home(int? pageNumber)
+        public async Task<IActionResult> Home(int? pageNumber, int? tagid)
         {
             _logger.LogInformation("Article home is called");
-            IQueryable<Article> articles = _service.GetArticleByStatus("Active");
+            IQueryable<Article> articles = null;
+            if (tagid != null || tagid >= 1)
+            {
+                articles = _service.GetArticleByTag(tagid ?? 1);
+            }
+            else
+            {
+                articles = _service.GetArticleByStatus("Active");
+            }
 
+            foreach (var a in articles)
+            {
+                _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
+                foreach (var at in a.ArticleTags)
+                {
+                    _logger.LogInformation($"Tag {at.TagId}");
+                    _logger.LogInformation($"Tag {at.Tag.Name}");
+                }
+            }
+            _logger.LogInformation("--------------------------------");
             int pageSize = PaginatedList<Article>.PerPage;
 
-            PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize);
+            PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles, pageNumber ?? 1, pageSize);
 
+            //_logger.LogInformation("result size : " + result.Count());
+            //foreach (var a in result)
+            //{
+            //    _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
+            //    foreach (var at in a.ArticleTags)
+            //    {
+            //        _logger.LogInformation($"Tag {at.TagId}");
+            //        _logger.LogInformation($"Tag {at.Tag}");
+            //    }
+            //}
             HomePageViewModel viewModel = new HomePageViewModel
             {
                 Articles = result,
             };
 
             var user = await _userManager.GetUserAsync(User);
-            if(user?.Id != null)
+            if (user?.Id != null)
             {
                 List<Bookmark> bookmarks = await _service.GetBookmarks(user).ToListAsync();
                 viewModel.UserBookmarks = bookmarks;
@@ -154,7 +182,8 @@ namespace TekiBlog.Controllers
                             ArticleContent = article.ContentHtml,
                             Title = article.Title,
                             Summary = article.Summary,
-                            Status = article.Status
+                            Status = article.Status,
+                            ArticleTags = article.ArticleTags
                         });
                     }
                 }
@@ -187,8 +216,8 @@ namespace TekiBlog.Controllers
                 _service.GetImage(out articleImage, this.Request);
                 // TODO: elimate magic number if have time
                 articleImage = _service.ResizeImgageByWidth(articleImage, 1280, ImageFormat.Jpeg);
-                
-                article.CoverImage = _service.CropImage(articleImage, new Rectangle(0,0,1280, 720),ImageFormat.Jpeg);
+
+                article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, 1280, 720), ImageFormat.Jpeg);
                 article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(600 / 3, 0, 600, 450), ImageFormat.Jpeg);
             }
             catch
@@ -199,48 +228,48 @@ namespace TekiBlog.Controllers
 
             string statusType = (ModelState.IsValid) ? "Active" : "Draft";
 
-                // Get active status for this post
-                Status status = _service.GetStatus(statusType);
+            // Get active status for this post
+            Status status = _service.GetStatus(statusType);
 
-                string html = article.ArticleContent;
+            string html = article.ArticleContent;
 
-                string raw = article.ArticleRaw;
+            string raw = article.ArticleRaw;
 
-                // Create article model to insert to Database
-                Article articleModel = new Article
+            // Create article model to insert to Database
+            Article articleModel = new Article
+            {
+                Title = article.Title?.Trim(),
+                Summary = article.Summary?.Trim(),
+                DatePosted = DateTime.UtcNow,
+                CurrentVote = 0,
+                ContentHtml = html,
+                ContentRaw = raw?.Trim(),
+                Status = status,
+                User = user,
+                CoverImage = article?.CoverImage,
+                ThumbnailImage = article?.ThumbnailImage
+            };
+
+            _service.AddArticle(articleModel);
+
+            if (await _service.Commit())
+            {
+                _logger.LogInformation($"user {user.Id} posted article {articleModel.ID} with status ${status.Name}");
+
+                if (ModelState.IsValid)
                 {
-                    Title = article.Title?.Trim(),
-                    Summary = article.Summary?.Trim(),
-                    DatePosted = DateTime.UtcNow,
-                    CurrentVote = 0,
-                    ContentHtml = html,
-                    ContentRaw = raw?.Trim(),
-                    Status = status,
-                    User = user,
-                    CoverImage = article?.CoverImage,
-                    ThumbnailImage = article?.ThumbnailImage
-                };
-
-                _service.AddArticle(articleModel);
-
-                if (await _service.Commit())
-                {
-                    _logger.LogInformation($"user {user.Id} posted article {articleModel.ID} with status ${status.Name}");
-
-                    if (ModelState.IsValid)
-                    {
-                        return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
-                    }
-                    else
-                    {
-                        return RedirectToAction("Editor", "Article", new { id = articleModel.ID });
-                    }
-
-                } 
+                    return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
+                }
                 else
                 {
-                    return NotFound();
+                    return RedirectToAction("Editor", "Article", new { id = articleModel.ID });
                 }
+
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost]
@@ -268,48 +297,48 @@ namespace TekiBlog.Controllers
             var pastArticle = _service.GetArticle(article.Id);
             if (pastArticle.User.Id.Equals(user.Id))
             {
-                string statusType = ( ModelState.IsValid ) ? "Active" : "Draft";
+                string statusType = (ModelState.IsValid) ? "Active" : "Draft";
 
-                    // Get active status for this post
-                    Status status = _service.GetStatus(statusType);
+                // Get active status for this post
+                Status status = _service.GetStatus(statusType);
 
-                    // edit article model to update to Database
-                    pastArticle.ContentHtml = article.ArticleContent;
-                    pastArticle.ContentRaw = article.ArticleRaw?.Trim();
-                    pastArticle.Title = article.Title?.Trim();
-                    pastArticle.Summary = article.Summary?.Trim();
-                    pastArticle.Status = status;
+                // edit article model to update to Database
+                pastArticle.ContentHtml = article.ArticleContent;
+                pastArticle.ContentRaw = article.ArticleRaw?.Trim();
+                pastArticle.Title = article.Title?.Trim();
+                pastArticle.Summary = article.Summary?.Trim();
+                pastArticle.Status = status;
 
-                    if(ModelState.IsValid && pastArticle.DatePosted == DateTime.MinValue)
+                if (ModelState.IsValid && pastArticle.DatePosted == DateTime.MinValue)
+                {
+                    pastArticle.DatePosted = DateTime.UtcNow;
+                }
+
+                if (articleImage != null)
+                {
+                    pastArticle.CoverImage = article.CoverImage;
+                    pastArticle.ThumbnailImage = article.ThumbnailImage;
+                }
+
+                _service.UpdateArticle(pastArticle);
+
+                if (await _service.Commit())
+                {
+                    _logger.LogInformation($"user {user.Id} updated article {pastArticle.ID} with status ${status.Name}");
+
+                    if (ModelState.IsValid)
                     {
-                        pastArticle.DatePosted = DateTime.UtcNow;
+                        return RedirectToAction("Detail", "Article", new { id = pastArticle.ID });
                     }
-
-                    if (articleImage!=null)
+                    else
                     {
-                        pastArticle.CoverImage = article.CoverImage;
-                        pastArticle.ThumbnailImage = article.ThumbnailImage;
+                        return RedirectToAction("Editor", "Article", new { id = pastArticle.ID });
                     }
-
-                    _service.UpdateArticle(pastArticle);
-
-                    if (await _service.Commit())
-                    {
-                        _logger.LogInformation($"user {user.Id} updated article {pastArticle.ID} with status ${status.Name}");
-
-                        if (ModelState.IsValid)
-                        {
-                            return RedirectToAction("Detail", "Article", new { id = pastArticle.ID });
-                        }
-                        else
-                        {
-                            return RedirectToAction("Editor", "Article", new { id = pastArticle.ID });
-                        }
-                    }
+                }
 
             } // exit if invalid user
             else
-            _logger.LogInformation($"user {user?.Id} tried updating {pastArticle.User.Id}'s article");
+                _logger.LogInformation($"user {user?.Id} tried updating {pastArticle.User.Id}'s article");
 
             return NotFound();
         }
@@ -338,7 +367,7 @@ namespace TekiBlog.Controllers
             }
 
             var pastArticle = _service.GetArticle(article.Id);
-            bool toUpdate = ( ( pastArticle != null ) && pastArticle.User.Id.Equals(user.Id) );
+            bool toUpdate = ((pastArticle != null) && pastArticle.User.Id.Equals(user.Id));
 
             Status draft = _service.GetStatus("Draft");
 
@@ -370,7 +399,7 @@ namespace TekiBlog.Controllers
                     Title = article.Title?.Trim(),
                     Summary = article.Summary?.Trim(),
                     User = user,
-                    DatePosted =DateTime.UtcNow,
+                    DatePosted = DateTime.UtcNow,
                     Status = draft
                 };
 
@@ -437,7 +466,7 @@ namespace TekiBlog.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search(string searchValue, int? pageNumber)
+        public IActionResult Search(string searchValue, int? pageNumber)
         {
             int pageSize = PaginatedList<Article>.PerPage;
             _logger.LogInformation("Search value " + searchValue);
@@ -447,8 +476,33 @@ namespace TekiBlog.Controllers
             }
             ViewData["SearchValue"] = searchValue;
             IQueryable<Article> articles = _service.SearchArticle(searchValue);
-            PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize);
+            foreach (var a in articles)
+            {
+                _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
+                foreach (var at in a.ArticleTags)
+                {
+                    _logger.LogInformation($"Tag {at.TagId}");
+                    _logger.LogInformation($"Tag {at.Tag.Name}");
+                }
+            }
+            PaginatedList<Article> result = PaginatedList<Article>.Create(articles, pageNumber ?? 1, pageSize);
+            //_logger.LogInformation("result size : " + result.Count());
+            //foreach (var a in result)
+            //{
+            //    _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
+            //    foreach (var at in a.ArticleTags)
+            //    {
+            //        _logger.LogInformation($"Tag {at.TagId}");
+            //        _logger.LogInformation($"Tag {at.Tag}");
+            //    }
+            //}
             return View(result);
+        }
+
+        [HttpGet]
+        public IActionResult Tag(string tagname)
+        {
+            return View();
         }
     }
 }

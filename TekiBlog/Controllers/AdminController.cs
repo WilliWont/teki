@@ -101,7 +101,7 @@ namespace TekiBlog.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteArticle(Guid id, int? pageNumber )
+        public async Task<IActionResult> DeleteArticle(Guid id, int? pageNumber)
         {
             Article article = _service.GetArticle(id);
             if (article != null)
@@ -119,6 +119,31 @@ namespace TekiBlog.Controllers
                 }
             }
             return RedirectToAction("Index", "Admin", pageNumber);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RestoreTag(int id)
+        {
+            bool restoreStatus = _service.RestoreTag(id);
+            if (!restoreStatus)
+            {
+                _logger.LogInformation("Invalid ID to restore");
+                TempData["RestoreMessageStatus"] = "Invalid ID to restore";
+            }
+            else
+            {
+                if (await _service.Commit())
+                {
+                    _logger.LogInformation("Restore tag successfully");
+                    TempData["RestoreMessageStatus"] = "Restore tag successfully";
+                }
+                else
+                {
+                    _logger.LogInformation("Restore tag unsuccessfully");
+                    TempData["RestoreMessageStatus"] = " Restore tag unsuccessfully";
+                }
+            }
+            return RedirectToAction("Tag", "Admin");
         }
         //[HttpGet]
         //public async Task<IActionResult> RestoreArticle(Guid id, int? pageNumber)

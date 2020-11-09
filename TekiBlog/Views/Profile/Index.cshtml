@@ -2,8 +2,8 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> userManager;
 
-@section Styles{ 
-    <link rel="stylesheet" href="~/css/profile.css"/>
+@section Styles{
+    <link rel="stylesheet" href="~/css/profile.css" />
 }
 
 @{
@@ -36,6 +36,9 @@
                         <th scope="col" class="col-5">
                             Action
                         </th>
+                        <th>
+                            Tag
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,11 +54,11 @@
                                 <td class="col-5 tbl-title">
                                     @if (item.Title != null)
                                     {
-                                        <span>@item.Title</span>
+                                        <a asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">@item.Title</a>
                                     }
                                     else
                                     {
-                                        <span class="empty">untitled article</span>
+                                        <a asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">untitled article</a>
                                     }
                                 </td>
                                 <td class="col-1">
@@ -72,7 +75,25 @@
                                         <a class="btn btn-secondary" asp-controller="Article" asp-action="ModifyArticle" asp-route-id="@item.ID" asp-route-type="Disable">Disable</a>
                                     }
                                     <a class="btn btn-secondary" asp-controller="Article" asp-action="ModifyArticle" asp-route-id="@item.ID" asp-route-type="Deleted">Delete</a>
-                                    <a class="btn btn-secondary" asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">View</a>
+
+                                </td>
+                                <td>
+                                    @if (item.ArticleTags.Count() == 0)
+                                    {
+                                        <div>No tags found</div>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var articleTag in item.ArticleTags)
+                                        {
+                                            <span class="badge badge-secondary">
+                                                <a style="color:white; text-decoration:none" asp-controller="Article" asp-action="Home" asp-route-tagid="@articleTag.TagId">
+                                                    @articleTag.Tag.Name
+                                                </a>
+                                            </span>
+                                        }
+                                    }
+
                                 </td>
                             </tr>
                         }

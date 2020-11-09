@@ -31,6 +31,8 @@ namespace TekiBlog.ViewModels
 
         public byte[] ThumbnailImage { get; set; }
 
+        public List<ArticleTag> ArticleTags { get; set; }
+
         public Status Status { get; set;}
     }
 }

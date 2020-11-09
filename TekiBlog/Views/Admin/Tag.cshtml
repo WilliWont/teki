@@ -10,6 +10,9 @@
 <span class="text-danger">
     @TempData["DeleteMessageStatus"]
 </span>
+<span class="text-danger">
+    @TempData["RestoreMessageStatus"]
+</span>
 
 <form asp-controller="Admin" asp-action="CreateTag" class="form-inline my-2 my-lg-0" method="get">
     <input class="form-control" type="text" name="tagName" placeholder="Add new Tag here" />
@@ -28,7 +31,7 @@
                     Name
                 </th>
                 <th scope="col">
-                    Update
+                    Status
                 </th>
                 <th scope="col">
                     Delete
@@ -43,18 +46,43 @@
                         @item.Id
                     </td>
                     <td>
-                        @item.Name
+                        <span class="badge badge-secondary">
+                            <a style="color:white; text-decoration:none" asp-controller="Article" asp-action="Home" asp-route-tagid="@item.Id">
+                                @item.Name
+                            </a>
+                        </span>
+
                     </td>
                     <td>
-                        <button class="btn btn-info">Update</button>
+                        @if (item.IsActive)
+                        {
+                            <p>Active</p>
+                        }
+                        else
+                        {
+                            <p>InActive</p>
+                        }
                     </td>
                     <td>
-                        <a asp-controller="Admin"
-                           asp-action="DeleteTag"
-                           asp-route-id="@item.Id"
-                           class="btn btn-danger">
-                            Delete
-                        </a>
+                        @if (item.IsActive)
+                        {
+                            <a asp-controller="Admin"
+                               asp-action="DeleteTag"
+                               asp-route-id="@item.Id"
+                               class="btn btn-danger">
+                                Delete
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Admin"
+                               asp-action="RestoreTag"
+                               asp-route-id="@item.Id"
+                               class="btn btn-danger">
+                                Restore
+                            </a>
+                        }
+
                     </td>
                 </tr>
             }

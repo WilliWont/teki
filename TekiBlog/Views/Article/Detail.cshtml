@@ -15,7 +15,7 @@
 }
 
 @section Scripts{
-@*    <script src="~/js/detail.js"></script>*@
+    @*    <script src="~/js/detail.js"></script>*@
     <script src="~/js/detail.min.js" asp-append-version="true"></script>
 
 }
@@ -87,8 +87,21 @@
                     }
                 </div>
             </div>
-
-
+            <br />
+            <br />
+            <div class="form-container">
+                @if (Model.ArticleTags.Count() != 0)
+                {
+                    @foreach (var articleTag in Model.ArticleTags)
+                    {
+                        <span class="badge badge-secondary">
+                            <a style="color:white; text-decoration:none" asp-controller="Article" asp-action="Home" asp-route-tagid="@articleTag.TagId">
+                                @articleTag.Tag.Name
+                            </a>
+                        </span>
+                    }
+                }
+            </div>
         </form>
 
     </div>
