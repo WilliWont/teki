@@ -44,23 +44,51 @@ namespace TekiBlog.Controllers
             _service = service;
             _validation = validation;
         }
-        
-        public async Task<IActionResult> Home(int? pageNumber)
+
+        public async Task<IActionResult> Home(int? pageNumber, int? tagid)
         {
             _logger.LogInformation("Article home is called");
-            IQueryable<Article> articles = _service.GetArticleByStatus("Active");
+            IQueryable<Article> articles = null;
+            if (tagid != null || tagid >= 1)
+            {
+                articles = _service.GetArticleByTag(tagid ?? 1);
+            }
+            else
+            {
+                articles = _service.GetArticleByStatus("Active");
+            }
 
+            foreach (var a in articles)
+            {
+                _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
+                foreach (var at in a.ArticleTags)
+                {
+                    _logger.LogInformation($"Tag {at.TagId}");
+                    _logger.LogInformation($"Tag {at.Tag.Name}");
+                }
+            }
+            _logger.LogInformation("--------------------------------");
             int pageSize = PaginatedList<Article>.PerPage;
 
-            PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize);
+            PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles, pageNumber ?? 1, pageSize);
 
+            _logger.LogInformation("result size : " + result.Count());
+            foreach (var a in result)
+            {
+                _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
+                foreach (var at in a.ArticleTags)
+                {
+                    _logger.LogInformation($"Tag {at.TagId}");
+                    _logger.LogInformation($"Tag {at.Tag}");
+                }
+            }
             HomePageViewModel viewModel = new HomePageViewModel
             {
                 Articles = result,
             };
 
             var user = await _userManager.GetUserAsync(User);
-            if(user?.Id != null)
+            if (user?.Id != null)
             {
                 List<Bookmark> bookmarks = await _service.GetBookmarks(user).ToListAsync();
                 viewModel.UserBookmarks = bookmarks;
@@ -142,7 +170,8 @@ namespace TekiBlog.Controllers
                             ArticleContent = article.ContentHtml,
                             Title = article.Title,
                             Summary = article.Summary,
-                            Status = article.Status
+                            Status = article.Status,
+                            ArticleTags = article.ArticleTags
                         });
                     }
                 }
@@ -249,11 +278,11 @@ namespace TekiBlog.Controllers
                         return RedirectToAction("Editor", "Article", new { id = articleModel.ID });
                     }
 
-                } 
-                else
-                {
-                    return NotFound();
-                }
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost]
@@ -292,7 +321,7 @@ namespace TekiBlog.Controllers
             
             if (pastArticle.User.Id.Equals(user.Id))
             {
-                string statusType = ( ModelState.IsValid ) ? "Active" : "Draft";
+                string statusType = (ModelState.IsValid) ? "Active" : "Draft";
 
                 // Get active status for this post
                 Status status = _service.GetStatus(statusType);
@@ -348,7 +377,7 @@ namespace TekiBlog.Controllers
 
             } // exit if invalid user
             else
-            _logger.LogInformation($"user {user?.Id} tried updating {pastArticle.User.Id}'s article");
+                _logger.LogInformation($"user {user?.Id} tried updating {pastArticle.User.Id}'s article");
 
             return Forbid();
         }
@@ -489,19 +518,39 @@ namespace TekiBlog.Controllers
             }
         }
 
-        [HttpGet]
+        
         public async Task<IActionResult> Search(string searchValue, int? pageNumber)
         {
-            int pageSize = PaginatedList<Article>.PerPage;
+            _logger.LogInformation("Article search is called");
             _logger.LogInformation("Search value " + searchValue);
             if (string.IsNullOrEmpty(searchValue) && (pageNumber == null))
             {
                 return RedirectToAction("Home", "Article");
             }
             ViewData["SearchValue"] = searchValue;
-            IQueryable<Article> articles = _service.SearchArticle(searchValue);
-            PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles.AsNoTracking(), pageNumber ?? 1, pageSize);
-
+            IQueryable<Article> articles = null;
+            articles = _service.SearchArticle(searchValue);
+            foreach (var a in articles)
+            {
+                _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
+                foreach (var at in a.ArticleTags)
+                {
+                    _logger.LogInformation($"Tag {at.TagId}");
+                    _logger.LogInformation($"Tag {at.Tag.Name}");
+                }
+            }
+            int pageSize = PaginatedList<Article>.PerPage;
+            PaginatedList<Article> result = await PaginatedList<Article>.CreateAsync(articles, pageNumber ?? 1, pageSize);
+            _logger.LogInformation("result size : " + result.Count());
+            //foreach (var a in result)
+            //{
+            //    _logger.LogInformation($"Article {a.ID} : {a.ArticleTags.Count}");
+            //    foreach (var at in a.ArticleTags)
+            //    {
+            //        _logger.LogInformation($"Tag {at.TagId}");
+            //        _logger.LogInformation($"Tag {at.Tag}");
+            //    }
+            //}
             HomePageViewModel viewModel = new HomePageViewModel
             {
                 Articles = result,
@@ -524,6 +573,12 @@ namespace TekiBlog.Controllers
             List<Article> drafts = await _service.GetUserDrafts(user).ToListAsync();
             _logger.LogInformation($"user {user.Id} requested {drafts.Count} drafts");
             return PartialView("_UserDraftListPartial", new UserDraftsViewModel{ UserDrafts = drafts });
+        }
+
+        [HttpGet]
+        public IActionResult Tag(string tagname)
+        {
+            return View();
         }
     }
 }

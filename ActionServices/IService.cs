@@ -23,6 +23,7 @@ namespace ActionServices
         IQueryable<Article> GetArticleByStatus(string status);
         IQueryable<Article> GetArticleForAdmin();
         IQueryable<Article> GetUserDrafts(ApplicationUser user);
+        IQueryable<Article> GetArticleByTag(int tagid);
         void GetImage(out byte[] img, HttpRequest req);
         byte[] ResizeImgageByWidth(byte[] originalBytes, int w, ImageFormat format);
         byte[] CropImage(byte[] originalBytes, Rectangle crop, ImageFormat format);
@@ -45,7 +46,8 @@ namespace ActionServices
         IEnumerable<Tag> GetAllTags();
         void CreateTag(Tag tag);
         bool DeleteTag(int id);
-
+        IEnumerable<Tag> GetAllActiveTags();
+        bool RestoreTag(int id);
         Task<bool> Commit();
 
         // Cloud Service

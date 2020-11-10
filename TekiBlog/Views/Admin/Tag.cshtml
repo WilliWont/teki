@@ -23,58 +23,82 @@
             @TempData["DeleteMessageStatus"]
         </span>
 
-        <form asp-controller="Admin" asp-action="CreateTag" class="form-inline my-2 my-lg-0" method="get">
-            <input class="form-control" type="text" name="tagName" placeholder="Add new Tag here" />
-            <input class="btn btn-success" type="submit" value="Add" />
-        </form>
-        <br />
-        @if (Model.Any())
-        {
-            <table class="table">
-                <thead class="black white-text">
-                    <tr>
-                        <th scope="col">
-                            ID
-                        </th>
-                        <th scope="col">
-                            Name
-                        </th>
-                        <th scope="col">
-                            Update
-                        </th>
-                        <th scope="col">
-                            Delete
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @item.Id
-                            </td>
-                            <td>
+<form asp-controller="Admin" asp-action="CreateTag" class="form-inline my-2 my-lg-0" method="get">
+    <input class="form-control" type="text" name="tagName" placeholder="Add new Tag here" />
+    <input class="btn btn-success" type="submit" value="Add" />
+</form>
+<br />
+@if (Model.Any())
+{
+    <table class="table">
+        <thead class="black white-text">
+            <tr>
+                <th scope="col">
+                    ID
+                </th>
+                <th scope="col">
+                    Name
+                </th>
+                <th scope="col">
+                    Status
+                </th>
+                <th scope="col">
+                    Delete
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        <span class="badge badge-secondary">
+                            <a style="color:white; text-decoration:none" asp-controller="Article" asp-action="Home" asp-route-tagid="@item.Id">
                                 @item.Name
-                            </td>
-                            <td>
-                                <button class="btn btn-info">Update</button>
-                            </td>
-                            <td>
-                                <a asp-controller="Admin"
-                                   asp-action="DeleteTag"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-danger">
-                                    Delete
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <h2>No tag is displayed</h2>
-        }
-</div>
+                            </a>
+                        </span>
+
+                    </td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <p>Active</p>
+                        }
+                        else
+                        {
+                            <p>InActive</p>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <a asp-controller="Admin"
+                               asp-action="DeleteTag"
+                               asp-route-id="@item.Id"
+                               class="btn btn-danger">
+                                Delete
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Admin"
+                               asp-action="RestoreTag"
+                               asp-route-id="@item.Id"
+                               class="btn btn-danger">
+                                Restore
+                            </a>
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h2>No tag is displayed</h2>
+}

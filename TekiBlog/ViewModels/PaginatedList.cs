@@ -15,12 +15,11 @@ namespace TekiBlog.ViewModels
         {
             get
             {
-                return 10;
+                return 2;
             }
         }
 
-
-        public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
+        private PaginatedList(IQueryable<T> items, int count, int pageIndex, int pageSize)
         {
             PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
@@ -43,11 +42,24 @@ namespace TekiBlog.ViewModels
             }
         }
 
-        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
+       
+        public static PaginatedList<T> Create(IQueryable<T> source, int pageIndex, int pageSize)
         {
-            var count = await source.CountAsync();
-            var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            var count = source.Count();
+            var items = source.Skip((pageIndex - 1) * pageSize).Take(pageSize);
             return new PaginatedList<T>(items, count, pageIndex, pageSize);
         }
+        public async static Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
+        {
+            var count = await source.CountAsync();
+            var items = source.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            return new PaginatedList<T>(items, count, pageIndex, pageSize);
+        }
+        //public async static Task<PaginatedList<T>> CreateAsync(IQueryable<T> source)
+        //{
+        //    //var count = await source.CountAsync();
+        //    //var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+        //    return new PaginatedList<T>(source, 3, 1, 3);
+        //}
     }
 }

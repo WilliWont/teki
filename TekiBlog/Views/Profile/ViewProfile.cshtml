@@ -34,6 +34,9 @@ else
                         <th scope="col">
                             Action
                         </th>
+                        <th scope="col">
+                            Tag
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +57,23 @@ else
                                 </td>
                                 <td>
                                     <a class="btn btn-secondary" asp-controller="Article" asp-action="Detail" asp-route-id="@item.ID">View</a>
+                                </td>
+                                <td>
+                                    @if (item.ArticleTags.Count() == 0)
+                                    {
+                                        <div>No tags found</div>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var articleTag in item.ArticleTags)
+                                        {
+                                            <span class="badge badge-secondary">
+                                                <a style="color:white; text-decoration:none" asp-controller="Article" asp-action="Home" asp-route-tagid="@articleTag.TagId">
+                                                    @articleTag.Tag.Name
+                                                </a>
+                                            </span>
+                                        }
+                                    }
                                 </td>
                             </tr>
                         }

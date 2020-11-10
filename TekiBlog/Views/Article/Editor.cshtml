@@ -1,5 +1,9 @@
 ﻿@model TekiBlog.ViewModels.CreateArticleViewModel
-
+@inject ActionServices.IService service
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment webhost
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using System.Web
 
 @{
     ViewData["Title"] = "Editor";
@@ -12,6 +16,9 @@
     <link rel="stylesheet" href="~/css/editor.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/detail.min.css" asp-append-version="true" />
 
+
+    <link rel="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/assets/app.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-tagsinput.css">
 }
 
 @section Scripts{
@@ -20,6 +27,50 @@
     </script>
     <script type="text/javascript" src="~/js/tinymce/tinymce.min.js"></script>
     <script type="text/javascript" src="~/js/editor.min.js" asp-append-version="true"></script>
+
+    @*<script type="text/javascript" src="~/js/bootstrap-tagsinput.js"></script>
+        <script type="text/javascript" src="~/js/typeahead.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+    <script src="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+    <script>
+        var tags = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            prefetch: "https://localhost:44326/tag.json"
+        });
+        tags.initialize();
+
+        var elt = $('#bootstrap-tagsinput');
+        elt.tagsinput({
+            itemValue: 'value',
+            itemText: 'text',
+            typeaheadjs: {
+                name: 'cities',
+                displayKey: 'text',
+                source: tags.ttAdapter()
+            }
+        });
+
+        function GetData() {
+            var a = elt.val();
+            console.log(a);
+        }
+    </script>
+
+    @{
+        if (Model.ArticleTags.Count() != 0)
+        {
+            foreach (var at in Model.ArticleTags)
+            {
+                <script>
+                    var elt = $('#bootstrap-tagsinput');
+                    console.log("@at.Tag.Name");
+                    elt.tagsinput('add', { "value": @at.TagId, "text": "@at.Tag.Name", "continent": "Tag" });
+                </script>
+
+            }
+        }
+    }
 
     @if (@Model != null && @Model.Status.Name.Equals("Draft"))
     {
@@ -97,9 +148,16 @@
                            name="file1" class="fileinput form-control-file"
                            accept="image/*"
                            onchange="previewFile(this); hideField('#file-invalid');"
-                           required/>
+                           required />
 
                     <small id="file-invalid" class="invalid-input d-none">Empty image field</small>
+                </div>
+
+                <small class="form-text text-muted">
+                    Please choos article tag
+                </small>
+                <div class="form-container">
+                    <input id="bootstrap-tagsinput" type="text" placeholder="Add tags" class="form-control" />
                 </div>
 
                 <small id="tldrHelp" class="form-text text-muted">

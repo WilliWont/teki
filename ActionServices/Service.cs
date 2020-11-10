@@ -260,6 +260,11 @@ namespace ActionServices
         public bool DeleteTag(int id)
         {
             Tag tag = tagRepository.GetByID(id);
+            if (tag == null)
+            {
+                Console.WriteLine("Tag is null");
+                return false;
+            }
             if (!tag.IsActive)
             {
                 return false;
@@ -268,6 +273,7 @@ namespace ActionServices
             tagRepository.UpdateTag(tag);
             return true;
         }
+
         public IQueryable<Bookmark> GetBookmarks(ApplicationUser user, bool includeArticle)
         {
             return bookmarkRepository.GetBookmarks(user, true);
@@ -309,6 +315,34 @@ namespace ActionServices
             var fileTransferUtility = new TransferUtility(client);
             await fileTransferUtility.UploadAsync(uploadRequest);
         }
+
+        public IEnumerable<Tag> GetAllActiveTags()
+        {
+            return tagRepository.GetAll().Where(tag => tag.IsActive);
+        }
+
+        public IQueryable<Article> GetArticleByTag(int tagid)
+        {
+            return articleRepository.GetArtcilesByTag(tagid);
+        }
+
+        public bool RestoreTag(int id)
+        {
+            Tag tag = tagRepository.GetByID(id);
+            if(tag == null)
+            {
+                Console.WriteLine("Tag is null");
+                return false;
+            }
+            if (tag.IsActive)
+            {
+                return false;
+            }
+            tag.IsActive = true;
+            tagRepository.UpdateTag(tag);
+            return true;
+        }
+
         //public bool DeleteArticlesByAdmin(Guid id)
         //{
         //    Article article = articleRepository.GetArticleInfo(id);

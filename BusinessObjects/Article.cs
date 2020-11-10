@@ -38,5 +38,6 @@ namespace BusinessObjects
         // public ICollection<Tag> Tags { get; set; }
         public List<ArticleTag> ArticleTags { get; set; }
 
+
     }
 }

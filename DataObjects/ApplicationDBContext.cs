@@ -77,6 +77,11 @@ namespace DataObjects
             {
                 entity.ToTable("ArticleTag");
                 entity.HasKey(articleTag => new { articleTag.ArticleId, articleTag.TagId });
+                entity.HasOne(articleTag => articleTag.Tag)
+                    .WithMany(tag => tag.ArticleTags).HasForeignKey(articleTag => articleTag.TagId);
+                entity.HasOne(articleTag => articleTag.Article)
+                .WithMany(article => article.ArticleTags)
+                .HasForeignKey(articleTag => articleTag.ArticleId);
             });
             //builder.Entity<A>
         }
