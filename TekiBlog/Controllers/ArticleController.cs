@@ -206,7 +206,6 @@ namespace TekiBlog.Controllers
                 Summary = article.Summary?.Trim(),
                 DatePosted = publishDate,
                 LastUpdate = DateTime.UtcNow,
-                CurrentVote = 0,
                 ContentHtml = html,
                 ContentRaw = raw?.Trim(),
                 Status = status,
@@ -524,7 +523,7 @@ namespace TekiBlog.Controllers
             var user = await _userManager.GetUserAsync(User);
             List<Article> drafts = await _service.GetUserDrafts(user).ToListAsync();
             _logger.LogInformation($"user {user.Id} requested {drafts.Count} drafts");
-            return PartialView("_UserDraftListPartial", drafts);
+            return PartialView("_UserDraftListPartial", new UserDraftsViewModel{ UserDrafts = drafts });
         }
     }
 }

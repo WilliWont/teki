@@ -61,7 +61,8 @@ namespace TekiBlog.Controllers
         public async Task<IActionResult> UserBookmark()
         {
             var user = await _userManager.GetUserAsync(User);
-            return View(_service.GetBookmarks(user, true));
+            BookmarkViewModel viewModel = new BookmarkViewModel { Bookmarks = _service.GetBookmarks(user, true)};
+            return View(viewModel);
         }
 
         [Authorize(Roles = "User")]

@@ -1,4 +1,4 @@
-﻿@model List<Article>
+﻿@model TekiBlog.ViewModels.UserDraftsViewModel
 
 <div id="draft-modal" class="modal fade show" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
@@ -18,7 +18,7 @@
                         </tr>
                     </thead>
                     <tbody class="draft-tbody">
-                        @foreach (Article article in Model)
+                        @foreach (Article article in Model.UserDrafts)
                         {
                         <tr editor-id="@article.ID" class="draft-row">
                             @if (article.Title == null)

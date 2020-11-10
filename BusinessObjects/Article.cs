@@ -25,8 +25,6 @@ namespace BusinessObjects
         [DisplayFormat(DataFormatString = "{0:ddd, MMM dd yyyy 'at' H:m}")]
         public DateTime LastUpdate { get; set; }
 
-        public int CurrentVote { get; set; }
-
         public Status Status { get; set; }
 
         public ApplicationUser User { get; set; }

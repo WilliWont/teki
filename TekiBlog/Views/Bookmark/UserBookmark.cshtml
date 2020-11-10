@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using BusinessObjects
 
-@model IQueryable<Bookmark>
+@model TekiBlog.ViewModels.BookmarkViewModel
 
 @inject SignInManager<ApplicationUser> SignInManager;
 
@@ -19,7 +19,7 @@
     <script>$(".body-content").addClass("col-12"); $('main').addclass("flex-container")</script>
 }
 
-@if (Model.Any())
+@if (Model.Bookmarks.Any())
 {
     <div class="article-card-list-container col-8">
         <h1>My Bookmarks</h1>
@@ -28,7 +28,7 @@
         @{ 
             string img = $"{@Configuration["Credentials:AWS:ImagePathPre"]}{Configuration["Credentials:AWS:ThumbnailBucket"]}{@Configuration["Credentials:AWS:ImagePathPost"]}";
         }
-        @foreach (var item in Model)
+        @foreach (var item in Model.Bookmarks)
         {
             <div class="article-card-container">
                 <div class="article-link-container">
