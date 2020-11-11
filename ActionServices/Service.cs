@@ -380,6 +380,11 @@ namespace ActionServices
             tagRepository.UpdateArticleTag(articleID, tagList);
         }
 
+        public Tag GetTagByID(int id)
+        {
+            return tagRepository.GetTagByID(id);
+        }
+
         //public bool DeleteArticlesByAdmin(Guid id)
         //{
         //    Article article = articleRepository.GetArticleInfo(id);

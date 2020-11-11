@@ -18,3 +18,8 @@
     position: sticky;
     top: .5rem;
 }
+h3.tag {
+    background-color: rgb(128,128,128) !important;
+    color: white !important;
+    font-size: 2rem !important;
+}

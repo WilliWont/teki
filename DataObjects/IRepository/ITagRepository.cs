@@ -11,6 +11,6 @@ namespace DataObjects.IRepository
         //public IQueryable<Tag> GetTagsAlphabetically();
         public void AddArticleTag(Guid articleID, List<int> tagList);
         public void UpdateArticleTag(Guid articleID, List<int> tagList);
-
+        public Tag GetTagByID(int id);
     }
 }

@@ -47,6 +47,7 @@ namespace TekiBlog.Controllers
             if (tagid != null || tagid >= 1)
             {
                 articles = _service.GetArticleByTag(tagid ?? 1);
+                ViewData["TagHeader"] = _service.GetTagByID((int)tagid).Name;
             }
             else
             {

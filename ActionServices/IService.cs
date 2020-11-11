@@ -47,6 +47,7 @@ namespace ActionServices
         
         // Tag Services
         IEnumerable<Tag> GetAllTags();
+        Tag GetTagByID(int id);
         void CreateTag(Tag tag);
         bool DeleteTag(int id);
         IEnumerable<Tag> GetAllActiveTags();

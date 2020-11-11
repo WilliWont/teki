@@ -14,6 +14,10 @@ namespace DataObjects.Repository
 
         }
 
+        public Tag GetTagByID(int id)
+        {
+            return _context.Tags.FirstOrDefault(a => a.Id == id);
+        }
         public void AddArticleTag(Guid articleID, List<int> tagList)
         {
             if(tagList == null || tagList.Count == 0)

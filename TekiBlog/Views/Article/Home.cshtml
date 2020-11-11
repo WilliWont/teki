@@ -29,6 +29,11 @@
 }
 
 <div class="home-page-left">
+    @if(ViewData["TagHeader"] != null)
+    {
+        <h3 class="tag">@ViewData["TagHeader"]</h3>
+    }
+
     @if (Model.Articles.Any())
     {
         <div class="article-card-list-container col-12">
