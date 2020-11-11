@@ -115,7 +115,7 @@
 :root {
     --card-width: 16vw;
     --card-height: 12vw;
-    --card-black: rgb(64,64,64);
+    --card-black: rgb(68,68,68);
     --card-white: rgb(255,255,255);
     --bookmark-size: 1rem;
     --loader-size: 1.25rem;
@@ -128,16 +128,17 @@
 
 .article-card-container {
     transition: .25s ease;
+    border: solid 1px rgb(240,240,240);
     position: relative;
     padding: .1vw;
     margin-bottom: 1vh;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.13);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 1px 2px 3px rgba(0,0,0,0.013);
     width: 100%;
 }
 
 .article-card-container:hover {
     transition: .25s ease;
-    box-shadow: 0 7px 10px rgba(0,0,0,0.125), 0 6px 3px rgba(0,0,0,0.13);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06), 1px 2px 3px rgba(0,0,0,0.013);
 }
 
 .article-info-container {
@@ -215,7 +216,7 @@
 .article-link img {
     transition: .5s ease;
     width: var(--card-width);
-    padding: .5vw;
+    padding: .25vw;
     height: auto;
     filter: grayscale(20%);
     z-index: 9;

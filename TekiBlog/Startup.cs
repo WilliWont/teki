@@ -25,6 +25,7 @@ namespace TekiBlog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             // Register DB Context. This method is add many of service revelant to DBContext to service collection . 
             // We can use this service any time by using dependency injection
             services.AddDbContext<ApplicationDBContext>(options =>

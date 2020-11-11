@@ -7,3 +7,14 @@
     top: 6.5vw;
     right: 3vw;
 }
+.header-tag {
+    font-size:.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: rgb(128,128,128);
+}
+
+.tag-list-container {
+    position: sticky;
+    top: .5rem;
+}

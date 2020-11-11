@@ -12,6 +12,9 @@ namespace ActionServices
 {
     public interface IService
     {
+        // Misc Services
+        List<int> StringToInt(List<string> input);
+
         // Article Services
         Article GetArticle(Guid id);
         IEnumerable<Article> GetAllArticle();
@@ -49,6 +52,9 @@ namespace ActionServices
         IEnumerable<Tag> GetAllActiveTags();
         bool RestoreTag(int id);
         Task<bool> Commit();
+        void AddArticleTag(Guid articleID, List<int> tagList);
+        void UpdateArticleTag(Guid articleID, List<int> tagList);
+
 
         // Cloud Service
         Task UploadToS3(string k, string sK, string bucketName, byte[] file, string fileName);

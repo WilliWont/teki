@@ -58,7 +58,6 @@ namespace DataObjects.Repository
                     ContentHtml = a.ContentHtml,
                     ContentRaw = a.ContentRaw,
                     DatePosted = a.DatePosted,
-                    CurrentVote = a.CurrentVote,
                     User = a.User,
                     Status = a.Status,
                     ArticleTags = a.ArticleTags.Where(at => at.Tag.IsActive).ToList()
@@ -202,7 +201,6 @@ namespace DataObjects.Repository
                     ContentHtml = a.ContentHtml,
                     ContentRaw = a.ContentRaw,
                     DatePosted = a.DatePosted,
-                    CurrentVote = a.CurrentVote,
                     User = a.User,
                     Status = a.Status,
                     ArticleTags = a.ArticleTags.Where(at => at.Tag.IsActive).ToList()

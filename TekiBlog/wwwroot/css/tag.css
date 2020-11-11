@@ -1,0 +1,20 @@
+﻿:root{
+    --tag-black: rgb(128,128,128);
+}
+
+.tag {
+    display:inline-block;
+    font-size: .85rem;
+    background-color: white;
+    color: var(--tag-black);
+    text-decoration: none;
+    border: solid 2px rgb(100,100,100);
+    border-radius: 3px;
+    padding: .5rem .65rem;
+    margin: .2rem .1rem;
+}
+
+.tag:hover{
+    color:white;
+    background-color:var(--tag-black);
+}

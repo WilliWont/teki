@@ -1,18 +1,15 @@
 ﻿@inject ActionServices.IService service;
 
 <div>
-    <h1>tags</h1>
     @{
-        var tags = service.GetAllActiveTags();
+        var tags = service.GetAllActiveTags().OrderBy(a => a.Name);
         if (tags.Count() != 0)
         {
             foreach (var tag in tags)
             {
-                <span class="badge badge-secondary">
-                    <a style="color:white; text-decoration:none" asp-controller="Article" asp-action="Home" asp-route-tagid="@tag.Id">
-                        @tag.Name
-                    </a>
-                </span>
+                <a class="tag badge" asp-controller="Article" asp-action="Home" asp-route-tagid="@tag.Id">
+                    @tag.Name
+                </a>
             }
         }
     }

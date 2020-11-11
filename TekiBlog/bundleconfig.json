@@ -29,6 +29,7 @@
 		"inputFiles": [
 			"wwwroot/css/notification.css",
 			"wwwroot/css/article-card.css",
+			"wwwroot/css/tag.css",
 			"wwwroot/css/homepage.css"
 		]
 	},

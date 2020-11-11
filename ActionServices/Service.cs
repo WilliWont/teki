@@ -6,6 +6,7 @@ using DataObjects;
 using DataObjects.IRepository;
 using DataObjects.Repository;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using Smartcrop;
 using System;
 using System.Collections.Generic;
@@ -176,9 +177,13 @@ namespace ActionServices
                 System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(
                     cropCoords.Area.X,
                     cropCoords.Area.Y,
-                    cropCoords.Area.Width,
-                    cropCoords.Area.Height
+                    crop.Width,
+                    crop.Height
                 );
+                //System.Drawing.Rectangle rectangle = crop;
+
+                rectangle.X = (rectangle.X + rectangle.Width > rectangle.Width) ? 0 : rectangle.X;
+                rectangle.Y = (rectangle.Y + rectangle.Height > rectangle.Height) ? 0 : rectangle.Y;
                 ///////////////////////////////////////////////////
 
 
@@ -341,6 +346,38 @@ namespace ActionServices
             tag.IsActive = true;
             tagRepository.UpdateTag(tag);
             return true;
+        }
+
+        public void AddArticleTag(Guid articleID, List<int> tagList)
+        {
+            tagRepository.AddArticleTag(articleID, tagList);
+        }
+
+        public List<int> StringToInt(List<string> input)
+        {
+            List<int> result = null;
+
+            if (input == null)
+                return result;
+
+            foreach (string s in input){
+                try
+                {
+                    int i = int.Parse(s);
+                    if(result == null)
+                        result = new List<int>();
+
+                    result.Add(i);
+                }
+                catch{}
+            }
+
+            return result;
+        }
+
+        public void UpdateArticleTag(Guid articleID, List<int> tagList)
+        {
+            tagRepository.UpdateArticleTag(articleID, tagList);
         }
 
         //public bool DeleteArticlesByAdmin(Guid id)

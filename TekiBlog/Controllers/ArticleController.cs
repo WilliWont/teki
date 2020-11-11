@@ -195,7 +195,6 @@ namespace TekiBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostArticle(CreateArticleViewModel article)
         {
-
             try
             {
                 int iW = _configuration.GetValue<int>("Article:Image:Width");
@@ -241,7 +240,10 @@ namespace TekiBlog.Controllers
                 User = user
             };
 
+            List<int> tagList = _service.StringToInt(article.TagsString.Split(",").ToList());
+
             _service.AddArticle(articleModel);
+            _service.AddArticleTag(articleModel.ID, tagList);
 
             if (await _service.Commit())
             {
@@ -267,7 +269,7 @@ namespace TekiBlog.Controllers
                     _logger.LogInformation($"failed to upload image of article {articleModel.ID} to AWS");
                 }
 
-                _logger.LogInformation($"user {user.Id} posted article {articleModel.ID} with status ${status.Name}");
+                _logger.LogInformation($"user {user.Id} posted article {articleModel.ID} with status {status.Name}");
 
                 if (ModelState.IsValid && uploadValid)
                     {
@@ -338,8 +340,10 @@ namespace TekiBlog.Controllers
                 {
                     pastArticle.DatePosted = DateTime.UtcNow;
                 }
+                List<int> tagList = _service.StringToInt(article.TagsString.Split(",").ToList());
 
                 _service.UpdateArticle(pastArticle);
+                _service.UpdateArticleTag(pastArticle.ID, tagList);
 
                 if (await _service.Commit())
                 {
@@ -418,6 +422,8 @@ namespace TekiBlog.Controllers
 
             Status draft = _service.GetStatus("Draft");
 
+            List<int> tagList = _service.StringToInt(article.TagsString?.Split(",")?.ToList());
+
             if (toUpdate)
             {
                 // Get active status for this post
@@ -431,6 +437,7 @@ namespace TekiBlog.Controllers
                 draftArticle.Status = draft;
 
                 _service.UpdateArticle(draftArticle);
+                _service.UpdateArticleTag(draftArticle.ID, tagList);
             }
             else
             {
@@ -447,8 +454,8 @@ namespace TekiBlog.Controllers
                 };
 
                 _service.AddArticle(draftArticle);
+                _service.AddArticleTag(draftArticle.ID, tagList);
             }
-
 
             if (await _service.Commit())
             {

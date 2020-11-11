@@ -33,6 +33,9 @@ namespace TekiBlog.ViewModels
 
         public List<ArticleTag> ArticleTags { get; set; }
 
+        [Required]
+        public string TagsString { get; set;}
+
         public Status Status { get; set;}
     }
 }

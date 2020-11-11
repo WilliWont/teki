@@ -28,15 +28,19 @@
     <script type="text/javascript" src="~/js/tinymce/tinymce.min.js"></script>
     <script type="text/javascript" src="~/js/editor.min.js" asp-append-version="true"></script>
 
-    @*<script type="text/javascript" src="~/js/bootstrap-tagsinput.js"></script>
-        <script type="text/javascript" src="~/js/typeahead.js"></script>*@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
     <script src="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+
     <script>
+        $(window).bind('beforeunload', function () {
+            return "Do you want to exit this page?";
+        });
+
+
         var tags = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: "https://localhost:44326/tag.json"
+            prefetch: "/Tag/Get"
         });
         tags.initialize();
 
@@ -57,22 +61,17 @@
         }
     </script>
 
-    @{
-        if (Model.ArticleTags.Count() != 0)
+    @if(Model != null && Model.ArticleTags?.Count() != null){
+        foreach (var at in Model.ArticleTags)
         {
-            foreach (var at in Model.ArticleTags)
-            {
-                <script>
-                    var elt = $('#bootstrap-tagsinput');
-                    console.log("@at.Tag.Name");
-                    elt.tagsinput('add', { "value": @at.TagId, "text": "@at.Tag.Name", "continent": "Tag" });
-                </script>
-
-            }
+            <script>
+                console.log("@at.Tag.Name");
+                elt.tagsinput('add', { "value": @at.TagId, "text": "@at.Tag.Name", "continent": "Tag" });
+            </script>
         }
     }
 
-    @if (@Model != null && @Model.Status.Name.Equals("Draft"))
+    @if (@Model != null)
     {
         <script>
             $(document).ready(function () {
@@ -130,7 +129,6 @@
     <form id="add-action-template" asp-controller="Article" asp-action="PostArticle"></form>
     <form id="update-action-template" asp-controller="Article" asp-action="UpdateArticle"></form>
 
-
     <div class="flx-container">
         <div class="col-9 article-detail">
             <form id="form" asp-controller="Article"
@@ -154,10 +152,10 @@
                 </div>
 
                 <small class="form-text text-muted">
-                    Please choos article tag
+                    Please choose enter article tag
                 </small>
                 <div class="form-container">
-                    <input id="bootstrap-tagsinput" type="text" placeholder="Add tags" class="form-control" />
+                    <input id="bootstrap-tagsinput" asp-for="@Model.TagsString" type="text" placeholder="Add tags" class="form-control" />
                 </div>
 
                 <small id="tldrHelp" class="form-text text-muted">
@@ -179,7 +177,10 @@
                            default-value=true></small>
                 </div>
 
-                <input type="hidden" id="input-id" asp-for="@Model.Id">
+                @if (Model != null)
+                {
+                    <input type="hidden" id="input-id" asp-for="@Model.Id">
+                }
 
                 <input type="hidden" id="input-raw" asp-for="@Model.ArticleRaw">
                 <input type="hidden" id="input-title" asp-for="@Model.Title">

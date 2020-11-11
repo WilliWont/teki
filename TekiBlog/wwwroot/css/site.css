@@ -37,6 +37,12 @@ a.navbar-brand {
     word-break: break-all;
 }
 
+code {
+    color: rgb(68,68,68);
+    background-color: rgba(40,40,40,.075);
+    padding: .5%;
+}
+
 /* Provide sufficient contrast against white background */
 a {
     color: rgb(254, 121, 78);

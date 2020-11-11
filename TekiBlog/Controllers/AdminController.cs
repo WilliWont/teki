@@ -66,6 +66,7 @@ namespace TekiBlog.Controllers
             {
                 _logger.LogInformation("Create tag successfully");
                 TempData["CreateMessageStatus"] = "Create tag successfully";
+                //_service.TagToJson(_service.GetAllActiveTags());
             }
             else
             {
@@ -90,6 +91,7 @@ namespace TekiBlog.Controllers
                 {
                     _logger.LogInformation("Delete tag successfully");
                     TempData["DeleteMessageStatus"] = "Delete tag successfully";
+                    //_service.TagToJson(_service.GetAllActiveTags());
                 }
                 else
                 {
@@ -136,6 +138,7 @@ namespace TekiBlog.Controllers
                 {
                     _logger.LogInformation("Restore tag successfully");
                     TempData["RestoreMessageStatus"] = "Restore tag successfully";
+                    //_service.TagToJson(_service.GetAllActiveTags());
                 }
                 else
                 {
