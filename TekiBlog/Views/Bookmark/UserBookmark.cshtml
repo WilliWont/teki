@@ -25,16 +25,23 @@
         <h1>My Bookmarks</h1>
         <a id="href-remove-template" class="d-none" asp-controller="Bookmark" asp-action="BookmarkRemove"></a>
         <a id="href-add-template" class="d-none" asp-controller="Bookmark" asp-action="BookmarkAdd"></a>
-        @{ 
+        @*@{ 
             string img = $"{@Configuration["Credentials:AWS:ImagePathPre"]}{Configuration["Credentials:AWS:ThumbnailBucket"]}{@Configuration["Credentials:AWS:ImagePathPost"]}";
-        }
+        }*@
         @foreach (var item in Model.Bookmarks)
         {
             <div class="article-card-container">
                 <div class="article-link-container">
                     <div class="article-thumbnail-container">
                         <a class="article-link" asp-controller="Article" asp-action="Detail" asp-route-id="@item.Article.ID">
-                            <img class="article-link-img" src="@img/@item.ArticleID" />
+                            @if (item.Article.ThumbnailImage != null)
+                            {
+                                <img id="article-img-cover" src="data:image;base64,@System.Convert.ToBase64String(item.Article.ThumbnailImage)" />
+                            }
+                            else
+                            {
+                                <img id="article-img-cover" src="/img/empty.jpg" />
+                            }
                         </a>
                     </div>
                     <div class="article-info-container">

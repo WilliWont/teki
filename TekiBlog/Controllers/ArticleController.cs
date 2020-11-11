@@ -167,6 +167,7 @@ namespace TekiBlog.Controllers
                             Title = article.Title,
                             Summary = article.Summary,
                             Status = article.Status,
+                            CoverImage = article.CoverImage,
                             ArticleTags = article.ArticleTags
                         });
                     }

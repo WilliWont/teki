@@ -37,7 +37,11 @@
         var tags = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: "/Tag/Get"
+            names:'tag-list',
+            prefetch: {
+                url: "/Tag/Get",
+                cache: false
+            }
         });
         tags.initialize();
 
