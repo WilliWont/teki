@@ -335,7 +335,7 @@ namespace TekiBlog.Controllers
                 pastArticle.LastUpdate = DateTime.UtcNow;
                 pastArticle.Status = status;
 
-                if (article.CoverImage != null & article.ThumbnailImage != null)
+                if (article.CoverImage != null && article.ThumbnailImage != null)
                 {
                     pastArticle.CoverImage = article.CoverImage;
                     pastArticle.ThumbnailImage = article.ThumbnailImage;
@@ -441,7 +441,7 @@ namespace TekiBlog.Controllers
                 draftArticle.LastUpdate = DateTime.UtcNow;
                 draftArticle.Status = draft;
 
-                if (article.CoverImage != null & article.ThumbnailImage != null)
+                if (article.CoverImage != null && article.ThumbnailImage != null)
                 {
                     draftArticle.CoverImage = article.CoverImage;
                     draftArticle.ThumbnailImage = article.ThumbnailImage;
@@ -464,7 +464,7 @@ namespace TekiBlog.Controllers
                     Status = draft
                 };
 
-                if (article.CoverImage != null & article.ThumbnailImage != null)
+                if (article.CoverImage != null && article.ThumbnailImage != null)
                 {
                     draftArticle.CoverImage = article.CoverImage;
                     draftArticle.ThumbnailImage = article.ThumbnailImage;
