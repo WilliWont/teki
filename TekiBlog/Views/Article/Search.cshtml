@@ -58,7 +58,7 @@
                             var user = await UserManager.GetUserAsync(User);
                             //var role = await UserManager
                             var role = await UserManager.GetRolesAsync(user);
-                            if (!role.Contains("Admin"))
+                            if (role.Contains("User"))
                             {
                                 if (Model.UserBookmarks.Find(x => x.ArticleID.Equals(item.ID)) != null)
                                 {
