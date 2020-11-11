@@ -32,9 +32,6 @@
     <script src="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 
     <script>
-        $(window).bind('beforeunload', function () {
-            return "Do you want to exit this page?";
-        });
 
 
         var tags = new Bloodhound({
@@ -90,10 +87,18 @@
 @section CoverImg{
     <div class="article-header">
         <div class="article-img-container">
-            @{
-                string img = $"{@Configuration["Credentials:AWS:ImagePathPre"]}{Configuration["Credentials:AWS:ImageBucket"]}{@Configuration["Credentials:AWS:ImagePathPost"]}";
+            @*@{
+            string img = $"{@Configuration["Credentials:AWS:ImagePathPre"]}{Configuration["Credentials:AWS:ImageBucket"]}{@Configuration["Credentials:AWS:ImagePathPost"]}";
+        }
+        <img id="article-img-cover" src="@img/@Model?.Id" />*@
+            @if (Model != null && Model.CoverImage != null)
+            {
+                <img id="article-img-cover" src="data:image;base64,@System.Convert.ToBase64String(Model?.CoverImage)" />
             }
-            <img id="article-img-cover" src="@img/@Model?.Id" />
+            else
+            {
+                <img id="article-img-cover" src="" />
+            }
         </div>
         <div class="flx-container article-header-info-container">
             <div class="article-header-info-inner col-9">
@@ -152,11 +157,16 @@
                 </div>
 
                 <small class="form-text text-muted">
-                    Please choose enter article tag
+                    Enter your article tags <sup class="input-required"></sup>
                 </small>
                 <div class="form-container">
-                    <input id="bootstrap-tagsinput" asp-for="@Model.TagsString" type="text" placeholder="Add tags" class="form-control" />
+                    <input id="bootstrap-tagsinput" asp-for="@Model.TagsString" type="text" placeholder="Add tags" class="form-control" required/>
+                    @if (Model != null && (Model.ArticleTags == null || Model.ArticleTags.Count == 0))
+                    {
+                        <small id="tag-invalid" class="invalid-input">Empty tag field</small>
+                    }
                 </div>
+
 
                 <small id="tldrHelp" class="form-text text-muted">
                     Write a brief summary for your article

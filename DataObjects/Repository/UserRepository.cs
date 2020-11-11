@@ -9,11 +9,9 @@ namespace DataObjects.Repository
 {
     class UserRepository : GenericRepository<ApplicationUser> , IUserRepository
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        public UserRepository(ApplicationDBContext context,
-            UserManager<ApplicationUser> userManager) : base(context)
+        public UserRepository(ApplicationDBContext context) : base(context)
         {
-            _userManager = userManager;
+
         }
 
     }

@@ -60,6 +60,7 @@ namespace DataObjects.Repository
                     DatePosted = a.DatePosted,
                     User = a.User,
                     Status = a.Status,
+                    CoverImage = a.CoverImage,
                     ArticleTags = a.ArticleTags.Where(at => at.Tag.IsActive).ToList()
                 })
                 .Where(a => a.ID.Equals(ID) && (!a.Status.Name.Equals("Deleted")));
@@ -84,6 +85,7 @@ namespace DataObjects.Repository
                     Status = a.Status,
                     Title = a.Title,
                     DatePosted = a.DatePosted,
+                    ThumbnailImage = a.ThumbnailImage,
                     ArticleTags = a.ArticleTags.Where(at => at.Tag.IsActive).ToList()
                 })
                 .Where(a => a.User.Equals(user) && (!a.Status.Name.Equals("Deleted")))
@@ -106,6 +108,7 @@ namespace DataObjects.Repository
                     Summary = a.Summary,
                     Title = a.Title,
                     DatePosted = a.DatePosted,
+                    ThumbnailImage = a.ThumbnailImage,
                     ArticleTags = a.ArticleTags.Where(at => at.Tag.IsActive).ToList()
                 })
                 .Where(a => a.Status.Name.Equals("Active") && a.User.Equals(user))
@@ -129,6 +132,7 @@ namespace DataObjects.Repository
                     ContentRaw = a.ContentRaw,
                     Title = a.Title,
                     DatePosted = a.DatePosted,
+                    ThumbnailImage = a.ThumbnailImage,
                     ArticleTags = a.ArticleTags.Where(at => at.Tag.IsActive).ToList()
                 })
                 .Where(a => a.Status.Name.Equals("Active")
@@ -158,6 +162,7 @@ namespace DataObjects.Repository
                     //CurrentVote = a.CurrentVote,
                     User = a.User,
                     Status = a.Status,
+                    ThumbnailImage = a.ThumbnailImage,
                     ArticleTags = a.ArticleTags.Where(at => at.Tag.IsActive).ToList()
                 })
                 .Where(a => a.Status.Name.Equals(status))
@@ -203,6 +208,7 @@ namespace DataObjects.Repository
                     DatePosted = a.DatePosted,
                     User = a.User,
                     Status = a.Status,
+                    ThumbnailImage = a.ThumbnailImage,
                     ArticleTags = a.ArticleTags.Where(at => at.Tag.IsActive).ToList()
                 })
                 .Where(a => a.Status.Name.Equals("Active") && articleIDs.Contains(a.ID))
@@ -215,10 +221,15 @@ namespace DataObjects.Repository
             IQueryable<Article> articles = _context.Articles
                 .Include(a => a.Status)
                 .Include(a => a.User)
-                .Select(a => new Article { ID = a.ID, User = a.User, Status = a.Status, Title = a.Title, LastUpdate = a.LastUpdate })
+                .Select(a => new Article { ID = a.ID, User = a.User, 
+                                            Status = a.Status, 
+                                            Title = a.Title, 
+                                            LastUpdate = a.LastUpdate,
+                                            CoverImage = a.CoverImage})
                 .Where(a => a.User.Equals(user) && ( a.Status.Name.Equals("Draft") ))
                 .OrderByDescending(a => a.LastUpdate);
             return articles;
         }
+    
     }
 }

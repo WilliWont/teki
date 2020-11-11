@@ -21,5 +21,6 @@ namespace DataObjects
 
         IQueryable<Article> GetUserDrafts(ApplicationUser user);
         IQueryable<Article> GetArtcilesByTag(int tagid);
+
     }
 }

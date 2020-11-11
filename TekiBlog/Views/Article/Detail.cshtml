@@ -23,14 +23,23 @@
 }
 
 @section CoverImg{
-    @{
+    @*@{
         string img = $"{@Configuration["Credentials:AWS:ImagePathPre"]}{Configuration["Credentials:AWS:ImageBucket"]}{@Configuration["Credentials:AWS:ImagePathPost"]}";
-    }
+    
+    }*@
 
     <div class="article-header">
         <div class="article-img-container">
-            @*<img id="article-img-cover" src="@ViewData["ArticleCoverImg"]" />*@
-            <img id="article-img-cover" src="@img/@Model.ID" />
+            @*            <img id="article-img-cover" src="@ViewData["ArticleCoverImg"]" />*@
+            @if (Model.CoverImage != null)
+            {
+                <img id="article-img-cover" src="data:image;base64,@System.Convert.ToBase64String(Model?.CoverImage)" />
+            }
+            else
+            {
+                <img id="article-img-cover" src="/img/empty.jpg" />
+            }
+            @*<img id="article-img-cover" src="@img/@Model.ID" />*@
         </div>
         <div class="flx-container article-header-info-container">
             <div class="article-header-info-inner col-9">

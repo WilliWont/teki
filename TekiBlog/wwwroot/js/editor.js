@@ -1,4 +1,9 @@
-﻿
+﻿let hasBinded = false;
+
+$(window).bind('beforeunload', function () {
+    if (!hasSaved)
+        return "Do you want to exit this page?";
+});
 
 $(document).ready(function () {
     // initializing editor
@@ -17,6 +22,7 @@ $(document).ready(function () {
             });
 
             editor.on('WordCountUpdate', function (e) {
+                hasBinded = false;
                 let charcount = tinymce.activeEditor.plugins.wordcount.body.getCharacterCount();
                 if (charcount != 0)
                     $('.charcount-input[count-for="input-raw"]').text(charcount + ' characters');
@@ -54,6 +60,8 @@ function bindData() {
     $("#input-content").val(tinymce.activeEditor.getContent());
     $("#input-tldr").val($("#form-tldr").text());
     $("#input-title").val($("#form-title").text());
+
+    hasBinded = true;
 }
 
 // to convert any pasting into plain text
@@ -65,6 +73,14 @@ document.querySelector('#form-tldr').addEventListener('paste', function (event) 
     event.preventDefault();
     document.execCommand('inserttext', false, event.clipboardData.getData('text/plain').trim());
 });
+
+document.querySelector('#form-title').addEventListener('input', function (event) {
+    hasBinded = false;
+});
+document.querySelector('#form-tldr').addEventListener('input', function (event) {
+    hasBinded = false;
+});
+
 
 
 function previewFile(input) {
@@ -97,7 +113,7 @@ jQuery(window).on('scroll', function () {
 function hideField(fieldName) {
     $(fieldName).addClass('d-none');
 }
-// Write your JavaScript code.
-$("img").on("error", function () {
-    $(this).addClass("d-none");
-});
+//// Write your JavaScript code.
+//$("img").on("error", function () {
+//    $(this).addClass("d-none");
+//});

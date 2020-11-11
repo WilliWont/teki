@@ -147,7 +147,7 @@ namespace ActionServices
                         //make a paramater to adjust quality
                         var codecParams = new EncoderParameters(1);
 
-                        codecParams.Param[0] = new EncoderParameter(Encoder.Quality, 100L);
+                        codecParams.Param[0] = new EncoderParameter(Encoder.Quality, 75L);
 
                         //save to the memorystream - convert it to an array and send it back as a byte[]
                         croppedBmp.Save(ms, imgCodec, codecParams);
@@ -207,7 +207,7 @@ namespace ActionServices
                         //make a paramater to adjust quality
                         var codecParams = new EncoderParameters(1);
 
-                        codecParams.Param[0] = new EncoderParameter(Encoder.Quality, 100L);
+                        codecParams.Param[0] = new EncoderParameter(Encoder.Quality, 75L);
 
                         //save to the memorystream - convert it to an array and send it back as a byte[]
                         croppedBmp.Save(ms, imgCodec, codecParams);

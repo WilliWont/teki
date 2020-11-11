@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 using TekiBlog.ViewModels;
-using DataObjects;
 using BusinessObjects;
-using DataObjects.Repository;
 using Microsoft.Extensions.Logging;
 using ActionServices;
 using ValidationUtilities;
@@ -237,41 +232,43 @@ namespace TekiBlog.Controllers
                 ContentHtml = html,
                 ContentRaw = raw?.Trim(),
                 Status = status,
+                CoverImage = article.CoverImage,
+                ThumbnailImage = article.ThumbnailImage,
                 User = user
             };
 
-            List<int> tagList = _service.StringToInt(article.TagsString.Split(",").ToList());
+            List<int> tagList = _service.StringToInt(article?.TagsString?.Split(",")?.ToList());
 
             _service.AddArticle(articleModel);
             _service.AddArticleTag(articleModel.ID, tagList);
 
             if (await _service.Commit())
             {
-                bool uploadValid;
+                //bool uploadValid;
 
-                try
-                {
-                    string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
-                    string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
-                    string addr = _configuration.GetValue<string>("Credentials:AWS:CredentialAddress");
+                //try
+                //{
+                //    string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
+                //    string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
+                //    string addr = _configuration.GetValue<string>("Credentials:AWS:CredentialAddress");
 
-                    string k = $"{_configuration.GetValue<string>("Credentials:AWS:k1")}{_configuration.GetValue<string>("Credentials:AWS:k2")}{_configuration.GetValue<string>("Credentials:AWS:k3")}";
-                    string sK = $"{_configuration.GetValue<string>("Credentials:AWS:k4")}{_configuration.GetValue<string>("Credentials:AWS:k5")}{_configuration.GetValue<string>("Credentials:AWS:k6")}";
+                //    string k = $"{_configuration.GetValue<string>("Credentials:AWS:k1")}{_configuration.GetValue<string>("Credentials:AWS:k2")}{_configuration.GetValue<string>("Credentials:AWS:k3")}";
+                //    string sK = $"{_configuration.GetValue<string>("Credentials:AWS:k4")}{_configuration.GetValue<string>("Credentials:AWS:k5")}{_configuration.GetValue<string>("Credentials:AWS:k6")}";
 
-                    await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{articleModel.ID}");
-                    await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{articleModel.ID}");
+                //    await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{articleModel.ID}");
+                //    await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{articleModel.ID}");
 
-                    uploadValid = true;
-                }
-                catch
-                {
-                    uploadValid = false;
-                    _logger.LogInformation($"failed to upload image of article {articleModel.ID} to AWS");
-                }
+                //    uploadValid = true;
+                //}
+                //catch
+                //{
+                //    uploadValid = false;
+                //    _logger.LogInformation($"failed to upload image of article {articleModel.ID} to AWS");
+                //}
 
                 _logger.LogInformation($"user {user.Id} posted article {articleModel.ID} with status {status.Name}");
 
-                if (ModelState.IsValid && uploadValid)
+                if (ModelState.IsValid /*&& uploadValid*/)
                     {
                         return RedirectToAction("Detail", "Article", new { id = articleModel.ID });
                     }
@@ -336,40 +333,46 @@ namespace TekiBlog.Controllers
                 pastArticle.LastUpdate = DateTime.UtcNow;
                 pastArticle.Status = status;
 
-                if(ModelState.IsValid && pastArticle.DatePosted == DateTime.MinValue)
+                if (article.CoverImage != null & article.ThumbnailImage != null)
+                {
+                    pastArticle.CoverImage = article.CoverImage;
+                    pastArticle.ThumbnailImage = article.ThumbnailImage;
+                }
+
+                    if (ModelState.IsValid && pastArticle.DatePosted == DateTime.MinValue)
                 {
                     pastArticle.DatePosted = DateTime.UtcNow;
                 }
-                List<int> tagList = _service.StringToInt(article.TagsString.Split(",").ToList());
+                List<int> tagList = _service.StringToInt(article?.TagsString?.Split(",")?.ToList());
 
                 _service.UpdateArticle(pastArticle);
                 _service.UpdateArticleTag(pastArticle.ID, tagList);
 
                 if (await _service.Commit())
                 {
-                    bool uploadValid = true;
+                    //bool uploadValid = true;
 
-                    if(article.CoverImage != null & article.ThumbnailImage != null)
-                        try
-                        {
-                            string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
-                            string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
+                    //if(article.CoverImage != null & article.ThumbnailImage != null)
+                    //    try
+                    //    {
+                    //        string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
+                    //        string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
 
-                            string k = $"{_configuration.GetValue<string>("Credentials:AWS:k1")}{_configuration.GetValue<string>("Credentials:AWS:k2")}{_configuration.GetValue<string>("Credentials:AWS:k3")}";
-                            string sK = $"{_configuration.GetValue<string>("Credentials:AWS:k4")}{_configuration.GetValue<string>("Credentials:AWS:k5")}{_configuration.GetValue<string>("Credentials:AWS:k6")}";
+                    //        string k = $"{_configuration.GetValue<string>("Credentials:AWS:k1")}{_configuration.GetValue<string>("Credentials:AWS:k2")}{_configuration.GetValue<string>("Credentials:AWS:k3")}";
+                    //        string sK = $"{_configuration.GetValue<string>("Credentials:AWS:k4")}{_configuration.GetValue<string>("Credentials:AWS:k5")}{_configuration.GetValue<string>("Credentials:AWS:k6")}";
 
-                            await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{pastArticle.ID}");
-                            await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{pastArticle.ID}");
-                        }
-                        catch
-                        {
-                            uploadValid = false;
-                            _logger.LogInformation($"failed to upload image of article {pastArticle.ID} to AWS");
-                        }
+                    //        await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{pastArticle.ID}");
+                    //        await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{pastArticle.ID}");
+                    //    }
+                    //    catch
+                    //    {
+                    //        uploadValid = false;
+                    //        _logger.LogInformation($"failed to upload image of article {pastArticle.ID} to AWS");
+                    //    }
 
                     _logger.LogInformation($"user {user.Id} updated article {pastArticle.ID} with status ${status.Name}");
 
-                    if (ModelState.IsValid && uploadValid)
+                    if (ModelState.IsValid/* && uploadValid*/)
                     {
                         return RedirectToAction("Detail", "Article", new { id = pastArticle.ID });
                     }
@@ -422,7 +425,7 @@ namespace TekiBlog.Controllers
 
             Status draft = _service.GetStatus("Draft");
 
-            List<int> tagList = _service.StringToInt(article.TagsString?.Split(",")?.ToList());
+            List<int> tagList = _service.StringToInt(article?.TagsString?.Split(",")?.ToList());
 
             if (toUpdate)
             {
@@ -435,6 +438,12 @@ namespace TekiBlog.Controllers
                 draftArticle.Summary = article.Summary?.Trim();
                 draftArticle.LastUpdate = DateTime.UtcNow;
                 draftArticle.Status = draft;
+
+                if (article.CoverImage != null & article.ThumbnailImage != null)
+                {
+                    draftArticle.CoverImage = article.CoverImage;
+                    draftArticle.ThumbnailImage = article.ThumbnailImage;
+                }
 
                 _service.UpdateArticle(draftArticle);
                 _service.UpdateArticleTag(draftArticle.ID, tagList);
@@ -453,28 +462,33 @@ namespace TekiBlog.Controllers
                     Status = draft
                 };
 
+                if (article.CoverImage != null & article.ThumbnailImage != null)
+                {
+                    draftArticle.CoverImage = article.CoverImage;
+                    draftArticle.ThumbnailImage = article.ThumbnailImage;
+                }
+
                 _service.AddArticle(draftArticle);
                 _service.AddArticleTag(draftArticle.ID, tagList);
             }
 
             if (await _service.Commit())
             {
-                if (article.CoverImage != null & article.ThumbnailImage != null)
-                    try
-                    {
-                        string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
-                        string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
+                    //try
+                    //{
+                    //    string tB = _configuration.GetValue<string>("Credentials:AWS:ThumbnailBucket");
+                    //    string iB = _configuration.GetValue<string>("Credentials:AWS:ImageBucket");
 
-                        string k = $"{_configuration.GetValue<string>("Credentials:AWS:k1")}{_configuration.GetValue<string>("Credentials:AWS:k2")}{_configuration.GetValue<string>("Credentials:AWS:k3")}";
-                        string sK = $"{_configuration.GetValue<string>("Credentials:AWS:k4")}{_configuration.GetValue<string>("Credentials:AWS:k5")}{_configuration.GetValue<string>("Credentials:AWS:k6")}";
+                    //    string k = $"{_configuration.GetValue<string>("Credentials:AWS:k1")}{_configuration.GetValue<string>("Credentials:AWS:k2")}{_configuration.GetValue<string>("Credentials:AWS:k3")}";
+                    //    string sK = $"{_configuration.GetValue<string>("Credentials:AWS:k4")}{_configuration.GetValue<string>("Credentials:AWS:k5")}{_configuration.GetValue<string>("Credentials:AWS:k6")}";
 
-                        await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{draftArticle.ID}");
-                        await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{draftArticle.ID}");
-                    }
-                    catch
-                    {
-                        _logger.LogInformation($"failed to upload image of article {draftArticle.ID} to AWS");
-                    }
+                    //    await _service.UploadToS3(k, sK, iB, article.CoverImage, $"{draftArticle.ID}");
+                    //    await _service.UploadToS3(k, sK, tB, article.ThumbnailImage, $"{draftArticle.ID}");
+                    //}
+                    //catch
+                    //{
+                    //    _logger.LogInformation($"failed to upload image of article {draftArticle.ID} to AWS");
+                    //}
 
                 _logger.LogInformation($"user {user.Id} saved article {draftArticle?.ID}");
                 return Ok(draftArticle.ID);
@@ -587,5 +601,6 @@ namespace TekiBlog.Controllers
         {
             return View();
         }
+
     }
 }

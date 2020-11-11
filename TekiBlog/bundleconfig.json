@@ -21,6 +21,7 @@
 		"outputFileName": "wwwroot/css/editor.min.css",
 		"inputFiles": [
 			"wwwroot/css/notification.css",
+			"wwwroot/css/tag.css",
 			"wwwroot/css/editor.css"
 		]
 	},
