@@ -61,6 +61,7 @@ namespace DataObjects.Repository
                     User = a.User,
                     Status = a.Status,
                     CoverImage = a.CoverImage,
+                    ThumbnailImage = a.ThumbnailImage,
                     ArticleTags = a.ArticleTags.Where(at => at.Tag.IsActive).ToList()
                 })
                 .Where(a => a.ID.Equals(ID) && (!a.Status.Name.Equals("Deleted")));

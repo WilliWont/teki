@@ -149,7 +149,6 @@ namespace TekiBlog.Controllers
 
             ViewData["ContentMaxLen"] = _validation.GetMaxLen("ArticleRaw");
             ViewData["ContentMinLen"] = _validation.GetMinLen("ArticleRaw");
-
             #endregion
 
             if (id != null)
@@ -202,10 +201,9 @@ namespace TekiBlog.Controllers
                 _service.GetImage(out byte[] articleImage, this.Request);
 
                 articleImage = _service.ResizeImgageByWidth(articleImage, iW, ImageFormat.Jpeg);
-
                 article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, iW, iH), ImageFormat.Jpeg);
-                article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(tW / 3, 0, tW, tH), ImageFormat.Jpeg);
-
+                //article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(tW / 3, 0, tW, tH), ImageFormat.Jpeg);
+                article.ThumbnailImage = _service.ResizeImgageByWidth(article.CoverImage, tW, ImageFormat.Jpeg);
             }
             catch
             {
@@ -304,9 +302,9 @@ namespace TekiBlog.Controllers
                 if(articleImage != null)
                 {
                     articleImage = _service.ResizeImgageByWidth(articleImage, iW, ImageFormat.Jpeg);
-
                     article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, iW, iH), ImageFormat.Jpeg);
-                    article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(tW / 3, 0, tW, tH), ImageFormat.Jpeg);
+                    //article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(tW / 3, 0, tW, tH), ImageFormat.Jpeg);
+                    article.ThumbnailImage = _service.ResizeImgageByWidth(article.CoverImage, tW, ImageFormat.Jpeg);
                 }
             }
             catch
@@ -409,9 +407,9 @@ namespace TekiBlog.Controllers
                 if (articleImage != null)
                 {
                     articleImage = _service.ResizeImgageByWidth(articleImage, iW, ImageFormat.Jpeg);
-
                     article.CoverImage = _service.CropImage(articleImage, new Rectangle(0, 0, iW, iH), ImageFormat.Jpeg);
-                    article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(tW / 3, 0, tW, tH), ImageFormat.Jpeg);
+                    //article.ThumbnailImage = _service.CropImage(articleImage, new Rectangle(tW / 3, 0, tW, tH), ImageFormat.Jpeg);
+                    article.ThumbnailImage = _service.ResizeImgageByWidth(article.CoverImage, tW, ImageFormat.Jpeg);
                 }
             }
             catch

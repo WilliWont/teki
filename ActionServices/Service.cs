@@ -177,13 +177,13 @@ namespace ActionServices
                 System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(
                     cropCoords.Area.X,
                     cropCoords.Area.Y,
-                    crop.Width,
-                    crop.Height
+                    cropCoords.Area.Width,
+                    cropCoords.Area.Height
                 );
                 //System.Drawing.Rectangle rectangle = crop;
 
-                rectangle.X = (rectangle.X + rectangle.Width > rectangle.Width) ? 0 : rectangle.X;
-                rectangle.Y = (rectangle.Y + rectangle.Height > rectangle.Height) ? 0 : rectangle.Y;
+                rectangle.X = (rectangle.X + rectangle.Width > width) ? 0 : rectangle.X;
+                rectangle.Y = (rectangle.Y + rectangle.Height > height) ? 0 : rectangle.Y;
                 ///////////////////////////////////////////////////
 
 
